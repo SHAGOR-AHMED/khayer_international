@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Entry;
 
 use Session;
 use Carbon\Carbon;
-use App\Models\Agent;
+use App\Models\Entry;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,13 +15,13 @@ class IndexController extends Controller
     use ImageUpload;
 
     public function index(){
-    	$data['allData'] = Agent::get();
-    	return view('admin.agent.view',$data);
+    	$data['allData'] = Entry::with(['agent','user'])->get();
+    	return view('admin.entry.view',$data);
     }
 
     public function create(){
         $data['add'] = TRUE;
-        return view('admin.agent.add', $data);
+        return view('admin.entry.add', $data);
     }
 
     public function store(Request $request){
@@ -33,17 +33,7 @@ class IndexController extends Controller
             'address'=>'required',
         ]);
 
-        $data = new Agent();
-
-        $imagePath      = 'admin/userImage/';
-        $imgFor = 'agent-';
-        // Save Image 
-        $current_image  = $request->file('image'); 
-        if(!empty($current_image)){
-            $imgName= $this->imageUplaodByName($current_image, null, $imagePath, $imgFor); 
-            $data->image = $imgName;
-        }
-
+        $data = new Entry();
         $data->name          = $request->name;
         $data->email         = $request->email;
         $data->phone         = $request->phone;
@@ -55,14 +45,14 @@ class IndexController extends Controller
         }else{
             setMessage('message',"danger",exception());
         }
-        return redirect()->route('agent.index');
+        return redirect()->route('entry.index');
 
     }//store
 
     public function edit($id){
     	$data['edit'] = TRUE;
-    	$data['single'] = Agent::findOrFail($id);
-    	return view('admin.agent.add', $data);
+    	$data['single'] = Entry::findOrFail($id);
+    	return view('admin.entry.add', $data);
     }
 
     public function update(Request $request){
@@ -74,33 +64,7 @@ class IndexController extends Controller
             'address'=>'required',
         ]);
        
-        $data = Agent::findOrFail($request->id);
-
-        $userImage = $request->file('image');
-        if($userImage){
-            $preImg = $data->image;
-            if (file_exists($preImg)){
-                unlink($preImg);
-            }
-            $name = $userImage->getClientOriginalName();
-            $ext = explode('.',$name);
-            $finalName = 'agent-'.time().'.'.$ext[1];
-            $uploadPath = 'admin/userImage/';
-            $userImage->move($uploadPath, $finalName);
-            $imageUrl = $uploadPath.$finalName;
-            $data->image = $imageUrl;
-        }
-
-        // $imagePath      = 'admin/userImage/';
-        // $imgFor = 'agent-';
-        // // Save/update Image 
-        // $current_image  = $request->image; 
-        // if($current_image){
-        //     $old_image      = $data->image;
-        //     $imgName= $this->imageUplaodByName($current_image, $old_image, $imagePath, $imgFor); 
-        //     $data->image = $imgName;
-        // }
-
+        $data = Entry::findOrFail($request->id);
         $data->name         = $request->name;
         $data->email        = $request->email;
         $data->phone        = $request->phone;
@@ -112,14 +76,14 @@ class IndexController extends Controller
         }else{
             setMessage('message',"danger",exception());
         }
-        return redirect()->route('agent.edit',$request->id);
+        return redirect()->route('entry.edit',$request->id);
         
     }//update
 
     //control
     public function status($id){
 
-        $data       =  Agent::find($id);
+        $data       =  Entry::find($id);
         if($data){
            $status = $data->status;
             if($status == 1){
@@ -133,22 +97,21 @@ class IndexController extends Controller
             }else{
                 setMessage('message',"danger",exception());
             }
-            return redirect()->route('agent.index');
+            return redirect()->route('entry.index');
         }
     }
 
     // destroy
     public function delete($id)
     {
-        $data       =  Agent::find($id);
-        imageDeleteManager($data->image);
+        $data       =  Entry::find($id);
         $success    =  $data->delete();
         if($success){
             setMessage('message','success',deleted_success());
         }else{
             setMessage('message','danger',exception());
         }
-        return redirect()->route('agent.index');
+        return redirect()->route('entry.index');
     }
 
 }
