@@ -1,0 +1,63 @@
+@extends('admin.layout.default')
+@section('title')
+  Manage Client's
+@endsection
+@section('content')
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Manage Client's</h3>
+          <div class="box-tools pull-right"></div>
+        </div>
+        <div class="box-body color-black">
+              <table id="members_list_table" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                      <th>SN</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Gender</th>
+                      <th>Photo</th>
+                      <th>Passport</th>
+                      <th>Passport No</th>
+                      <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php if(!empty($users)){ 
+                  	foreach ($users as $key => $user) { 
+                  ?>
+                    <tr>
+                      	<td>{{ ++$key }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->phone }}</td>
+                        <td>{{ getGender($user->gender) }}</td>
+                        <td>
+                          <a href="{{ imageShow($user->image) }}" target="_blank">
+                            <img height="50" width="60" src="{{ imageShow($user->image) }}" />
+                          </a>
+                        </td>
+                        <td>
+                          <a href="{{ imageShow($user->passport_doc) }}" target="_blank">
+                            <img height="50" width="60" src="{{ imageShow($user->passport_doc) }}" />
+                          </a>
+                        </td>
+                        <td>{{ $user->passport_no }}</td>
+                      	<td>
+                            <a href="{{ route('client.edit',$user->id)}}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a> | 
+                            <a href="{{ route('client.delete',$user->id)}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash-o fa-lg" style="color: red;"></i></a>
+                        </td>
+                    </tr>
+                  <?php } } ?>
+                </tbody>
+              </table>        
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </section><!-- /.content -->
+  </div><!-- /.content-wrapper -->
+@endsection

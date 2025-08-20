@@ -1,0 +1,156 @@
+::selection { background-color: #E13300; color: white; }
+::-moz-selection { background-color: #E13300; color: white; }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url(../fonts/robotolight.woff2) format('woff2');
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 30px;
+  /*background-color: #f5f5f5;*/
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+.container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+
+
+.banner{
+	font-family: 'Roboto';
+	background: #2D3037 url('../img/homebg.png') repeat-x center top;
+	position: relative;
+	color: #EEE;
+	width: 100%;
+}
+
+.banner_overlay{
+	background-color: rgba(60, 141, 188, 0.3);
+	padding: 40px;
+	font-size: 36px;
+	font-weight: 300;
+	text-align: center;
+}
+
+
+.tagline_bg{
+	background-color: #FEDF98;
+}
+
+.tagline{
+	font-size: 22px;
+	text-align: center;
+	font-weight: bolder;
+	padding: 10px;
+	margin: 0;
+}
+
+.visiable-extra-sm{
+	font-size: 14px !important;
+	font-weight: bolder !important;
+	padding: 10px !important;
+	margin: 0;
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 767px) {
+	.visiable-extra-sm{
+		display: none;
+	}
+}
+
+.login_form_area{
+	margin-top: 80px;
+}
+
+.login_bg{
+	background-color: rgba(204, 204, 204, 0.3);
+	padding: 25px;
+	border-radius: 5px;
+	border: 1px dashed !important;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+}
+
+
+.login_error{
+	color: #ED1C24;
+	padding-left: 14px;
+}
+
+#message{
+	color: rgb(60,141,188);
+	padding: 5px;
+	font-weight: bolder;
+}
+
+.heading_title{
+	margin: 5px 5px;
+}
+
+.form-control{
+	color: #122B39;
+}
+
+.form-control:focus{
+	color: #ED1C24;
+	font-weight: 600;
+}
+
+.datepicker{
+	padding: 6px 12px;
+	border-radius: 0;
+}
+/*input:focus {
+    border: 2px solid blue;
+    -webkit-border: 1px solid blue;
+    -moz-border: 1px solid blue;
+	-o-border: 1px solid blue;
+    color: #E13300;
+} */
+
+/*#members_list_table_length{
+	float: left;
+}
+
+.paginate_button{
+	padding: 2px 4px;
+}*/
+
+.current{
+	padding: 2px;
+	font-weight: bolder;
+}
+.disabled{
+	color: #c3c3c3;
+}
+.color-black{
+	color: black;
+}
