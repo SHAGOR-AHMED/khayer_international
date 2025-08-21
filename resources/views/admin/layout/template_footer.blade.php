@@ -1,7 +1,7 @@
 	    
       <footer class="main-footer">
 	        <div class="pull-right hidden-xs">
-	          <b>Powered by</b> <a href="http://wanitbd.com/">WAN IT</a>
+	          <a href="http://wanitbd.com/">{{ developed_by() }}</a>
 	        </div>
 	        <strong>Copyright &copy; <?= date('Y'); ?> <a href="http://khyaerinternational.com/">Khayer International</a>.</strong> All rights reserved.
 	    </footer>

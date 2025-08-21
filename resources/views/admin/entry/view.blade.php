@@ -20,7 +20,7 @@
                       <th>REF/Agent</th>
                       <th>BD Office</th>
                       <th>Country</th>
-                      <th>Client Name</th>
+                      <th>Client Details</th>
                       <th>Kopil No</th>
                       <th>PC Ref No</th>
                       <th>Medical Report</th>
@@ -38,7 +38,13 @@
                           <td>{{ $data->agent->name }}</td>
                           <td>{{ $data->rl_no }}</td>
                           <td>{{ $data->country }}</td>
-                          <td>{{ $data->user->name }}</td>
+                          <td>
+                            <b>Name:</b> {{ $data->user->name }}<br>
+                            <b>Mobile No:</b> {{ $data->user->phone }}<br>
+                            <b>DOB:</b> {{ $data->user->dob }}<br>
+                            <b>Passport No:</b> {{ $data->user->passport_no }}<br>
+                            <b>Expired Date:</b> {{ $data->user->passport_expired_date }}
+                          </td>
                           <td>{{ $data->kopil_no }}</td>
                           <td>{{ $data->pc_ref_no }}</td>
                           <td>{{ $data->medical_report }}</td>

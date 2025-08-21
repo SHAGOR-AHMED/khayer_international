@@ -24,6 +24,7 @@
                       <th>Photo</th>
                       <th>Passport</th>
                       <th>Passport No</th>
+                      <th>Status</th>
                       <th>Action</th>
                   </tr>
                 </thead>
@@ -33,7 +34,10 @@
                   ?>
                     <tr>
                       	<td>{{ ++$key }}</td>
-                        <td>{{ $user->name }}</td>
+                        <td>
+                          {{ $user->name }}<br>
+                          <b>DOB</b>-{{ $user->dob }}
+                        </td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
                         <td>{{ getGender($user->gender) }}</td>
@@ -47,8 +51,23 @@
                             <img height="50" width="60" src="{{ imageShow($user->passport_doc) }}" />
                           </a>
                         </td>
-                        <td>{{ $user->passport_no }}</td>
+                        <td>
+                          {{ $user->passport_no }}<br>
+                          <b>Expired Date</b>-{{ $user->passport_expired_date }}
+                        </td>
+                        <td>
+                          @if($user->status == 1)
+                            <span class="badge btn-success">Active</span>
+                          @else
+                            <span class="badge btn-danger">Inactive</span>
+                          @endif
+                        </td>
                       	<td>
+                            @if($user->status == 1)
+                                <a onclick="return confirm('Are You Sure?')" href="{{ route('client.control',$user->id) }}" >Inactive <i class="fa fa-times-circle fa-lg"></i></a> | 
+                            @else
+                                <a onclick="return confirm('Are You Sure?')" href="{{ route('client.control',$user->id) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
+                            @endif
                             <a href="{{ route('client.edit',$user->id)}}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a> | 
                             <a href="{{ route('client.delete',$user->id)}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash-o fa-lg" style="color: red;"></i></a>
                         </td>

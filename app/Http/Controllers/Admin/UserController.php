@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function index(){
-    	$data['users'] = User::get();
+    	$data['users'] = User::where('type','!=','user')->get();
     	return view('admin.user.view',$data);
     }
 
@@ -85,7 +85,7 @@ class UserController extends Controller
             return redirect()->route('user.add');
        }
 
-    }//storeUser
+    }//store
 
     public function edit($user_id){
     	$data['edit'] = TRUE;
@@ -142,9 +142,9 @@ class UserController extends Controller
             return redirect()->route('user.edit',$request->id);
         }
         
-    }//updateUser
+    }//update
 
-
+    //control
     public function status($user_id){
 
         $data       =  User::find($user_id);

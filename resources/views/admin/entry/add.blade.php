@@ -15,41 +15,94 @@
             </div>
           </div>
           <div class="box-body">
-          <form action="{{ route('agent.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form action="{{ route('entry.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
           @csrf
             <div class="row">
               <div class="col-md-6">
+
                 <div class="form-group">
-                    <label for="Name">Name <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" required>
-                    <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
+                    <label for="type">Agent <span class="text-red">*</span></label>
+                    <select class="form-control" name="agent_id" required>
+                      <option value="">Please Select</option>
+                      @foreach($all_agents as $agent)
+                        <option value="{{ $agent->id }}">{{ $agent->name }}-({{ $agent->phone }})</option>
+                      @endforeach
+                    </select>
+                    <span class="text-danger">{{ $errors->has('agent_id') ? $errors->first('agent_id') : '' }}</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Email <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="" required>
-                    <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
+                    <label for="type">RL No <span class="text-red">*</span></label>
+                    <select class="form-control" name="rl_no" required>
+                      <option value="RL1717">RL1717</option>
+                    </select>
+                    <span class="text-danger">{{ $errors->has('rl_no') ? $errors->first('rl_no') : '' }}</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Phone No <span class="text-red">*</span></label>
-                    <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone No" value="" required>
-                    <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
+                    <label for="type">Country <span class="text-red">*</span></label>
+                    <select class="form-control" name="country" required>
+                      <option value="">Please Select</option>
+                      @foreach($all_countries as $country)
+                        <option value="{{ $country->con_name }}">{{ $country->con_name }}</option>
+                      @endforeach
+                    </select>
+                    <span class="text-danger">{{ $errors->has('country') ? $errors->first('country') : '' }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="type">Client <span class="text-red">*</span></label>
+                    <select class="form-control" name="client_id" required>
+                      <option value="">Please Select</option>
+                      @foreach($all_clients as $client)
+                        <option value="{{ $client->id }}">{{ $client->name }}-({{ $client->phone }})</option>
+                      @endforeach
+                    </select>
+                    <span class="text-danger">{{ $errors->has('client_id') ? $errors->first('client_id') : '' }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name">Kopil No <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="kopil_no" placeholder="Enter Kopil No" value="" required>
+                    <span class="text-danger">{{ $errors->has('kopil_no') ? $errors->first('kopil_no') : '' }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">PC Ref No <span class="text-red">*</span></label>
+                    <input type="number" class="form-control" name="pc_ref_no" placeholder="Enter PC Ref No" value="" required>
+                    <span class="text-danger">{{ $errors->has('pc_ref_no') ? $errors->first('pc_ref_no') : '' }}</span>
                 </div>
               </div>
 
               <div class="col-md-6">
                 <div class="form-group">
-                    <label>Address <span class="text-red">*</span></label>
-                    <textarea class="form-control" name="address" placeholder="Enter Address" required></textarea>
-                    <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
+                    <label for="type">Medical Report <span class="text-red">*</span></label>
+                    <select class="form-control" name="medical_report" required>
+                      <option value="">Please Select</option>
+                      <option value="FIT">FIT</option>
+                      <option value="UNFIT">UNFIT</option>
+                      <option value="other">Other</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="address">Upload Photograph</label>
-                    <input type="file" id="userfile" class="form-control" name="image" value="" onchange="getPreview('userfile','img_preview','none');">
-                    <img src="<?= asset('admin/img/unknown.png'); ?>" style="width:100px; margin-top:5px" id="img_preview" class="img-responsive img-thumbnail"/><br>
-                    <code>(Max photo size: 400x400, 512kb)</code>
+                    <label for="type">GCC Medical Report <span class="text-red">*</span></label>
+                    <select class="form-control" name="gcc_medical_report" required>
+                      <option value="">Please Select</option>
+                      <option value="FIT">FIT</option>
+                      <option value="UNFIT">UNFIT</option>
+                      <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Return Cause </label>
+                    <textarea class="form-control" name="return_cause" placeholder="Enter Return Cause"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Note </label>
+                    <textarea class="form-control" name="note" placeholder="Enter Any Note"></textarea>
                 </div>
               </div>
 
