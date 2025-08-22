@@ -36,7 +36,7 @@
                       	<td>{{ ++$key }}</td>
                         <td>
                           {{ $user->name }}<br>
-                          <b>DOB</b>-{{ $user->dob }}
+                          <b>DOB</b>-{{ ($user->dob) ? $user->dob : 'N/A' }}
                         </td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
@@ -53,7 +53,7 @@
                         </td>
                         <td>
                           {{ $user->passport_no }}<br>
-                          <b>Expired Date</b>-{{ $user->passport_expired_date }}
+                          <b>Expired Date</b>-{{ ($user->passport_expired_date) ? $user->passport_expired_date : 'N/A' }}
                         </td>
                         <td>
                           @if($user->status == 1)

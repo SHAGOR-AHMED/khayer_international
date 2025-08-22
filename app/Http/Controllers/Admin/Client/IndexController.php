@@ -103,7 +103,10 @@ class IndexController extends Controller
             'name'=>'required',
             'phone'=>'required',
             'email'=>'required',
+            'dob'=>'required',
+            'gender'=>'required',
             'passport_no'=>'required',
+            'passport_expired_date'=>'required',
             'address'=>'required',
         ]);
        
@@ -139,13 +142,15 @@ class IndexController extends Controller
             $data->image = $imageUrl;
         }
 
-        $data->name         = $request->name;
-        $data->email        = $request->email;
-        $data->phone        = $request->phone;
-        $data->passport_no  = $request->passport_no;
-        $data->gender       = $request->gender;
-        $data->address      = $request->address;
-        $success            = $data->save();
+        $data->name                   = $request->name;
+        $data->email                  = $request->email;
+        $data->phone                  = $request->phone;
+        $data->dob                    = $request->dob;
+        $data->passport_no            = $request->passport_no;
+        $data->passport_expired_date  = $request->passport_expired_date;
+        $data->gender                 = $request->gender;
+        $data->address                = $request->address;
+        $success                      = $data->save();
 
         if($success){
             setMessage('message',"success",updated_success());
