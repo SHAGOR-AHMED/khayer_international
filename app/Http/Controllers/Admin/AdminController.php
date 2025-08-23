@@ -15,10 +15,10 @@ class AdminController extends Controller
     public function index(){
 
         $data['title'] = "Welcome to A Khayer International";
-        $data['total_user'] = User::where('type','!=','user')->get();
-        $data['total_agent'] = Agent::get();
-        $data['total_client'] = User::where('type','user')->get();
-        $data['total_entry'] = Entry::get();
+        $data['total_user'] = User::where('type','!=','user')->count();
+        $data['total_agent'] = Agent::count();
+        $data['total_client'] = User::where('type','user')->count();
+        $data['total_entry'] = Entry::count();
         return view('admin.home.homeContent', $data);
     }
 

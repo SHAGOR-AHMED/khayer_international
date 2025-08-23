@@ -78,14 +78,14 @@ class IndexController extends Controller
             $success                       = $data->save();
 
             if($success){
-                setMessage('message',"success",saved_success());
+                notify()->success(saved_success(),"Success","topRight");
             }else{
-                setMessage('message',"danger",exception());
+                notify()->error(exception(),"Error","topRight");
             }
             return redirect()->route('client.index');
 
        }else{
-            setMessage('message',"danger",'Password and Confirm Password does not match !!!');
+            notify()->error("Password and Confirm Password does not match !!!","Error","topRight");
             return redirect()->route('client.add');
        }
 
@@ -153,10 +153,11 @@ class IndexController extends Controller
         $success                      = $data->save();
 
         if($success){
-            setMessage('message',"success",updated_success());
+            notify()->success(updated_success(),"Success","topRight");
         }else{
-            setMessage('message',"danger",exception());
+            notify()->error(exception(),"Error","topRight");
         }
+
         return redirect()->route('client.edit',$request->id);
         
     }//update
@@ -174,9 +175,9 @@ class IndexController extends Controller
             }
             $success    =  $data->save();
             if($success){
-	    	    setMessage('message',"success",updated_success());
+                notify()->success(updated_success(),"Success","topRight");
             }else{
-                setMessage('message',"danger",exception());
+                notify()->error(exception(),"Error","topRight");
             }
         }
         return redirect()->route('client.index');
@@ -200,9 +201,9 @@ class IndexController extends Controller
         }
         $success    =  $data->delete();
         if($success){
-            setMessage('message','success',deleted_success());
+            notify()->error(deleted_success(),"Success","topRight");
         }else{
-            setMessage('message','danger',exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('client.index');
     }

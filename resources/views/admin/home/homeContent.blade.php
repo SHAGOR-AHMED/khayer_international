@@ -51,7 +51,7 @@
             <!-- small box -->
             <div class="small-box" style="background-color: #dc3545!important; color:#fff">
             <div class="inner">
-                <h3 class="count" data-target="{{ count($total_user) }}">0</h3>
+                <h3 class="count" data-target="{{ $total_user }}">0</h3>
                 <p>Total Users</p>
             </div>
             <div class="icon">
@@ -66,7 +66,7 @@
             <!-- small box -->
             <div class="small-box" style="background-color: #17a2b8!important; color:#fff">
                 <div class="inner">
-                    <h3 class="count" data-target="{{ count($total_agent) }}">0</h3>
+                    <h3 class="count" data-target="{{ $total_agent }}">0</h3>
                     <p>Total Agent</p>
                 </div>
                 <div class="icon">
@@ -81,7 +81,7 @@
             <!-- small box -->
             <div class="small-box" style="background-color: #3540dcff!important; color:#fff">
             <div class="inner">
-                <h3 class="count" data-target="{{ count($total_client) }}">0</h3>
+                <h3 class="count" data-target="{{ $total_client }}">0</h3>
                 <p>Total Client</p>
             </div>
             <div class="icon">
@@ -96,7 +96,7 @@
             <!-- small box -->
             <div class="small-box" style="background-color: #60b817ff!important; color:#fff">
                 <div class="inner">
-                    <h3 class="count" data-target="{{ count($total_entry) }}">0</h3>
+                    <h3 class="count" data-target="{{ $total_entry }}">0</h3>
                     <p>Total Entry</p>
                 </div>
                 <div class="icon">

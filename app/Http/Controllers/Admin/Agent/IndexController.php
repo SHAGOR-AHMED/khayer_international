@@ -51,9 +51,9 @@ class IndexController extends Controller
         $success             = $data->save();
 
         if($success){
-            setMessage('message',"success",saved_success());
+            notify()->success(saved_success(),"Success","topRight");
         }else{
-            setMessage('message',"danger",exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('agent.index');
 
@@ -108,9 +108,9 @@ class IndexController extends Controller
         $success            = $data->save();
 
         if($success){
-            setMessage('message',"success",updated_success());
+            notify()->success(updated_success(),"Success","topRight");
         }else{
-            setMessage('message',"danger",exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('agent.edit',$request->id);
         
@@ -131,7 +131,7 @@ class IndexController extends Controller
             if($success){
                 notify()->success(updated_success(),"Success","topRight");
             }else{
-                notify()->error(exception(),"Error","topLeft");
+                notify()->error(exception(),"Error","topRight");
             }
             return redirect()->route('agent.index');
         }
@@ -144,9 +144,9 @@ class IndexController extends Controller
         imageDeleteManager($data->image);
         $success    =  $data->delete();
         if($success){
-            setMessage('message','success',deleted_success());
+            notify()->success(deleted_success(),"Success","topRight");
         }else{
-            setMessage('message','danger',exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('agent.index');
     }

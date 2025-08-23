@@ -60,14 +60,14 @@ class UserController extends Controller
             $success             = $data->save();
 
             if($success){
-                setMessage('message',"success",saved_success());
+                notify()->success(saved_success(),"Success","topRight");
             }else{
-                setMessage('message',"danger",exception());
+                notify()->error(exception(),"Error","topRight");
             }
             return redirect()->route('user.index');
 
        }else{
-            setMessage('message',"danger",'Password and Confirm Password does not match !!!');
+            notify()->error("Password and Confirm Password does not match !!!","Error","topRight");
             return redirect()->route('user.add');
        }
 
@@ -124,9 +124,9 @@ class UserController extends Controller
         }
 
         if($result){
-            setMessage('message',"success",updated_success());
+            notify()->success(updated_success(),"Success","topRight");
         }else{
-            setMessage('message',"danger",exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('user.edit',$request->id);
         
@@ -145,15 +145,15 @@ class UserController extends Controller
             }
             $success    =  $data->save();
             if($success){
-	    	    setMessage('message',"success",updated_success());
+                notify()->success(updated_success(),"Success","topRight");
             }else{
-                setMessage('message',"danger",exception());
+                notify()->error(exception(),"Error","topRight");
             }
             return redirect()->route('user.index');
         }
     }
 
-     // destroy
+    // destroy
     public function delete($user_id)
     {
         $data       =  User::find($user_id);
@@ -166,9 +166,9 @@ class UserController extends Controller
         }
         $success    =  $data->delete();
         if($success){
-            setMessage('message','success',deleted_success());
+            notify()->success(deleted_success(),"Success","topRight");
         }else{
-            setMessage('message','danger',exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('user.index');
     }
@@ -198,23 +198,21 @@ class UserController extends Controller
                 if($result){
                     Auth::logout();
                     // Session::forget('loggedData');
-                    setMessage('message',"success",'Password has been updated !!! Login Again with New Password');
+                    notify()->success("Password has been updated !!! Login Again with New Password","Success","topRight");
                     return redirect()->route('login');
                 }else{
-                    setMessage('message',"danger",'Failed to update !!!');
+                    notify()->error(exception(),"Error","topRight");
                     return redirect()->route('user.edit',$request->id);
                 }
 
             }else{
-
-                setMessage('message',"danger",'Password and Confirm Password does not match !!!');
+                notify()->error("Password and Confirm Password does not match !!!","Error","topRight");
                 return redirect()->route('user.edit',$request->id);
 
             }
 
         }else{
-
-            setMessage('message',"danger",'Old Password does not match !!!');
+            notify()->error("Old Password does not match !!!","Error","topRight");
             return redirect()->route('user.edit',$request->id);
         }
 

@@ -57,9 +57,9 @@ class IndexController extends Controller
         $success                   = $data->save();
 
         if($success){
-            setMessage('message',"success",saved_success());
+            notify()->success(saved_success(),"Success","topRight");
         }else{
-            setMessage('message',"danger",exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('entry.index');
 
@@ -88,9 +88,9 @@ class IndexController extends Controller
         $success            = $data->save();
 
         if($success){
-            setMessage('message',"success",updated_success());
+            notify()->success(updated_success(),"Success","topRight");
         }else{
-            setMessage('message',"danger",exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('entry.edit',$request->id);
         
@@ -109,9 +109,9 @@ class IndexController extends Controller
             }
             $success    =  $data->save();
             if($success){
-	    	    setMessage('message',"success",updated_success());
+                notify()->success(updated_success(),"Success","topRight");
             }else{
-                setMessage('message',"danger",exception());
+                notify()->error(exception(),"Error","topRight");
             }
             return redirect()->route('entry.index');
         }
@@ -122,9 +122,9 @@ class IndexController extends Controller
         $data->status       = $request->status;
         $success            = $data->save();
         if($success){
-            setMessage('message',"success",updated_success());
+            notify()->success(updated_success(),"Success","topRight");
         }else{
-            setMessage('message',"danger",exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('entry.index');
     }
@@ -135,9 +135,9 @@ class IndexController extends Controller
         $data       =  Entry::find($id);
         $success    =  $data->delete();
         if($success){
-            setMessage('message','success',deleted_success());
+            notify()->success(deleted_success(),"Success","topRight");
         }else{
-            setMessage('message','danger',exception());
+            notify()->error(exception(),"Error","topRight");
         }
         return redirect()->route('entry.index');
     }
