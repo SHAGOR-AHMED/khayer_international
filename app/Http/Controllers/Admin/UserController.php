@@ -28,7 +28,7 @@ class UserController extends Controller
             'name'=>'required',
             'phone'=>'required',
             'email'=>'required',
-            'passport_no'=>'required',
+            'gender'=>'required',
             'address'=>'required',
             'password'=>'required',
             'confirm_password'=>'required',
@@ -40,7 +40,6 @@ class UserController extends Controller
        if($password == $confirm_password){
 
             $imageUrl='';
-            $passportDocUrl='';
             if(!empty($request->file('image'))){
                 $userImg = $request->file('image');
                 $name = $userImg->getClientOriginalName();
@@ -49,36 +48,23 @@ class UserController extends Controller
                 $imageUrl = $uploadPath.$name;
             }
 
-            if(!empty($request->file('passport_doc'))){
-                $doc = $request->file('passport_doc');
-                $name = $doc->getClientOriginalName();
-                $ext = explode('.',$name);
-                $finalName = 'passport-'.time().'.'.$ext[1];
-                $uploadPath = 'admin/documents/';
-                $doc->move($uploadPath, $finalName);
-                $passportDocUrl = $uploadPath.$finalName;
-            }
-
             $data = new User();
             $data->name          = $request->name;
             $data->email         = $request->email;
             $data->phone         = $request->phone;
-            $data->passport_no   = $request->passport_no;
             $data->gender        = $request->gender;
             $data->address       = $request->address;
             $data->type          = $request->type;
             $data->password      = Hash::make($request->password);
             $data->image         = ($imageUrl) ? $imageUrl : NULL;
-            $data->passport_doc  = ($passportDocUrl) ? $passportDocUrl : NULL;
             $success             = $data->save();
 
             if($success){
                 setMessage('message',"success",saved_success());
-                return redirect()->route('user.index');
             }else{
                 setMessage('message',"danger",exception());
-                return redirect()->route('user.index');
             }
+            return redirect()->route('user.index');
 
        }else{
             setMessage('message',"danger",'Password and Confirm Password does not match !!!');
@@ -99,6 +85,7 @@ class UserController extends Controller
             'name'=>'required',
             'phone'=>'required',
             'email'=>'required',
+            'gender'=>'required',
         ]);
        
         $userByID = User::findOrFail($request->id);
@@ -120,6 +107,7 @@ class UserController extends Controller
                         'name'=>$request->name,
                         'phone'=>$request->phone,
                         'email'=>$request->email,
+                        'gender'=>$request->gender,
                         'image'=>$imageUrl,
                     ]);
     
@@ -130,17 +118,17 @@ class UserController extends Controller
                         'name'=>$request->name,
                         'phone'=>$request->phone,
                         'email'=>$request->email,
+                        'gender'=>$request->gender,
                     ]);
 
         }
 
         if($result){
             setMessage('message',"success",updated_success());
-            return redirect()->route('user.edit',$request->id);
         }else{
             setMessage('message',"danger",exception());
-            return redirect()->route('user.edit',$request->id);
         }
+        return redirect()->route('user.edit',$request->id);
         
     }//update
 
@@ -158,12 +146,10 @@ class UserController extends Controller
             $success    =  $data->save();
             if($success){
 	    	    setMessage('message',"success",updated_success());
-    		return redirect()->route('user.index');
             }else{
                 setMessage('message',"danger",exception());
-                return redirect()->route('user.index');
             }
-
+            return redirect()->route('user.index');
         }
     }
 
@@ -181,13 +167,11 @@ class UserController extends Controller
         $success    =  $data->delete();
         if($success){
             setMessage('message','success',deleted_success());
-            return redirect()->route('user.index');
         }else{
             setMessage('message','danger',exception());
-            return redirect()->route('user.index');
         }
+        return redirect()->route('user.index');
     }
-
 
     public function updatePassword(Request $request){
 

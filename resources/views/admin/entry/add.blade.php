@@ -121,65 +121,7 @@
         </div><!-- /.box -->
       @endisset
       @isset($edit)
-        <div class="box box-warning">
-          <div class="box-header with-border">
-            <h3 class="box-title">Update Information</h3>
-            <div class="box-tools pull-right">
-            </div>
-          </div>
-          <div class="box-body">
-            <form action="{{ route('agent.update') }}" name="form" method="post" name="edit" enctype="multipart/form-data" autocomplete="off">
-                @csrf
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="form-group">
-                      <label for="regional_branch_name">Name <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="{{ $single->name }}" required>
-                      <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
-                  </div>
-
-                  <div class="form-group">
-                      <label for="password">Email <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{ $single->email }}" required>
-                      <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
-                  </div>
-
-                  <div class="form-group">
-                      <label for="password">Phone No <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone No" value="{{ $single->phone }}" required>
-                      <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Address <span class="text-red">*</span></label>
-                    <textarea class="form-control" name="address" placeholder="Enter Address" required>{{ $single->address }}</textarea>
-                    <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
-                  </div>
-
-                  <input type="hidden" name="id" value="{{ $single->id }}"  />
-
-                  <div class="form-group">
-                      <label for="address">Update Photograph</label>
-                      <input type="file" id="userfile" class="form-control" name="image" value="" onchange="getPreview('userfile','img_preview','none');">
-                      <code>(Max photo size: 400x400, 512kb)</code>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <img src="{{ imageShow($single->image) }}" id="img_preview" class="img-responsive img-thumbnail"/>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                  <div>
-                    <button style="width:100%" type="submit" name="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Data</button>
-                  </div>
-                </div>
-              </div>
-              
-            </form>
-          </div><!-- /.box-body -->
-        </div><!-- /.box -->
+        
       @endisset
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->

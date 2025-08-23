@@ -97,7 +97,7 @@
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="{{ route('user.add') }}"><i class="fa fa-plus"></i>Add New User</a></li>
-					<li><a href="{{ route('user.index') }}"><i class="fa fa-eye"></i>View User</a></li>
+					<li><a href="{{ route('user.index') }}"><i class="fa fa-eye"></i>View All User</a></li>
 				</ul>
             </li>
 

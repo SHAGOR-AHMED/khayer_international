@@ -13,7 +13,7 @@
           <div class="box-tools pull-right"></div>
         </div>
         <div class="box-body color-black">
-              <table id="members_list_table" class="table table-bordered table-striped">
+              <table id="members_list_table" class="table table-bordered table-striped example">
                 <thead>
                   <tr>
                       <th>SN</th>
@@ -52,13 +52,17 @@
                           <td>{{ $data->created_at }}</td>
                           <td>
                             @if($data->status == 'PENDING')
-                              <span class="badge btn-success">PENDING</span>
-                            @else
-                              <span class="badge btn-primary">DELIVERED</span>
+                              <span class="badge btn-primary">PENDING</span>
+                            @elseif($data->status == 'EMBASSY')
+                              <span class="badge btn-info">EMBASSY</span>
+                            @elseif($data->status == 'MANPOWER')
+                              <span class="badge btn-warning">MANPOWER</span>
+                            @elseif($data->status == 'DELIVERED')
+                              <span class="badge btn-success">DELIVERED</span>
                             @endif
                           </td>
                           <td>
-                              <a href="{{ route('entry.edit',$data->id)}}" style="color: green;" title="Edit">View <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a>
+                              <button class="btn btn-info" id="details_modal" data-toggle="modal" data-id="{{ $data->id }}" data-target="#staticBackdrop">Next Stage</button>
                           </td>
                       </tr>
                     @endforeach
@@ -69,4 +73,63 @@
       </div><!-- /.box -->
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
+
+  <!-- Modal HTML -->
+    <div id="staticBackdrop" class="modal fade" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Next Stage</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="box-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <form action="{{ route('entry.nextStage') }}" method="post" name="form" enctype="multipart/form-data" onsubmit="return(validate())">
+                          @csrf
+
+                            <input type="hidden" class="form-control" value="" id="myInput" name="id">
+                            <div class="form-group">
+                              <label for="type">Next Stage<span class="text-red">*</span></label>
+                              <select class="form-control" name="status" required>
+                                <option value="0">Please Select</option>
+                                <option value="EMBASSY">EMBASSY</option>
+                                <option value="MANPOWER">MANPOWER</option>
+                                <option value="DELIVERED">DELIVERED</option>
+                              </select>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">OK</button>
+                            </div>
+
+                          </form> 
+                        </div>
+                      </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+      $(document).on("click", "#details_modal", function () {
+          var entry_id = $(this).data("id");
+          $("#myInput").val(entry_id);
+      });
+
+      function validate(){
+          if(document.form.status.value == '0'){
+              alert("Required field can't be Empty")
+              return false;
+          }
+          return true;
+      }
+    </script>
+
 @endsection

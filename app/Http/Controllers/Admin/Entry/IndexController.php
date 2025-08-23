@@ -117,6 +117,18 @@ class IndexController extends Controller
         }
     }
 
+    public function nextStage(Request $request){
+        $data               = Entry::findOrFail($request->id);
+        $data->status       = $request->status;
+        $success            = $data->save();
+        if($success){
+            setMessage('message',"success",updated_success());
+        }else{
+            setMessage('message',"danger",exception());
+        }
+        return redirect()->route('entry.index');
+    }
+
     // destroy
     public function delete($id)
     {

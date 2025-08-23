@@ -9,7 +9,7 @@
 	// Notify message for save/update/delete/error	
 	function saved_success()
 	{
-		return "Saved successfully &#128513;";
+		return "Saved successfully";
 	}
 	
 	function uploaded_success()

@@ -15,7 +15,7 @@
             </div>
           </div>
           <div class="box-body">
-          <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form action="{{ route('user.store') }}" method="post" name="form" enctype="multipart/form-data" autocomplete="off" onsubmit="return(validate())">
           @csrf
             <div class="row">
               <div class="col-md-6">
@@ -39,17 +39,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Passport No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="passport_no" placeholder="Enter Passport No" value="" required>
-                    <span class="text-danger">{{ $errors->has('passport_no') ? $errors->first('passport_no') : '' }}</span>
-                </div>
-
-                <div class="form-group">
                     <label for="gender">Gender <span class="text-red">*</span></label>
                     <select class="form-control" name="gender" required>
+                      <option value="0">Please Select</option>
                       <option value="1">Male</option>
                       <option value="2">Female</option>
                     </select>
+                    <span class="text-danger">{{ $errors->has('gender') ? $errors->first('gender') : '' }}</span>
                 </div>
 
                  <div class="form-group">
@@ -79,7 +75,6 @@
                     <select class="form-control" name="type" required  id="type" onchange="doc_toggle()">
                       <option value="admin">Admin</option>
                       <option value="manager">Manager</option>
-                      <option value="user">User</option>
                     </select>
                 </div>
 
@@ -90,11 +85,6 @@
                     <code>(Max photo size: 400x400, 512kb)</code>
                 </div>
 
-                <div class="form-group" id="pass_doc" style="visibility:hidden;">
-                    <label for="address">Upload Passport <code>PDF ONLY</code></label>
-                    <input type="file" class="form-control" name="passport_doc" value="">
-                    <code>(Max size: 512kb)</code>
-                </div>
               </div>
 
             </div>
@@ -139,6 +129,16 @@
                         <label for="password">Phone No <span class="text-red">*</span></label>
                         <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone No" value="{{ $userByID->phone }}" required>
                         <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender <span class="text-red">*</span></label>
+                        <select class="form-control" name="gender" required>
+                          <option value="0">Please Select</option>
+                          <option value="1">Male</option>
+                          <option value="2">Female</option>
+                        </select>
+                        <span class="text-danger">{{ $errors->has('gender') ? $errors->first('gender') : '' }}</span>
                     </div>
 
                     <input type="hidden" name="id" value="<?php echo $userByID->id; ?>"  />
@@ -189,6 +189,10 @@
             </div>
           </div><!-- /.box-body -->
         </div><!-- /.box -->
+        
+        <script type="text/javascript">
+          document.forms['form'].elements['gender'].value='<?php echo $userByID->gender?>';
+        </script>
       @endisset
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
@@ -210,15 +214,26 @@
                 message.innerHTML = "Password Does Not Match!"
             }
         }
-
-        function doc_toggle() {
-          var u_type = document.getElementById("type").value;
-          if(u_type == 'user'){
-            document.getElementById("pass_doc").style.visibility = "visible";
-          }else{
-            document.getElementById("pass_doc").style.visibility = "hidden";
-          }
+        
+        function validate(){
+            if(document.form.gender.value == '0'){
+                // swal("Alert","Required field can't be Empty","error",{
+                //     button:"ok"
+                // });
+                alert("Required field can't be Empty")
+                return false;
+            }
+            return true;
         }
+
+        // function doc_toggle() {
+        //   var u_type = document.getElementById("type").value;
+        //   if(u_type == 'user'){
+        //     document.getElementById("pass_doc").style.visibility = "visible";
+        //   }else{
+        //     document.getElementById("pass_doc").style.visibility = "hidden";
+        //   }
+        // }
     </script>
 
 @endsection

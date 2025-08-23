@@ -14,7 +14,7 @@ class AdminController extends Controller
 {
     public function index(){
 
-        $data['title'] = "Welcome to Khayer International";
+        $data['title'] = "Welcome to A Khayer International";
         $data['total_user'] = User::where('type','!=','user')->get();
         $data['total_agent'] = Agent::get();
         $data['total_client'] = User::where('type','user')->get();

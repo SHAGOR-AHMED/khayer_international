@@ -26,6 +26,7 @@
     <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('admin/backend/plugins/datatables/dataTables.bootstrap.css') }}">
+     <link href="{{ asset('css/iziToast.css') }}" rel="stylesheet">
     <!-- jQuery 2.1.4 -->
     <script src="{{ asset('admin/backend/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
   </head>
@@ -52,6 +53,7 @@
           </a>
 
           <div class="col-md-10">
+            
             @if(Session::has('message'))
               <div class="alert alert-block alert-{{Session::get('class')}}">
                 <button type="button" class="close" data-dismiss="alert">
@@ -127,5 +129,7 @@
         <!-- main panel -->
         @yield('content')
         <!-- main-panel ends -->
+
+
 
 		@include('admin.layout.template_footer')

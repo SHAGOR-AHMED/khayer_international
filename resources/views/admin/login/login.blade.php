@@ -70,7 +70,7 @@
                       <div class="form-group">
                         <label for="password" class="col-sm-3 hidden-md control-label">Password</label>
                         <div class="col-sm-9">
-                          <input type="password" class="form-control" id="password" name="password" placeholder="******">
+                          <input type="password" class="form-control pass" id="password" name="password" placeholder="******">
                         </div>
                         <a href="javascript:void(0)" id="password_text"><i class="fa fa-eye"></i></a>
                       </div><br><br>
@@ -96,9 +96,9 @@
     <footer class="footer">
       <div class="container-fluid">
         <span class="text-muted">
-          <strong>Copyright &copy; <?= date('Y'); ?> <a href="https://khayerint.com/">khayer International</a>.</strong> All rights reserved.</a>
+          <strong>Copyright &copy; <?= date('Y'); ?> <a href="https://khayerint.com/">A khayer International</a>.</strong> All rights reserved.</a>
         </span>
-        <span class="pull-right"><b>Powered by</b> <a href="https://wanitbd.com/" target="_blank">WAN IT</a></span>
+        <span class="pull-right"> <a href="http://wanitbd.com/">{{ developed_by() }}</a></span>
       </div>
     </footer>
 

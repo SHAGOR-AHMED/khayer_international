@@ -129,9 +129,9 @@ class IndexController extends Controller
             }
             $success    =  $data->save();
             if($success){
-	    	    setMessage('message',"success",updated_success());
+                notify()->success(updated_success(),"Success","topRight");
             }else{
-                setMessage('message',"danger",exception());
+                notify()->error(exception(),"Error","topLeft");
             }
             return redirect()->route('agent.index');
         }

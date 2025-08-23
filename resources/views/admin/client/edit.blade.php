@@ -107,9 +107,8 @@
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
 
-   <script type="text/javascript">
+  <script type="text/javascript">
         document.forms['form'].elements['gender'].value='<?php echo $single->gender?>';
-
         function validate(){
             if(document.form.gender.value == 0){
                 // swal("Alert","Required field can't be Empty","error",{

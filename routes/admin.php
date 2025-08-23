@@ -57,6 +57,7 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::post('/store',               'IndexController@store')->name('store');
 			Route::get('/edit/{id}',            'IndexController@edit')->name('edit');
 			Route::post('/update',              'IndexController@update')->name('update');
+			Route::post('/nextStage',           'IndexController@nextStage')->name('nextStage');
 			Route::get('/status/{id}',          'IndexController@status')->name('control');
 			Route::get('/delete/{id}',          'IndexController@delete')->name('delete');
 		});

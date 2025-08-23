@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('title')
-    Admin Dashboard
+    {{ $title }}
 @endsection
 @section('content')
 
@@ -51,7 +51,7 @@
             <!-- small box -->
             <div class="small-box" style="background-color: #dc3545!important; color:#fff">
             <div class="inner">
-                <h3>{{ count($total_user) }}</h3>
+                <h3 class="count" data-target="{{ count($total_user) }}">0</h3>
                 <p>Total Users</p>
             </div>
             <div class="icon">
@@ -66,7 +66,7 @@
             <!-- small box -->
             <div class="small-box" style="background-color: #17a2b8!important; color:#fff">
                 <div class="inner">
-                    <h3>{{ count($total_agent) }}</h3>
+                    <h3 class="count" data-target="{{ count($total_agent) }}">0</h3>
                     <p>Total Agent</p>
                 </div>
                 <div class="icon">
@@ -81,7 +81,7 @@
             <!-- small box -->
             <div class="small-box" style="background-color: #3540dcff!important; color:#fff">
             <div class="inner">
-                <h3>{{ count($total_client) }}</h3>
+                <h3 class="count" data-target="{{ count($total_client) }}">0</h3>
                 <p>Total Client</p>
             </div>
             <div class="icon">
@@ -96,7 +96,7 @@
             <!-- small box -->
             <div class="small-box" style="background-color: #60b817ff!important; color:#fff">
                 <div class="inner">
-                    <h3>{{ count($total_entry) }}</h3>
+                    <h3 class="count" data-target="{{ count($total_entry) }}">0</h3>
                     <p>Total Entry</p>
                 </div>
                 <div class="icon">
@@ -115,5 +115,30 @@
     </div><!-- /.container-fluid -->
 
   </div><!-- /.content-wrapper -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const counters = document.querySelectorAll('.count');
+            const speed = 9000; // lower is faster
+
+            counters.forEach(counter => {
+                const animate = () => {
+                    const value = +counter.getAttribute('data-target');
+                    const data = +counter.innerText;
+                    
+                    const increment = Math.ceil(value / speed);
+
+                    if (data < value) {
+                        counter.innerText = data + increment;
+                        setTimeout(animate, 30);
+                    } else {
+                        counter.innerText = value;
+                    }
+                };
+
+                animate();
+            });
+        });
+    </script>
 
 @endsection

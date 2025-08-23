@@ -35,7 +35,7 @@
                         <td>{{ ++$key }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone }}</td>
+                        <td>{{ ($user->phone) ? $user->phone : 'N/A' }}</td>
                         <td>{{ $user->type }}</td>
                         <td>
                           <a href="{{ imageShow($user->image) }}" target="_blank">
