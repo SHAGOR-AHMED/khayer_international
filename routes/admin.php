@@ -62,6 +62,7 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::get('/status/{id}',          'IndexController@status')->name('control');
 			Route::get('/details/{id}',         'IndexController@details')->name('details');
 			Route::get('/delete/{id}',          'IndexController@delete')->name('delete');
+			Route::get('/log',                  'IndexController@log')->name('log');
 		});
 
 

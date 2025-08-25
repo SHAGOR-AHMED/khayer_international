@@ -3,7 +3,27 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Request;
+use Hashids\Hashids;
 
+if (!function_exists('hashid_encode')) {
+
+    function hashid_encode($id){
+        $hashids = new Hashids('', 6);
+        return $hashids->encode($id); // shorter alphanumeric
+    }
+}
+
+if (!function_exists('hashid_decode')) {
+    
+    function hashid_decode($id){
+        $hashids = new Hashids('', 6);
+        return $hashids->decode($id)[0];
+    }
+}
+
+function decode($id) {
+    return base_convert($id, 10, 36); // shorter alphanumeric
+}
 
 // Check exist data
 function existed($tableName = NULL, $fieldName = NULL, $value = NULL) {

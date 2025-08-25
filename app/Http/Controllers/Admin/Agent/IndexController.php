@@ -60,6 +60,7 @@ class IndexController extends Controller
 
     public function edit($id){
     	$data['edit'] = TRUE;
+        $id = hashid_decode($id);
     	$data['single'] = Agent::findOrFail($id);
     	return view('admin.agent.add', $data);
     }
@@ -110,7 +111,7 @@ class IndexController extends Controller
         }else{
             notify()->error(exception(),"Error","topRight");
         }
-        return redirect()->route('agent.edit',$request->id);
+        return redirect()->route('agent.index');
         
     }//update
 

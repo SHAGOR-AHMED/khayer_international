@@ -27,6 +27,20 @@ class IndexController extends Controller
     	return view('admin.entry.details',$data);
     }
 
+    public function log(){
+        $id = \request()->input("entry_id");
+        //$data['single'] = Entry::with(['created_by','updated_by'])->findOrFail($id);
+
+        $data['single'] = DB::table("entries")
+            ->join('users as U', 'U.id', '=', 'entries.created_by', 'LEFT')
+            ->join('users as UM', 'UM.id', '=', 'entries.updated_by', 'LEFT')
+            ->select("entries.*", "U.name as created_by", "UM.name as updated_by")
+            ->where("entries.id","=",$id)
+            ->first();
+        $returnHTML = view('admin.entry.log')->with($data)->render();
+        return response()->json(array('success' => true, 'html'=>$returnHTML));
+    }
+
     public function create(){
         $data['add'] = TRUE;
         $data['all_clients'] = User::where('type','user')->get();

@@ -21,5 +21,15 @@ class Entry extends Model
         return $this->belongsTo(User::class, 'client_id');
     }
 
+    public function created_by()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updated_by()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
 
 }

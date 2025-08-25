@@ -32,7 +32,7 @@
     <!-- cusotm function -->
     <script src="{{ asset('admin/js/function.js') }}"></script>
     <script src="{{ asset('js/iziToast.js') }}"></script>
-     @include('vendor.lara-izitoast.toast')
+    @include('vendor.lara-izitoast.toast')
 
     <script type="text/javascript">
       $('.datepicker').datepicker({

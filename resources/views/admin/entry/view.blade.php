@@ -67,7 +67,7 @@
                           <td>
                               <a href="{{ route('entry.details',$data->id)}}" style="color: green;" title="Details">View <i class="fa fa-eye fa-lg" style="color: green;"></i></a> | 
 
-                              <a href="#" style="color: black;" title="Log" >Log <i class="fa fa-info fa-lg" style="color: black;"></i></a>
+                              <a href="#" style="color: black;" id="log_modal" data-toggle="modal" data-id="{{ $data->id }}" data-target="#staticBackdrop2" title="Log" >Log <i class="fa fa-info fa-lg" style="color: black;"></i></a>
                           </td>
                       </tr>
                     @endforeach
@@ -122,11 +122,51 @@
         </div>
     </div>
 
+     <!-- Log Modal HTML -->
+    <div id="staticBackdrop2" class="modal fade" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Log</h4>
+                </div>
+                <div class="modal-body">
+                  <div id="show_log">
+                
+                  </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
       $(document).on("click", "#next_stage_modal", function () {
           var entry_id = $(this).data("id");
           $("#myInput").val(entry_id);
       });
+
+      $(document).on("click","#log_modal",function () {
+            var entry_id = $(this).data("id");
+             $.ajax({
+                url:"{{route("entry.log")}}",
+                type:"get",
+                dataType:"json",
+                data:{"entry_id":entry_id},
+                beforeSend:function(){
+                    $("#overlay").fadeIn(300);　
+                 },
+                success:function(data){
+                    $("#show_log").html(data.html);
+                    $("#overlay").fadeOut(300);
+                },
+                error:function (e) {
+                    $.Notification.autoHideNotify('error', 'top right',"Something Wrong. Please try again");
+                    $("#overlay").fadeOut(300);
+                }
+            });
+        });
 
       function validate(){
           if(document.form.status.value == '0'){
