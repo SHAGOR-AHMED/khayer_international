@@ -29,7 +29,6 @@ class IndexController extends Controller
        $this->validate($request,[
             'name'=>'required',
             'phone'=>'required',
-            'email'=>'required',
             'address'=>'required',
         ]);
 
@@ -70,7 +69,6 @@ class IndexController extends Controller
         $this->validate($request,[
             'name'=>'required',
             'phone'=>'required',
-            'email'=>'required',
             'address'=>'required',
         ]);
        

@@ -33,9 +33,7 @@
 
                 <div class="form-group">
                     <label for="type">RL No <span class="text-red">*</span></label>
-                    <select class="form-control" name="rl_no" required>
-                      <option value="RL1717">RL1717</option>
-                    </select>
+                    <input type="text" class="form-control" name="rl_no" placeholder="Enter RL No" value="" required>
                     <span class="text-danger">{{ $errors->has('rl_no') ? $errors->first('rl_no') : '' }}</span>
                 </div>
 
@@ -51,7 +49,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="type">Client <span class="text-red">*</span></label>
+                    <label for="type">Passenger <span class="text-red">*</span></label>
                     <select class="form-control" name="client_id" required>
                       <option value="">Please Select</option>
                       @foreach($all_clients as $client)
@@ -67,17 +65,19 @@
                     <span class="text-danger">{{ $errors->has('kopil_no') ? $errors->first('kopil_no') : '' }}</span>
                 </div>
 
-                <div class="form-group">
-                    <label for="password">PC Ref No <span class="text-red">*</span></label>
-                    <input type="number" class="form-control" name="pc_ref_no" placeholder="Enter PC Ref No" value="" required>
-                    <span class="text-danger">{{ $errors->has('pc_ref_no') ? $errors->first('pc_ref_no') : '' }}</span>
-                </div>
               </div>
 
               <div class="col-md-6">
+
                 <div class="form-group">
-                    <label for="type">Medical Report <span class="text-red">*</span></label>
-                    <select class="form-control" name="medical_report" required>
+                    <label for="password">PC Ref No <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="pc_ref_no" placeholder="Enter PC Ref No" value="" required>
+                    <span class="text-danger">{{ $errors->has('pc_ref_no') ? $errors->first('pc_ref_no') : '' }}</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="type">Medical Report</label>
+                    <select class="form-control" name="medical_report">
                       <option value="">Please Select</option>
                       <option value="FIT">FIT</option>
                       <option value="UNFIT">UNFIT</option>
@@ -93,11 +93,6 @@
                       <option value="UNFIT">UNFIT</option>
                       <option value="other">Other</option>
                     </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Return Cause </label>
-                    <textarea class="form-control" name="return_cause" placeholder="Enter Return Cause"></textarea>
                 </div>
 
                 <div class="form-group">

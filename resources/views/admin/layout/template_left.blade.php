@@ -21,11 +21,11 @@
 
 			<li class="treeview">
 				<a href="javascript:">
-					<i class="fa fa-users fa-lg"></i> <span>Client Module</span> <i class="fa fa-angle-left pull-right"></i>
+					<i class="fa fa-users fa-lg"></i> <span>Passenger Module</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="{{ route('client.add') }}"><i class="fa fa-plus"></i>Add New Client</a></li>
-					<li><a href="{{ route('client.index') }}"><i class="fa fa-eye"></i>View All Clients</a></li>
+					<li><a href="{{ route('client.add') }}"><i class="fa fa-plus"></i>Add New Passenger</a></li>
+					<li><a href="{{ route('client.index') }}"><i class="fa fa-eye"></i>View All Passengers</a></li>
 				</ul>
             </li>
 

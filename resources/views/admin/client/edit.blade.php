@@ -27,9 +27,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Email <span class="text-red">*</span></label>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{ $single->email }}" required>
-                        <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
+                        <label for="password">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{ $single->email }}">
                     </div>
 
                     <div class="form-group">
@@ -39,9 +38,8 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="password">Date Of Birth <span class="text-red">*</span></label>
-                      <input type="date" class="form-control" name="dob" value="{{ $single->dob }}" required>
-                      <span class="text-danger">{{ $errors->has('dob') ? $errors->first('dob') : '' }}</span>
+                      <label for="password">Date Of Birth</label>
+                      <input type="text" class="form-control datepicker" name="dob" value="{{ $single->dob }}">
                     </div>
 
                     <div class="form-group">
@@ -52,7 +50,7 @@
 
                     <div class="form-group">
                       <label for="password">Passport Expired Date <span class="text-red">*</span></label>
-                      <input type="date" class="form-control" name="passport_expired_date" value="{{ $single->passport_expired_date }}" required>
+                      <input type="text" class="form-control datepicker" name="passport_expired_date" value="{{ $single->passport_expired_date }}" required>
                       <span class="text-danger">{{ $errors->has('passport_expired_date') ? $errors->first('passport_expired_date') : '' }}</span>
                     </div>
 
@@ -73,8 +71,6 @@
                       <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                     </div>
 
-                    <input type="hidden" name="id" value="<?php echo $single->id; ?>"  />
-
                     <div class="form-group">
                       <label for="address">Update Photograph</label>
                       <input type="file" id="userfile" class="form-control" name="image" value="" onchange="getPreview('userfile','img_preview','none');">
@@ -87,6 +83,16 @@
                       <br>
                       <code>(Max photo size: 400x400, 512kb)</code>
                     </div>
+
+                    <div class="form-group">
+                      <label for="gender">Is Original Passport Given? <span class="text-red">*</span></label>
+                      <select class="form-control" name="is_original_passport_given" required>
+                        <option value="YES">YES</option>
+                        <option value="NO">NO</option>
+                      </select>
+                    </div>
+
+                    <input type="hidden" name="id" value="<?php echo $single->id; ?>"  />
 
                     <div class="form-group">
                       <button style="width:100%" type="submit" name="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Data</button>
@@ -109,6 +115,7 @@
 
   <script type="text/javascript">
         document.forms['form'].elements['gender'].value='<?php echo $single->gender?>';
+        document.forms['form'].elements['is_original_passport_given'].value='<?php echo $single->is_original_passport_given?>';
         function validate(){
             if(document.form.gender.value == 0){
                 // swal("Alert","Required field can't be Empty","error",{

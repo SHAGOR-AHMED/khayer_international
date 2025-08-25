@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('title')
-  Manage Client's
+  Manage Passenger's
 @endsection
 @section('content')
   <div class="content-wrapper">
@@ -9,7 +9,7 @@
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Manage Client's</h3>
+          <h3 class="box-title">Manage Passenger's</h3>
           <div class="box-tools pull-right"></div>
         </div>
         <div class="box-body color-black">
@@ -38,7 +38,7 @@
                           {{ $user->name }}<br>
                           <b>DOB</b>-{{ ($user->dob) ? $user->dob : 'N/A' }}
                         </td>
-                        <td>{{ $user->email }}</td>
+                        <td>{{ ($user->email) ? $user->email : 'N/A' }}</td>
                         <td>{{ $user->phone }}</td>
                         <td>{{ getGender($user->gender) }}</td>
                         <td>
@@ -53,7 +53,8 @@
                         </td>
                         <td>
                           {{ $user->passport_no }}<br>
-                          <b>Expired Date</b>-{{ ($user->passport_expired_date) ? $user->passport_expired_date : 'N/A' }}
+                          <b>Expired Date:</b> {{ ($user->passport_expired_date) ? $user->passport_expired_date : 'N/A' }}<br>
+                          <b>Original Passport Given:</b> {{  $user->is_original_passport_given }}
                         </td>
                         <td>
                           @if($user->status == 1)

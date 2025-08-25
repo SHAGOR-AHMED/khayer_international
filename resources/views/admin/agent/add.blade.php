@@ -26,9 +26,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Email <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="" required>
-                    <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
+                    <label for="password">Email</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="">
                 </div>
 
                 <div class="form-group">
@@ -86,9 +85,8 @@
                   </div>
 
                   <div class="form-group">
-                      <label for="password">Email <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{ $single->email }}" required>
-                      <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
+                      <label for="password">Email</label>
+                      <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{ $single->email }}">
                   </div>
 
                   <div class="form-group">

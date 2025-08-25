@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('title')
-  Create New Client
+  Create New Passenger
 @endsection
 @section('content')
 
@@ -10,7 +10,7 @@
       @isset($add)
         <div class="box box-warning">
           <div class="box-header with-border">
-            <h3 class="box-title">Create New Client</h3>
+            <h3 class="box-title">Create New Passenger</h3>
             <div class="box-tools pull-right">
             </div>
           </div>
@@ -27,21 +27,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Email <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="" required>
-                    <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Date Of Birth <span class="text-red">*</span></label>
-                    <input type="date" class="form-control" name="dob" value="" required>
-                    <span class="text-danger">{{ $errors->has('dob') ? $errors->first('dob') : '' }}</span>
+                    <label for="password">Email</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Phone No <span class="text-red">*</span></label>
                     <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone No" value="" required>
                     <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Date Of Birth</label>
+                    <input type="text" class="form-control datepicker" name="dob" value="">
                 </div>
 
                 <div class="form-group">
@@ -52,7 +50,7 @@
 
                  <div class="form-group">
                     <label for="password">Passport Expired Date <span class="text-red">*</span></label>
-                    <input type="date" class="form-control" name="passport_expired_date" value="" required>
+                    <input type="text" class="form-control datepicker" name="passport_expired_date" value="" required>
                     <span class="text-danger">{{ $errors->has('passport_expired_date') ? $errors->first('passport_expired_date') : '' }}</span>
                 </div>
 
@@ -64,15 +62,15 @@
                     </select>
                 </div>
 
-              </div>
-
-              <div class="col-md-6">
-
                 <div class="form-group">
                     <label>Address <span class="text-red">*</span></label>
                     <textarea class="form-control" name="address" placeholder="Enter Address" required></textarea>
                     <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                 </div>
+
+              </div>
+
+              <div class="col-md-6">
 
                 <div class="form-group">
                     <label for="password">Password <span class="text-red">*</span></label>
@@ -95,9 +93,17 @@
                 </div>
 
                 <div class="form-group" id="pass_doc">
-                    <label for="address">Upload Passport <code>PDF ONLY</code></label>
+                    <label for="address">Upload Passport</label>
                     <input type="file" class="form-control" name="passport_doc" value="">
                     <code>(Max size: 512kb)</code>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Is Original Passport Given? <span class="text-red">*</span></label>
+                    <select class="form-control" name="is_original_passport_given" required>
+                      <option value="YES">YES</option>
+                      <option value="NO">NO</option>
+                    </select>
                 </div>
               </div>
 

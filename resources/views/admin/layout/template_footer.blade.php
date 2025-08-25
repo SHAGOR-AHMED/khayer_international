@@ -40,7 +40,7 @@
           weekStart: 6,
           todayHighlight: true,
           todayBtn: "linked",
-          format : 'yyyy-mm-dd'
+          format : 'dd-mm-yyyy'
       });
 
       $(function () {

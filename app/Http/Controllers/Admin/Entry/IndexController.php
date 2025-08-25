@@ -22,6 +22,11 @@ class IndexController extends Controller
     	return view('admin.entry.view',$data);
     }
 
+    public function details($id){
+    	$data['single'] = Entry::with(['agent','user'])->findOrFail($id);
+    	return view('admin.entry.details',$data);
+    }
+
     public function create(){
         $data['add'] = TRUE;
         $data['all_clients'] = User::where('type','user')->get();
@@ -39,7 +44,6 @@ class IndexController extends Controller
             'client_id'=>'required',
             'kopil_no'=>'required',
             'pc_ref_no'=>'required',
-            'medical_report'=>'required',
             'gcc_medical_report'=>'required',
         ]);
 
@@ -52,8 +56,8 @@ class IndexController extends Controller
         $data->pc_ref_no           = $request->pc_ref_no;
         $data->medical_report      = $request->medical_report;
         $data->gcc_medical_report  = $request->gcc_medical_report;
-        $data->return_cause        = $request->return_cause;
         $data->note                = $request->note;
+        $data->created_by          = logged_in_user_id();
         $success                   = $data->save();
 
         if($success){
@@ -85,6 +89,7 @@ class IndexController extends Controller
         $data->email        = $request->email;
         $data->phone        = $request->phone;
         $data->address      = $request->address;
+        $data->updated_by   = logged_in_user_id();
         $success            = $data->save();
 
         if($success){
@@ -95,6 +100,27 @@ class IndexController extends Controller
         return redirect()->route('entry.edit',$request->id);
         
     }//update
+
+    public function return_application(Request $request){
+
+        $this->validate($request,[
+            'return_cause'=>'required',
+        ]);
+       
+        $data = Entry::findOrFail($request->id);
+        $data->is_returned     = 'YES';
+        $data->return_cause    = $request->return_cause;
+        $data->updated_by      = logged_in_user_id();
+        $success               = $data->save();
+
+        if($success){
+            notify()->success(updated_success(),"Success","topRight");
+        }else{
+            notify()->error(exception(),"Error","topRight");
+        }
+        return redirect()->route('entry.index');
+        
+    }
 
     //control
     public function status($id){
@@ -120,6 +146,7 @@ class IndexController extends Controller
     public function nextStage(Request $request){
         $data               = Entry::findOrFail($request->id);
         $data->status       = $request->status;
+        $data->updated_by   = logged_in_user_id();
         $success            = $data->save();
         if($success){
             notify()->success(updated_success(),"Success","topRight");
@@ -130,8 +157,7 @@ class IndexController extends Controller
     }
 
     // destroy
-    public function delete($id)
-    {
+    public function delete($id){
         $data       =  Entry::find($id);
         $success    =  $data->delete();
         if($success){

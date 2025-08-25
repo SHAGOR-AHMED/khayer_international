@@ -30,10 +30,9 @@ class IndexController extends Controller
        $this->validate($request,[
             'name'=>'required',
             'phone'=>'required',
-            'email'=>'required',
-            'dob'=>'required',
             'passport_no'=>'required',
             'passport_expired_date'=>'required',
+            'is_original_passport_given'=>'required',
             'address'=>'required',
             'password'=>'required',
             'confirm_password'=>'required',
@@ -65,17 +64,19 @@ class IndexController extends Controller
                 $imgName= $this->imageUplaodByName($current_image, null, $imagePath, $imgFor); 
                 $data->image = $imgName;
             }
-            $data->name                    = $request->name;
-            $data->email                   = $request->email;
-            $data->phone                   = $request->phone;
-            $data->dob                     = $request->dob;
-            $data->passport_no             = $request->passport_no;
-            $data->passport_expired_date   = $request->passport_expired_date;
-            $data->gender                  = $request->gender;
-            $data->address                 = $request->address;
-            $data->password                = Hash::make($request->password);
-            $data->passport_doc            = ($passportDocUrl) ? $passportDocUrl : NULL;
-            $success                       = $data->save();
+            $data->name                         = $request->name;
+            $data->email                        = $request->email;
+            $data->phone                        = $request->phone;
+            $data->dob                          = $request->dob;
+            $data->passport_no                  = $request->passport_no;
+            $data->passport_expired_date        = $request->passport_expired_date;
+            $data->is_original_passport_given   = $request->is_original_passport_given;
+            $data->gender                       = $request->gender;
+            $data->address                      = $request->address;
+            $data->password                     = Hash::make($request->password);
+            $data->passport_doc                 = ($passportDocUrl) ? $passportDocUrl : NULL;
+            $data->created_by                   = logged_in_user_id();
+            $success                            = $data->save();
 
             if($success){
                 notify()->success(saved_success(),"Success","topRight");
@@ -102,8 +103,6 @@ class IndexController extends Controller
         $this->validate($request,[
             'name'=>'required',
             'phone'=>'required',
-            'email'=>'required',
-            'dob'=>'required',
             'gender'=>'required',
             'passport_no'=>'required',
             'passport_expired_date'=>'required',
@@ -142,15 +141,17 @@ class IndexController extends Controller
             $data->image = $imageUrl;
         }
 
-        $data->name                   = $request->name;
-        $data->email                  = $request->email;
-        $data->phone                  = $request->phone;
-        $data->dob                    = $request->dob;
-        $data->passport_no            = $request->passport_no;
-        $data->passport_expired_date  = $request->passport_expired_date;
-        $data->gender                 = $request->gender;
-        $data->address                = $request->address;
-        $success                      = $data->save();
+        $data->name                         = $request->name;
+        $data->email                        = $request->email;
+        $data->phone                        = $request->phone;
+        $data->dob                          = $request->dob;
+        $data->passport_no                  = $request->passport_no;
+        $data->passport_expired_date        = $request->passport_expired_date;
+        $data->is_original_passport_given   = $request->is_original_passport_given;
+        $data->gender                       = $request->gender;
+        $data->address                      = $request->address;
+        $data->updated_by                   = logged_in_user_id();
+        $success                            = $data->save();
 
         if($success){
             notify()->success(updated_success(),"Success","topRight");

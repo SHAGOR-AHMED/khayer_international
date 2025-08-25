@@ -23,7 +23,6 @@
                       <th>Client Details</th>
                       <th>Kopil No</th>
                       <th>PC Ref No</th>
-                      <th>Medical Report</th>
                       <th>GCC Medical Report</th>
                       <th>Entry Date</th>
                       <th>Status</th>
@@ -41,28 +40,34 @@
                           <td>
                             <b>Name:</b> {{ $data->user->name }}<br>
                             <b>Mobile No:</b> {{ $data->user->phone }}<br>
-                            <b>DOB:</b> {{ $data->user->dob }}<br>
+                            <b>DOB:</b> {{ ($data->user->dob) ? $data->user->dob : 'N/A'}}<br>
                             <b>Passport No:</b> {{ $data->user->passport_no }}<br>
                             <b>Expired Date:</b> {{ $data->user->passport_expired_date }}
                           </td>
                           <td>{{ $data->kopil_no }}</td>
                           <td>{{ $data->pc_ref_no }}</td>
-                          <td>{{ $data->medical_report }}</td>
                           <td>{{ $data->gcc_medical_report }}</td>
                           <td>{{ $data->created_at }}</td>
                           <td>
-                            @if($data->status == 'PENDING')
-                              <span class="badge btn-primary">PENDING</span>
-                            @elseif($data->status == 'EMBASSY')
-                              <span class="badge btn-info">EMBASSY</span>
-                            @elseif($data->status == 'MANPOWER')
-                              <span class="badge btn-warning">MANPOWER</span>
-                            @elseif($data->status == 'DELIVERED')
-                              <span class="badge btn-success">DELIVERED</span>
+                            @if($data->is_returned == 'YES')
+                              <span class="badge btn-danger">RETURNED</span><br><br>
+                            @else
+                              @if($data->status == 'PENDING')
+                              <span class="badge btn-primary">PENDING</span><br><br>
+                              @elseif($data->status == 'EMBASSY')
+                                <span class="badge btn-info">EMBASSY</span><br><br>
+                              @elseif($data->status == 'MANPOWER')
+                                <span class="badge btn-warning">MANPOWER</span><br><br>
+                              @elseif($data->status == 'DELIVERED')
+                                <span class="badge btn-success">DELIVERED</span><br><br>
+                              @endif
+                              <button class="btn btn-default" id="next_stage_modal" data-toggle="modal" data-id="{{ $data->id }}" data-target="#staticBackdrop">Next Stage</button>
                             @endif
                           </td>
                           <td>
-                              <button class="btn btn-info" id="details_modal" data-toggle="modal" data-id="{{ $data->id }}" data-target="#staticBackdrop">Next Stage</button>
+                              <a href="{{ route('entry.details',$data->id)}}" style="color: green;" title="Details">View <i class="fa fa-eye fa-lg" style="color: green;"></i></a> | 
+
+                              <a href="#" style="color: black;" title="Log" >Log <i class="fa fa-info fa-lg" style="color: black;"></i></a>
                           </td>
                       </tr>
                     @endforeach
@@ -74,7 +79,7 @@
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
 
-  <!-- Modal HTML -->
+  <!-- Next Stage Modal HTML -->
     <div id="staticBackdrop" class="modal fade" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -118,7 +123,7 @@
     </div>
 
     <script type="text/javascript">
-      $(document).on("click", "#details_modal", function () {
+      $(document).on("click", "#next_stage_modal", function () {
           var entry_id = $(this).data("id");
           $("#myInput").val(entry_id);
       });
