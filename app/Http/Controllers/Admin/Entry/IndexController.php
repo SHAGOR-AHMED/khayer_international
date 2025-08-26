@@ -43,8 +43,12 @@ class IndexController extends Controller
 
     public function create(){
         $data['add'] = TRUE;
+        $data['all_agents'] = Agent::query()
+                            ->where('status',1)
+                            ->pluck('name', 'id')
+                            ->prepend('Please Select', '')
+                            ->toArray();
         $data['all_clients'] = User::where('type','user')->get();
-        $data['all_agents'] = Agent::where('status',1)->get();
         $data['all_countries'] = DB::table('countries')->get();
         return view('admin.entry.add', $data);
     }

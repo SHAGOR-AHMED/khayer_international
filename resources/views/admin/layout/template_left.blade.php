@@ -44,8 +44,7 @@
 					<i class="fa fa-university fa-lg"></i> <span>Embassy Module</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="#"><i class="fa fa-plus"></i>Add New</a></li>
-					<li><a href="#"><i class="fa fa-eye"></i>View</a></li>
+					<li><a href="{{ route('embassy.index') }}"><i class="fa fa-eye"></i>View All</a></li>
 				</ul>
             </li>
 

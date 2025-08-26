@@ -8,6 +8,7 @@ use App\Models\Agent;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Controllers\Common\ImageUpload;
 
 class IndexController extends Controller
@@ -117,8 +118,8 @@ class IndexController extends Controller
 
     //control
     public function status($id){
-
-        $data       =  Agent::find($id);
+        $id = hashid_decode($id);
+        $data       =  Agent::findOrFail($id);
         if($data){
            $status = $data->status;
             if($status == 1){
@@ -128,9 +129,9 @@ class IndexController extends Controller
             }
             $success    =  $data->save();
             if($success){
-                notify()->success(updated_success(),"Success","topRight");
+                Alert::toast(updated_success(), 'info');
             }else{
-                notify()->error(exception(),"Error","topRight");
+                Alert::toast(exception(), 'error');
             }
             return redirect()->route('agent.index');
         }
@@ -139,13 +140,14 @@ class IndexController extends Controller
     // destroy
     public function delete($id)
     {
-        $data       =  Agent::find($id);
+        $id = hashid_decode($id);
+        $data       =  Agent::findOrFail($id);
         imageDeleteManager($data->image);
         $success    =  $data->delete();
         if($success){
-            notify()->success(deleted_success(),"Success","topRight");
+            Alert::success('Deleted!', deleted_success());
         }else{
-            notify()->error(exception(),"Error","topRight");
+            Alert::error('Error!', exception());
         }
         return redirect()->route('agent.index');
     }

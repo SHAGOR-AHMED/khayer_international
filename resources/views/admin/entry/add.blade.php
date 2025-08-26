@@ -12,6 +12,7 @@
           <div class="box-header with-border">
             <h3 class="box-title">Create New Entry</h3>
             <div class="box-tools pull-right">
+               <a href="{{ route('entry.index') }}" class="btn btn-success">View All</a>
             </div>
           </div>
           <div class="box-body">
@@ -23,9 +24,8 @@
                 <div class="form-group">
                     <label for="type">Agent <span class="text-red">*</span></label>
                     <select class="form-control" name="agent_id" required>
-                      <option value="">Please Select</option>
-                      @foreach($all_agents as $agent)
-                        <option value="{{ $agent->id }}">{{ $agent->name }}-({{ $agent->phone }})</option>
+                      @foreach($all_agents as $id => $name)
+                        <option value="{{ $id }}">{{ $name }}</option>
                       @endforeach
                     </select>
                     <span class="text-danger">{{ $errors->has('agent_id') ? $errors->first('agent_id') : '' }}</span>

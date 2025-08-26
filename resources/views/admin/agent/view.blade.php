@@ -47,13 +47,13 @@
                           </td>
                           <td>
                               @if($data->status == 1)
-                                  <a onclick="return confirm('Are You Sure?')" href="{{ route('agent.control',$data->id) }}" >Inactive <i class="fa fa-times-circle fa-lg"></i></a> | 
+                                  <a onclick="return confirm('Are You Sure?')" href="{{ route('agent.control',hashid_encode($data->id)) }}" >Inactive <i class="fa fa-times-circle fa-lg"></i></a> | 
                               @else
-                                  <a onclick="return confirm('Are You Sure?')" href="{{ route('agent.control',$data->id) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
+                                  <a onclick="return confirm('Are You Sure?')" href="{{ route('agent.control',hashid_encode($data->id)) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
                               @endif
                               <a href="{{ route('agent.edit',hashid_encode($data->id)) }}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a> | 
                               
-                              <a href="{{ route('agent.delete',$data->id)}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash fa-lg" style="color: red;"></i></a>
+                              <a href="{{ route('agent.delete',hashid_encode($data->id))}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash fa-lg" style="color: red;"></i></a>
                           </td>
                       </tr>
                     @endforeach

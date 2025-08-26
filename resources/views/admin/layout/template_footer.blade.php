@@ -11,6 +11,8 @@
 	    <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
 
+    @include('sweetalert::alert')
+
     <!-- Bootstrap 3.3.5 -->
     <script src="{{ asset('admin/backend/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- Bootstrap 5 -->
