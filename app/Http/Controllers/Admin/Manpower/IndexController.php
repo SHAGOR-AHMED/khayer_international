@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Embassy;
+namespace App\Http\Controllers\Admin\Manpower;
 
 use Session;
 use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Agent;
 use App\Models\Entry;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -18,14 +16,14 @@ class IndexController extends Controller
     use ImageUpload;
 
     public function index(){
-    	$data['allData'] = Entry::with(['agent','user'])->latest()->where('status','EMBASSY')->get();
-    	return view('admin.embassy.view',$data);
+    	$data['allData'] = Entry::with(['agent','user'])->latest()->where('status','MANPOWER')->get();
+    	return view('admin.manpower.view',$data);
     }
 
     public function details($hashid){
         $id = hashid_decode($hashid);
     	$data['single'] = Entry::with(['agent','user'])->findOrFail($id);
-    	return view('admin.embassy.details',$data);
+    	return view('admin.manpower.details',$data);
     }
 
     public function log(){
@@ -43,18 +41,12 @@ class IndexController extends Controller
     public function update(Request $request){
 
         $this->validate($request,[
-            'mofa_no'=>'required',
-            'visa_no'=>'required',
-            'visa_issued_date'=>'required',
-            'finger_ttc_note'=>'required',
+            'manpower_date'=>'required',
         ]);
        
         $data                     = Entry::findOrFail($request->id);
-        $data->mofa_no            = $request->mofa_no;
-        $data->visa_no            = $request->visa_no;
-        $data->visa_issued_date   = $request->visa_issued_date;
-        $data->finger_ttc_note    = $request->finger_ttc_note;
-        $data->status             = 'MANPOWER';
+        $data->manpower_date      = $request->manpower_date;
+        $data->status             = 'COLLECT';
         $data->updated_by         = logged_in_user_id();
         $success                  = $data->save();
 
@@ -63,7 +55,7 @@ class IndexController extends Controller
         }else{
             notify()->error(exception(),"Error","topRight");
         }
-        return redirect()->route('manpower.index');
+        return redirect()->route('delivery.index');
         
     }//update
 

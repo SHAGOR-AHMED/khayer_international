@@ -37,7 +37,7 @@ class IndexController extends Controller
             ->select("entries.*", "U.name as created_by", "UM.name as updated_by")
             ->where("entries.id","=",$id)
             ->first();
-        $returnHTML = view('admin.entry.log')->with($data)->render();
+        $returnHTML = view('admin.common.log')->with($data)->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
 
@@ -87,6 +87,40 @@ class IndexController extends Controller
 
     }//store
 
+    public function nextStage(Request $request){
+        $data               = Entry::findOrFail($request->id);
+        $data->status       = $request->status;
+        $data->updated_by   = logged_in_user_id();
+        $success            = $data->save();
+        if($success){
+            notify()->success(updated_success(),"Success","topRight");
+        }else{
+            notify()->error(exception(),"Error","topRight");
+        }
+        return redirect()->route('entry.index');
+    }
+
+    public function return_application(Request $request){
+
+        $this->validate($request,[
+            'return_cause'=>'required',
+        ]);
+       
+        $data = Entry::findOrFail($request->id);
+        $data->is_returned     = 'YES';
+        $data->return_cause    = $request->return_cause;
+        $data->updated_by      = logged_in_user_id();
+        $success               = $data->save();
+
+        if($success){
+            notify()->success(updated_success(),"Success","topRight");
+        }else{
+            notify()->error(exception(),"Error","topRight");
+        }
+        return redirect()->route('entry.index');
+        
+    }
+
     public function edit($id){
     	$data['edit'] = TRUE;
     	$data['single'] = Entry::findOrFail($id);
@@ -119,27 +153,6 @@ class IndexController extends Controller
         
     }//update
 
-    public function return_application(Request $request){
-
-        $this->validate($request,[
-            'return_cause'=>'required',
-        ]);
-       
-        $data = Entry::findOrFail($request->id);
-        $data->is_returned     = 'YES';
-        $data->return_cause    = $request->return_cause;
-        $data->updated_by      = logged_in_user_id();
-        $success               = $data->save();
-
-        if($success){
-            notify()->success(updated_success(),"Success","topRight");
-        }else{
-            notify()->error(exception(),"Error","topRight");
-        }
-        return redirect()->route('entry.index');
-        
-    }
-
     //control
     public function status($id){
 
@@ -159,19 +172,6 @@ class IndexController extends Controller
             }
             return redirect()->route('entry.index');
         }
-    }
-
-    public function nextStage(Request $request){
-        $data               = Entry::findOrFail($request->id);
-        $data->status       = $request->status;
-        $data->updated_by   = logged_in_user_id();
-        $success            = $data->save();
-        if($success){
-            notify()->success(updated_success(),"Success","topRight");
-        }else{
-            notify()->error(exception(),"Error","topRight");
-        }
-        return redirect()->route('entry.index');
     }
 
     // destroy

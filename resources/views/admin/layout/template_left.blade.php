@@ -50,21 +50,10 @@
 
 			<li class="treeview">
 				<a href="javascript:">
-					<i class="fa fa-medkit fa-lg"></i> <span>Medical Module</span> <i class="fa fa-angle-left pull-right"></i>
-				</a>
-				<ul class="treeview-menu">
-					<li><a href="#"><i class="fa fa-plus"></i>Add New</a></li>
-					<li><a href="#"><i class="fa fa-eye"></i>View</a></li>
-				</ul>
-            </li>
-
-			<li class="treeview">
-				<a href="javascript:">
 					<i class="fa fa-cog fa-lg"></i> <span>Manpower Module</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="#"><i class="fa fa-plus"></i>Add New</a></li>
-					<li><a href="#"><i class="fa fa-eye"></i>View</a></li>
+					<li><a href="{{ route('manpower.index') }}"><i class="fa fa-eye"></i>View All</a></li>
 				</ul>
             </li>
 
@@ -73,8 +62,7 @@
 					<i class="fa fa-delicious fa-lg"></i> <span>Delivery Module</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="#"><i class="fa fa-plus"></i>Add New</a></li>
-					<li><a href="#"><i class="fa fa-eye"></i>View</a></li>
+					<li><a href="{{ route('delivery.index') }}"><i class="fa fa-eye"></i>View All</a></li>
 				</ul>
             </li>
 

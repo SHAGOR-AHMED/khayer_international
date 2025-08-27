@@ -68,11 +68,24 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 		/*---Embassy---*/
 		Route::namespace('Embassy')->prefix('/embassy')->name('embassy.')->group(function(){
 			Route::get('/index',                'IndexController@index')->name('index');
-			Route::get('/create',               'IndexController@create')->name('add');
-			Route::post('/store',               'IndexController@store')->name('store');
-			Route::get('/edit/{id}',            'IndexController@edit')->name('edit');
 			Route::post('/update',              'IndexController@update')->name('update');
-			Route::get('/status/{id}',          'IndexController@status')->name('control');
+			Route::get('/details/{id}',         'IndexController@details')->name('details');
+			Route::get('/log',                  'IndexController@log')->name('log');
+		});
+
+		/*---Embassy---*/
+		Route::namespace('Manpower')->prefix('/manpower')->name('manpower.')->group(function(){
+			Route::get('/index',                'IndexController@index')->name('index');
+			Route::post('/update',              'IndexController@update')->name('update');
+			Route::get('/details/{id}',         'IndexController@details')->name('details');
+			Route::get('/log',                  'IndexController@log')->name('log');
+		});
+
+		/*---Delivery---*/
+		Route::namespace('Delivery')->prefix('/delivery')->name('delivery.')->group(function(){
+			Route::get('/index',                'IndexController@index')->name('index');
+			Route::post('/update',              'IndexController@update')->name('update');
+			Route::get('/details/{id}',         'IndexController@details')->name('details');
 			Route::get('/log',                  'IndexController@log')->name('log');
 		});
 
