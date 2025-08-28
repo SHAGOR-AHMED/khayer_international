@@ -35,12 +35,12 @@ trait ImageUpload {
     }
 
     // Upload Documents
-    public function documentUpload($document,  $old_file=null, $uploadDocPath = 'images/my/'){
+    public function documentUpload($document,  $old_file=null, $uploadDocPath){
 
         // Delete Old file
         if(!empty($old_file)){
-            if (file_exists($uploadDocPath . $old_file)){
-                unlink( $uploadDocPath . $old_file );
+            if (file_exists($old_file)){
+                unlink($old_file );
             }
         }
 
@@ -52,7 +52,7 @@ trait ImageUpload {
             $successImg         = $document->move($uploadDocPath, $document_full_name);
         }
        
-        return $document_full_name;
+        return $uploadDocPath.$document_full_name;
 
     }
 

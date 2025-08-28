@@ -34,7 +34,7 @@
 
                 <div class="form-group">
                     <label for="password">Phone No <span class="text-red">*</span></label>
-                    <input type="number" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ old('phone') }}" required>
+                    <input type="text" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ old('phone') }}" required>
                     <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
                 </div>
 

@@ -12,6 +12,7 @@
           <div class="box-header with-border">
             <h3 class="box-title">Create New Agent</h3>
             <div class="box-tools pull-right">
+              <a href="{{ route('agent.index') }}" class="btn btn-success">View All</a>
             </div>
           </div>
           <div class="box-body">
@@ -21,18 +22,18 @@
               <div class="col-md-6">
                 <div class="form-group">
                     <label for="Name">Name <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" required>
+                    <input type="text" class="form-control" name="name" placeholder="Enter Name" value="{{ old('name') }}" required>
                     <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Email</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="">
+                    <input type="email" class="form-control" name="email" placeholder="Enter Email" value="{{ old('email') }}">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Phone No <span class="text-red">*</span></label>
-                    <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone No" value="" required>
+                    <input type="text" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ old('phone') }}" required>
                     <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
                 </div>
               </div>
@@ -40,7 +41,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                     <label>Address <span class="text-red">*</span></label>
-                    <textarea class="form-control" name="address" placeholder="Enter Address" required></textarea>
+                    <textarea class="form-control" name="address" placeholder="Enter Address" required>{{ old('address') }}</textarea>
                     <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                 </div>
 
@@ -80,18 +81,18 @@
                 <div class="col-md-8">
                   <div class="form-group">
                       <label for="regional_branch_name">Name <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="{{ $single->name }}" required>
+                      <input type="text" class="form-control" name="name" placeholder="Enter Name" value="{{ $single->name }}" required>
                       <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
                   </div>
 
                   <div class="form-group">
                       <label for="password">Email</label>
-                      <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{ $single->email }}">
+                      <input type="email" class="form-control" name="email" placeholder="Enter Email" value="{{ $single->email }}">
                   </div>
 
                   <div class="form-group">
                       <label for="password">Phone No <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone No" value="{{ $single->phone }}" required>
+                      <input type="text" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ $single->phone }}" required>
                       <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
                   </div>
 

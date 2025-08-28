@@ -29,7 +29,7 @@ class IndexController extends Controller
 
        $this->validate($request,[
             'name'=>'required',
-            'phone'=>'required',
+            'phone'=>'required|digits_between:11,14',
             'address'=>'required',
         ]);
 
@@ -39,7 +39,7 @@ class IndexController extends Controller
         $imgFor = 'agent-';
         // Save Image 
         $current_image  = $request->file('image'); 
-        if(!empty($current_image)){
+        if($current_image){
             $imgName= $this->imageUplaodByName($current_image, null, $imagePath, $imgFor); 
             $data->image = $imgName;
         }
@@ -70,36 +70,21 @@ class IndexController extends Controller
 
         $this->validate($request,[
             'name'=>'required',
-            'phone'=>'required',
+            'phone'=>'required|digits_between:11,14',
             'address'=>'required',
         ]);
        
         $data = Agent::findOrFail($request->id);
-
-        $userImage = $request->file('image');
-        if($userImage){
-            $preImg = $data->image;
-            if (file_exists($preImg)){
-                unlink($preImg);
-            }
-            $name = $userImage->getClientOriginalName();
-            $ext = explode('.',$name);
-            $finalName = 'agent-'.time().'.'.$ext[1];
-            $uploadPath = 'admin/userImage/';
-            $userImage->move($uploadPath, $finalName);
-            $imageUrl = $uploadPath.$finalName;
-            $data->image = $imageUrl;
+        
+        $imagePath      = 'admin/userImage/';
+        $imgFor = 'agent-';
+        // Save/update Image 
+        $current_image  = $request->image; 
+        if($current_image){
+            $old_image      = $data->image;
+            $imgName= $this->imageUplaodByName($current_image, $old_image, $imagePath, $imgFor); 
+            $data->image = $imgName;
         }
-
-        // $imagePath      = 'admin/userImage/';
-        // $imgFor = 'agent-';
-        // // Save/update Image 
-        // $current_image  = $request->image; 
-        // if($current_image){
-        //     $old_image      = $data->image;
-        //     $imgName= $this->imageUplaodByName($current_image, $old_image, $imagePath, $imgFor); 
-        //     $data->image = $imgName;
-        // }
 
         $data->name         = $request->name;
         $data->email        = $request->email;

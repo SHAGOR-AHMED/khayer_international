@@ -37,32 +37,30 @@ class IndexController extends Controller
             'password' => 'min:6|required_with:confirm_password|same:confirm_password',
         ]);
 
-       $password = $request->password;
+       $password         = $request->password;
        $confirm_password = $request->confirm_password;
 
        if($password == $confirm_password){
 
-            $passportDocUrl='';
-            if(!empty($request->file('passport_doc'))){
-                $doc = $request->file('passport_doc');
-                $name = $doc->getClientOriginalName();
-                $ext = explode('.',$name);
-                $finalName = 'passport-'.time().'.'.$ext[1];
-                $uploadPath = 'admin/documents/';
-                $doc->move($uploadPath, $finalName);
-                $passportDocUrl = $uploadPath.$finalName;
-            }
-
             $data           = new User();
 
-            $imagePath      = 'admin/userImage/';
-            $imgFor = 'client-';
             // Save Image 
+            $imagePath      = 'admin/userImage/';
+            $imgFor = 'passenger-';
             $current_image  = $request->file('image'); 
-            if(!empty($current_image)){
+            if($current_image){
                 $imgName= $this->imageUplaodByName($current_image, null, $imagePath, $imgFor); 
                 $data->image = $imgName;
             }
+
+            // Save Doc
+            $path = 'admin/documents/';
+            $current_doc  = $request->file('passport_doc'); 
+            if($current_doc){
+                $docName= $this->documentUpload($current_doc, null, $path); 
+                $data->passport_doc = $docName;
+            }
+
             $data->name                         = $request->name;
             $data->email                        = $request->email;
             $data->phone                        = $request->phone;
@@ -73,7 +71,6 @@ class IndexController extends Controller
             $data->gender                       = $request->gender;
             $data->address                      = $request->address;
             $data->password                     = Hash::make($request->password);
-            $data->passport_doc                 = ($passportDocUrl) ? $passportDocUrl : NULL;
             $data->created_by                   = logged_in_user_id();
             $success                            = $data->save();
 
@@ -110,35 +107,24 @@ class IndexController extends Controller
         ]);
        
         $data = User::findOrFail($request->id);
-        $userImage = $request->file('image');
-        $passDoc = $request->file('passport_doc');
 
-        if($passDoc){
-            $preDoc = $data->passport_doc;
-            if (file_exists($preDoc)){
-                unlink($preDoc);
-            }
-            $name = $passDoc->getClientOriginalName();
-            $ext = explode('.',$name);
-            $finalName = 'passport-'.time().'.'.$ext[1];
-            $uploadPath = 'admin/documents/';
-            $passDoc->move($uploadPath, $finalName);
-            $passportDocUrl = $uploadPath.$finalName;
-            $data->passport_doc = $passportDocUrl;
+        // Save/Update Image 
+        $imagePath      = 'admin/userImage/';
+        $imgFor         = 'passenger-';
+        $current_image  = $request->image; 
+        if($current_image){
+            $old_image      = $data->image;
+            $imgName= $this->imageUplaodByName($current_image, $old_image, $imagePath, $imgFor); 
+            $data->image = $imgName;
         }
 
-        if($userImage){
-            $preImg = $data->image;
-            if (file_exists($preImg)){
-                unlink($preImg);
-            }
-            $name = $userImage->getClientOriginalName();
-            $ext = explode('.',$name);
-            $finalName = 'user-'.time().'.'.$ext[1];
-            $uploadPath = 'admin/userImage/';
-            $userImage->move($uploadPath, $finalName);
-            $imageUrl = $uploadPath.$finalName;
-            $data->image = $imageUrl;
+        // Save/Update Doc
+        $path = 'admin/documents/';
+        $current_doc  = $request->file('passport_doc'); 
+        if($current_doc){
+            $oldDoc  = $data->passport_doc;
+            $docName = $this->documentUpload($current_doc, $oldDoc, $path); 
+            $data->passport_doc = $docName;
         }
 
         $data->name                         = $request->name;

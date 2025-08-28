@@ -10,7 +10,9 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Manage Agent's</h3>
-          <div class="box-tools pull-right"></div>
+          <div class="box-tools pull-right">
+            <a href="{{ route('agent.add') }}" class="btn btn-success">Add New</a>
+          </div>
         </div>
         <div class="box-body color-black">
               <table id="members_list_table" class="table table-bordered table-striped">
