@@ -12,6 +12,7 @@
           <div class="box-header with-border">
             <h3 class="box-title">Create User</h3>
             <div class="box-tools pull-right">
+              <a href="{{ route('user.index') }}" class="btn btn-success">View All</a>
             </div>
           </div>
           <div class="box-body">
@@ -22,19 +23,19 @@
 
                 <div class="form-group">
                     <label for="Name">Name <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" required>
+                    <input type="text" class="form-control" name="name" placeholder="Enter Name" value="{{ old('name') }}" required>
                     <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Email <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="" required>
+                    <input type="email" class="form-control" name="email" placeholder="Enter Email" value="{{ old('email') }}" required>
                     <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Phone No <span class="text-red">*</span></label>
-                    <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone No" value="" required>
+                    <input type="number" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ old('phone') }}" required>
                     <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
                 </div>
 
@@ -48,9 +49,9 @@
                     <span class="text-danger">{{ $errors->has('gender') ? $errors->first('gender') : '' }}</span>
                 </div>
 
-                 <div class="form-group">
+                <div class="form-group">
                     <label>Address <span class="text-red">*</span></label>
-                    <textarea class="form-control" name="address" placeholder="Enter Address" required></textarea>
+                    <textarea class="form-control" name="address" placeholder="Enter Address" required>{{ old('address') }}</textarea>
                     <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                 </div>
 
@@ -59,13 +60,13 @@
               <div class="col-md-6">
                 <div class="form-group">
                     <label for="password">Password <span class="text-red">*</span></label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" value="" required>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" value="{{ old('password') }}" required>
                     <span class="text-danger">{{ $errors->has('password') ? $errors->first('password') : '' }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Confirm Password <span class="text-red">*</span></label>
-                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Enter Confirm Password" value="" required onkeyup="checkPass();">
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Enter Confirm Password" value="{{ old('confirm_password') }}" required onkeyup="checkPass();">
                     <span class="text-danger">{{ $errors->has('confirm_password') ? $errors->first('confirm_password') : '' }}</span>
                     <span id="confirmMessage" class="confirmMessage"></span>
                 </div>
@@ -121,13 +122,13 @@
 
                     <div class="form-group">
                         <label for="password">Email <span class="text-red">*</span></label>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{ $userByID->email }}" required>
+                        <input type="email" class="form-control" name="email" placeholder="Enter Email" value="{{ $userByID->email }}" required>
                         <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
                     </div>
 
                     <div class="form-group">
                         <label for="password">Phone No <span class="text-red">*</span></label>
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone No" value="{{ $userByID->phone }}" required>
+                        <input type="text" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ $userByID->phone }}" required>
                         <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
                     </div>
 
@@ -140,6 +141,12 @@
                         </select>
                         <span class="text-danger">{{ $errors->has('gender') ? $errors->first('gender') : '' }}</span>
                     </div>
+
+                    <div class="form-group">
+                      <label>Address <span class="text-red">*</span></label>
+                      <textarea class="form-control" name="address" placeholder="Enter Address" required>{{ $userByID->address }}</textarea>
+                      <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
+                  </div>
 
                     <input type="hidden" name="id" value="<?php echo $userByID->id; ?>"  />
 

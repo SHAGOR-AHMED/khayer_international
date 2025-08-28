@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -26,12 +27,11 @@ class UserController extends Controller
 
        $this->validate($request,[
             'name'=>'required',
-            'phone'=>'required',
-            'email'=>'required',
+            'phone'=>'required|digits_between:11,14',
+            'email'=>'required|email:filter',
             'gender'=>'required',
-            'address'=>'required',
-            'password'=>'required',
-            'confirm_password'=>'required',
+            'address'=>'required|max:255',
+            'password' => 'min:6|required_with:confirm_password|same:confirm_password',
         ]);
 
        $password = $request->password;
@@ -73,9 +73,10 @@ class UserController extends Controller
 
     }//store
 
-    public function edit($user_id){
+    public function edit($hash_id){
     	$data['edit'] = TRUE;
-    	$data['userByID'] = User::findOrFail($user_id);
+        $id = hashid_decode($hash_id);
+    	$data['userByID'] = User::findOrFail($id);
     	return view('admin.user.add', $data);
     }
 
@@ -83,9 +84,10 @@ class UserController extends Controller
 
         $this->validate($request,[
             'name'=>'required',
-            'phone'=>'required',
-            'email'=>'required',
+            'phone'=>'required|digits_between:11,14',
+            'email'=>'required|email:filter',
             'gender'=>'required',
+            'address'=>'required|max:255',
         ]);
        
         $userByID = User::findOrFail($request->id);
@@ -108,6 +110,7 @@ class UserController extends Controller
                         'phone'=>$request->phone,
                         'email'=>$request->email,
                         'gender'=>$request->gender,
+                        'address'=>$request->address,
                         'image'=>$imageUrl,
                     ]);
     
@@ -119,6 +122,7 @@ class UserController extends Controller
                         'phone'=>$request->phone,
                         'email'=>$request->email,
                         'gender'=>$request->gender,
+                        'address'=>$request->address,
                     ]);
 
         }
@@ -128,14 +132,14 @@ class UserController extends Controller
         }else{
             notify()->error(exception(),"Error","topRight");
         }
-        return redirect()->route('user.edit',$request->id);
+        return redirect()->route('user.index');
         
     }//update
 
     //control
-    public function status($user_id){
-
-        $data       =  User::find($user_id);
+    public function status($hash_id){
+        $id         = hashid_decode($hash_id);
+        $data       =  User::find($id);
         if($data){
            $status = $data->status;
             if($status == 1){
@@ -154,9 +158,9 @@ class UserController extends Controller
     }
 
     // destroy
-    public function delete($user_id)
-    {
-        $data       =  User::find($user_id);
+    public function delete($hash_id){
+        $id         = hashid_decode($hash_id);
+        $data       =  User::find($id);
         $preImg = $data->image;
         if(!empty($preImg)){
             //Delete Old File
@@ -177,8 +181,7 @@ class UserController extends Controller
 
         $this->validate($request,[
             'old_password'=>'required',
-            'password'=>'required',
-            'confirm_password'=>'required',
+            'password' => 'min:6|required_with:confirm_password|same:confirm_password',
         ]);
 
         $userByID = User::find($request->id);
@@ -198,22 +201,22 @@ class UserController extends Controller
                 if($result){
                     Auth::logout();
                     // Session::forget('loggedData');
-                    notify()->success("Password has been updated !!! Login Again with New Password","Success","topRight");
+                    Alert::success('Success!', "Password has been updated !!! Login Again with New Password");
                     return redirect()->route('login');
                 }else{
                     notify()->error(exception(),"Error","topRight");
-                    return redirect()->route('user.edit',$request->id);
+                    return redirect()->route('user.edit',hashid_encode($request->id));
                 }
 
             }else{
                 notify()->error("Password and Confirm Password does not match !!!","Error","topRight");
-                return redirect()->route('user.edit',$request->id);
+                return redirect()->route('user.edit',hashid_encode($request->id));
 
             }
 
         }else{
             notify()->error("Old Password does not match !!!","Error","topRight");
-            return redirect()->route('user.edit',$request->id);
+            return redirect()->route('user.edit',hashid_encode($request->id));
         }
 
     }//updatePassword

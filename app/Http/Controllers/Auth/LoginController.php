@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -83,6 +84,7 @@ class LoginController extends Controller
             }
 
         }else{
+            Alert::error('Error!', "Invalid Email or Password");
             return redirect()->route('login')
                 ->with('error','Email-Address And Password Are Wrong.');
         }

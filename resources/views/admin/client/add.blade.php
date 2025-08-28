@@ -12,6 +12,7 @@
           <div class="box-header with-border">
             <h3 class="box-title">Create New Passenger</h3>
             <div class="box-tools pull-right">
+              <a href="{{ route('client.index') }}" class="btn btn-success">View All</a>
             </div>
           </div>
           <div class="box-body">
@@ -22,35 +23,35 @@
 
                 <div class="form-group">
                     <label for="Name">Name <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" required>
+                    <input type="text" class="form-control" name="name" placeholder="Enter Name" value="{{ old('name') }}" required>
                     <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Email</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="">
+                    <input type="email" class="form-control" name="email" placeholder="Enter Email" value="{{ old('email') }}">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Phone No <span class="text-red">*</span></label>
-                    <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone No" value="" required>
+                    <input type="number" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ old('phone') }}" required>
                     <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Date Of Birth</label>
-                    <input type="text" class="form-control datepicker" name="dob" value="">
+                    <input type="text" class="form-control datepicker" name="dob" value="{{ old('dob') }}">
                 </div>
 
                 <div class="form-group">
                     <label>Passport No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="passport_no" placeholder="Enter Passport No" value="" required>
+                    <input type="text" class="form-control" name="passport_no" placeholder="Enter Passport No" value="{{ old('passport_no') }}" required>
                     <span class="text-danger">{{ $errors->has('passport_no') ? $errors->first('passport_no') : '' }}</span>
                 </div>
 
                  <div class="form-group">
                     <label for="password">Passport Expired Date <span class="text-red">*</span></label>
-                    <input type="text" class="form-control datepicker" name="passport_expired_date" value="" required>
+                    <input type="text" class="form-control datepicker" name="passport_expired_date" value="{{ old('passport_expired_date') }}" required>
                     <span class="text-danger">{{ $errors->has('passport_expired_date') ? $errors->first('passport_expired_date') : '' }}</span>
                 </div>
 
@@ -64,7 +65,7 @@
 
                 <div class="form-group">
                     <label>Address <span class="text-red">*</span></label>
-                    <textarea class="form-control" name="address" placeholder="Enter Address" required></textarea>
+                    <textarea class="form-control" name="address" placeholder="Enter Address" required>{{ old('address') }}</textarea>
                     <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                 </div>
 

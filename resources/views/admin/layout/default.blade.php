@@ -53,7 +53,6 @@
           </a>
 
           <div class="col-md-10">
-            
             @if(Session::has('message'))
               <div class="alert alert-block alert-{{Session::get('class')}}">
                 <button type="button" class="close" data-dismiss="alert">
@@ -78,10 +77,8 @@
                       {{ Str::substr(logged_in_user_name(), 0,1 ) }}
                     @else
                       <img src="{{ asset($user->image) }}" class="user-image" alt="User Image">
-                	@endif
-                    <span class="hidden-xs">
-		                {{ logged_in_user_name() }}
-                  	</span>
+                	  @endif
+                    <span class="hidden-xs">{{ logged_in_user_name() }}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -91,10 +88,7 @@
                     @else
                       <img src="{{ asset($user->image) }}" class="img-circle" alt="User Image">
                 	  @endif
-                    <p>
-                      {{ logged_in_user_name() }} - {{ $user->email }}
-                    </p>
-
+                    <p>{{ logged_in_user_name() }} - {{ $user->email }}</p>
                   </li>
                   <!-- Menu Footer-->
                   <li class="user-footer">
@@ -111,7 +105,7 @@
                     </div>
 
                     <div class="pull-left">
-                      <a href="{{ route('user.edit', logged_in_user_id()) }}" class="btn btn-default btn-flat">Change Profile</a>
+                      <a href="{{ route('user.edit', hashid_encode(logged_in_user_id())) }}" class="btn btn-default btn-flat">Change Profile</a>
                     </div>
                   </li>
                 </ul>

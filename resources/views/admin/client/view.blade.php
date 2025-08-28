@@ -10,7 +10,9 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Manage Passenger's</h3>
-          <div class="box-tools pull-right"></div>
+          <div class="box-tools pull-right">
+            <a href="{{ route('client.add') }}" class="btn btn-success">Add New</a>
+          </div>
         </div>
         <div class="box-body color-black">
               <table id="members_list_table" class="table table-bordered table-striped">
@@ -65,12 +67,12 @@
                         </td>
                       	<td>
                             @if($user->status == 1)
-                                <a onclick="return confirm('Are You Sure?')" href="{{ route('client.control',$user->id) }}" >Inactive <i class="fa fa-times-circle fa-lg"></i></a> | 
+                                <a onclick="return confirm('Are You Sure?')" href="{{ route('client.control',hashid_encode($user->id)) }}" >Inactive <i class="fa fa-times-circle fa-lg"></i></a> | 
                             @else
-                                <a onclick="return confirm('Are You Sure?')" href="{{ route('client.control',$user->id) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
+                                <a onclick="return confirm('Are You Sure?')" href="{{ route('client.control',hashid_encode($user->id)) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
                             @endif
-                            <a href="{{ route('client.edit',$user->id)}}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a> | 
-                            <a href="{{ route('client.delete',$user->id)}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash-o fa-lg" style="color: red;"></i></a>
+                            <a href="{{ route('client.edit',hashid_encode($user->id))}}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a> | 
+                            <a href="{{ route('client.delete',hashid_encode($user->id))}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash-o fa-lg" style="color: red;"></i></a>
                         </td>
                     </tr>
                   <?php } } ?>

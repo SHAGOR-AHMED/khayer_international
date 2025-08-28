@@ -29,13 +29,12 @@ class IndexController extends Controller
 
        $this->validate($request,[
             'name'=>'required',
-            'phone'=>'required',
+            'phone'=>'required|digits_between:11,14',
             'passport_no'=>'required',
             'passport_expired_date'=>'required',
             'is_original_passport_given'=>'required',
-            'address'=>'required',
-            'password'=>'required',
-            'confirm_password'=>'required',
+            'address'=>'required|max:255',
+            'password' => 'min:6|required_with:confirm_password|same:confirm_password',
         ]);
 
        $password = $request->password;
@@ -54,7 +53,7 @@ class IndexController extends Controller
                 $passportDocUrl = $uploadPath.$finalName;
             }
 
-            $data                          = new User();
+            $data           = new User();
 
             $imagePath      = 'admin/userImage/';
             $imgFor = 'client-';
@@ -92,9 +91,10 @@ class IndexController extends Controller
 
     }//store
 
-    public function edit($user_id){
+    public function edit($hash_id){
     	$data['edit'] = TRUE;
-    	$data['single'] = User::findOrFail($user_id);
+        $id = hashid_decode($hash_id);
+    	$data['single'] = User::findOrFail($id);
     	return view('admin.client.edit', $data);
     }
 
@@ -102,7 +102,7 @@ class IndexController extends Controller
 
         $this->validate($request,[
             'name'=>'required',
-            'phone'=>'required',
+            'phone'=>'required|digits_between:11,14',
             'gender'=>'required',
             'passport_no'=>'required',
             'passport_expired_date'=>'required',
@@ -154,19 +154,19 @@ class IndexController extends Controller
         $success                            = $data->save();
 
         if($success){
-            notify()->success(updated_success(),"Success","topRight");
+            notify()->info(updated_success(),"Success","topRight");
         }else{
             notify()->error(exception(),"Error","topRight");
         }
 
-        return redirect()->route('client.edit',$request->id);
+        return redirect()->route('client.index');
         
     }//update
 
     //control
-    public function status($user_id){
-
-        $data       =  User::find($user_id);
+    public function status($hash_id){
+        $id         = hashid_decode($hash_id);
+        $data       = User::find($id);
         if($data){
             $status = $data->status;
             if($status == 1){
@@ -176,7 +176,7 @@ class IndexController extends Controller
             }
             $success    =  $data->save();
             if($success){
-                notify()->success(updated_success(),"Success","topRight");
+                notify()->info(updated_success(),"Success","topRight");
             }else{
                 notify()->error(exception(),"Error","topRight");
             }
@@ -185,11 +185,11 @@ class IndexController extends Controller
     }
 
     // destroy
-    public function delete($user_id)
-    {
-        $data       =  User::find($user_id);
-        $preImg = $data->image;
-        $preDoc = $data->passport_doc;
+    public function delete($hash_id){
+        $id         = hashid_decode($hash_id);
+        $data       = User::find($id);
+        $preImg     = $data->image;
+        $preDoc     = $data->passport_doc;
         if(!empty($preImg)){
             if (file_exists($preImg)){
                 unlink($preImg);
@@ -202,7 +202,7 @@ class IndexController extends Controller
         }
         $success    =  $data->delete();
         if($success){
-            notify()->error(deleted_success(),"Success","topRight");
+            notify()->success(deleted_success(),"Success","topRight");
         }else{
             notify()->error(exception(),"Error","topRight");
         }

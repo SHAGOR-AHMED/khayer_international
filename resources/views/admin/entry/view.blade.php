@@ -69,7 +69,7 @@
                             @endif
                           </td>
                           <td>
-                              <a href="{{ route('entry.details',$data->id)}}" style="color: green;" title="Details">View <i class="fa fa-eye fa-lg" style="color: green;"></i></a> | 
+                              <a href="{{ route('entry.details',hashid_encode($data->id)) }}" style="color: green;" title="Details">View <i class="fa fa-eye fa-lg" style="color: green;"></i></a> | 
 
                               <a href="#" style="color: black;" id="log_modal" data-toggle="modal" data-id="{{ $data->id }}" data-target="#staticBackdrop2" title="Log" >Log <i class="fa fa-info fa-lg" style="color: black;"></i></a>
                           </td>

@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('title')
-  Manage List
+  Manage Embassy List
 @endsection
 @section('content')
   <div class="content-wrapper">
@@ -9,7 +9,7 @@
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Manage List's</h3>
+          <h3 class="box-title">Manage Embassy List's</h3>
           <div class="box-tools pull-right">
             <a href="{{ route('entry.add') }}" class="btn btn-success">Add New</a>
           </div>

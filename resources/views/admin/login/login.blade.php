@@ -30,16 +30,6 @@
         <div class="row login_form_area">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-10 col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-1">
               <div class="row login_bg">
-                @if(Session::has('message'))
-                    <div class="alert alert-block alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">
-                            <i class="ace-icon fa fa-times"></i>
-                        </button>
-                        <i class="ace-icon fa fa-check green"></i>
-                        {{ Session::get("message") }}
-                        {{ Session::forget('message') }}
-                    </div>
-                @endif
 
                 <div class="col-lg-6 col-md-6">
                     <img src="{{ asset('admin/img/logo.png') }}" class="img-responsive hidden-xs center-block">
@@ -91,6 +81,8 @@
           </div>
         </div>
     </div>
+
+     @include('sweetalert::alert')
 
     <!-- footer -->
     <footer class="footer">

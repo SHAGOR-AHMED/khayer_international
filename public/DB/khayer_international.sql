@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 23, 2025 at 01:30 AM
+-- Generation Time: Aug 28, 2025 at 12:10 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `agents` (
   `id` bigint UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -44,8 +44,9 @@ CREATE TABLE `agents` (
 --
 
 INSERT INTO `agents` (`id`, `name`, `email`, `phone`, `address`, `image`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'TAUKIR BHAI', 'subotibigy@mailinator.com', '+1 (747) 263-9737', 'Quae maxime debitis', 'admin/userImage/agent-1755721147.jpg', 1, '2025-08-20 15:00:57', '2025-08-23 00:27:35'),
-(7, 'Ila Oconnor', 'qypuhawymy@mailinator.com', '+1 (552) 291-2644', 'Iure vitae consequun', 'admin/userImage/agent-1755719880.jpg', 0, '2025-08-20 18:57:17', '2025-08-23 00:17:47');
+(1, 'TAUKIR BHAI', 'taukir@mailinator.com', '01814000000', 'dhaka', 'admin/userImage/agent-1755721147.jpg', 1, '2025-08-20 15:00:57', '2025-08-25 11:56:25'),
+(7, 'Natasha', 'natasha@mailinator.com', '0176536124361', 'dhaka', 'admin/userImage/agent-1755719880.jpg', 1, '2025-08-20 18:57:17', '2025-08-26 09:32:04'),
+(12, 'Keelie Carlson', 'nopip@mailinator.com', '+1 (261) 958-8781', 'Autem ut eum sunt un', NULL, 0, '2025-08-26 11:32:33', '2025-08-27 13:08:42');
 
 -- --------------------------------------------------------
 
@@ -328,9 +329,18 @@ CREATE TABLE `entries` (
   `pc_ref_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `medical_report` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gcc_medical_report` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `note` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `status` enum('PENDING','EMBASSY','MANPOWER','COLLECT','DELIVERED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDING',
+  `mofa_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `visa_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `visa_issued_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `finger_ttc_note` longtext COLLATE utf8mb4_unicode_ci,
+  `manpower_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `delivered_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_returned` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `return_cause` longtext COLLATE utf8mb4_unicode_ci,
-  `note` longtext COLLATE utf8mb4_unicode_ci,
-  `status` enum('PENDING','EMBASSY','MANPOWER','DELIVERED') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDING',
+  `created_by` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_by` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -339,10 +349,12 @@ CREATE TABLE `entries` (
 -- Dumping data for table `entries`
 --
 
-INSERT INTO `entries` (`id`, `agent_id`, `rl_no`, `country`, `client_id`, `kopil_no`, `pc_ref_no`, `medical_report`, `gcc_medical_report`, `return_cause`, `note`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'RL1717', 'Australia', 10, '123213', '131231', 'FIT', 'FIT', 'test', 'test', 'PENDING', '2025-08-20 23:15:24', NULL),
-(2, 1, 'RL1717', 'Afghanistan', 4, '121312', '12313131', 'FIT', 'FIT', 'dummy', 'dummy', 'PENDING', '2025-08-21 11:15:01', '2025-08-21 11:15:01'),
-(3, 1, 'RL1717', 'Albania', 13, '112233', '007', 'FIT', 'FIT', NULL, NULL, 'EMBASSY', '2025-08-21 11:58:18', '2025-08-22 23:31:14');
+INSERT INTO `entries` (`id`, `agent_id`, `rl_no`, `country`, `client_id`, `kopil_no`, `pc_ref_no`, `medical_report`, `gcc_medical_report`, `note`, `status`, `mofa_no`, `visa_no`, `visa_issued_date`, `finger_ttc_note`, `manpower_date`, `delivered_date`, `is_returned`, `return_cause`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 'RL1717', 'Australia', 10, '123213', '131231', 'FIT', 'FIT', 'test', 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-20 23:15:24', '2025-08-23 09:12:57'),
+(2, 1, 'RL1717', 'Afghanistan', 4, '121312', '12313131', 'FIT', 'FIT', 'dummy', 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, 'YES', 'Application has been failed', '3', '2', '2025-08-21 11:15:01', '2025-08-24 22:59:14'),
+(3, 1, 'RL1717', 'Albania', 13, '112233', '007', 'FIT', 'FIT', 'application success', 'DELIVERED', 'dummy mofa no 123', 'dummy visa no 123', '26-08-2025', 'dummy text', '27-08-2025', '27-08-2025', NULL, NULL, '2', '2', '2025-08-21 11:58:18', '2025-08-27 17:45:19'),
+(5, 1, 'Recusandae Assumend', 'Wallis And Futuna Islands', 4, 'Qui ab quae sed repr', 'Autem reiciendis ut', 'FIT', 'FIT', 'Omnis veniam autem', 'EMBASSY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', '2', '2025-08-24 23:11:29', '2025-08-27 14:14:49'),
+(6, 7, 'Deserunt recusandae', 'Zambia', 13, 'Labore deserunt itaq', 'Eveniet consequatur', 'UNFIT', 'UNFIT', 'Delectus voluptates', 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', '2', '2025-08-26 10:11:47', '2025-08-27 19:33:58');
 
 -- --------------------------------------------------------
 
@@ -438,12 +450,13 @@ CREATE TABLE `personal_access_tokens` (
 CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `dob` date DEFAULT NULL,
+  `dob` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `passport_expired_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `passport_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `passport_expired_date` date DEFAULT NULL,
+  `is_original_passport_given` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `gender` tinyint DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -452,6 +465,8 @@ CREATE TABLE `users` (
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `passport_doc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_by` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_by` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -460,15 +475,15 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `phone`, `dob`, `email_verified_at`, `passport_no`, `passport_expired_date`, `address`, `gender`, `password`, `type`, `status`, `image`, `passport_doc`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Solaman Badsha', 'solaman@hotmail.co.uk', NULL, NULL, NULL, NULL, NULL, '', NULL, '$2y$12$mOpRpVjMsySNEIe4.ckVU.cLQ8NWjY6sy5sEDNp2tbXH6LrZdvm4y', 'admin', 0, NULL, NULL, NULL, '2025-08-13 11:51:20', '2025-08-20 20:00:50'),
-(2, 'Admin-Solaman Badsha', 'admin@example.com', '01814944730', NULL, NULL, NULL, NULL, '', 1, '$2y$12$jEtYUyvXClQCpKZerNcoS.lcehUJy6VfABdhrFx9eetRiWdWa7N6O', 'admin', 1, 'admin/userImage/shagor_formal.jpg', NULL, NULL, '2025-08-14 11:03:56', '2025-08-22 22:14:34'),
-(3, 'Manager User', 'manager@example.com', NULL, NULL, NULL, NULL, NULL, '', NULL, '$2y$12$NJqCy65OiFHmoJFR2HpItue3wDjIr2ebjF7JcZqOxpSWMYNiK08B.', 'manager', 0, NULL, NULL, NULL, '2025-08-14 11:03:56', '2025-08-20 20:03:21'),
-(4, 'tommy', 'user@example.com', '31231232', '1990-01-10', NULL, '123123123', '2010-01-20', 'Canada', 2, '$2y$12$l/4FhPki03hOcX0I58Y/6eJzlORBsg4JUjh4Z8.Qd/ob98zo10ADa', 'user', 1, 'admin/userImage/user-1755471470.jpeg', 'admin/documents/passport-1755467655.jpg', NULL, '2025-08-14 11:03:56', '2025-08-22 10:36:34'),
-(10, 'TAFAZZOL HOSSEN', 'john@example.com', '234352532', '1994-04-10', NULL, 'A15720219', '2032-07-20', '36A n22 6ll', 1, '$2y$12$TZdMX/IINv8FYstX7U7UeOXoe3u87HVzQ1OXvG2eroqMVtq/N1uXq', 'user', 1, 'admin/userImage/user-1755733567.png', 'admin/documents/passport-1755471751.jpg', NULL, '2025-08-17 19:47:08', '2025-08-22 10:46:58'),
-(12, 'Leslie Petersen', 'vafifibuxu@mailinator.com', '234234', NULL, NULL, '2324', NULL, 'Voluptatem voluptas', 1, '$2y$12$nXyaqhPt5Se9zBC.APLrUue1qyeP8b8DppHkF4YxrtrYGHi6us/5G', 'manager', 1, NULL, NULL, NULL, '2025-08-20 20:03:03', '2025-08-21 11:51:17'),
-(13, 'mr rahim', 'rahim@example.com', '51351341', '2000-04-21', NULL, 'A132423', '2029-01-01', 'dhaka bangladesh', 1, '$2y$12$Ymf3StEubUDjsD/Do6ZViexIQYBgASNcz5Vu98MhirwtBJ7eiOU3O', 'user', 1, 'admin/userImage/client-bw4il1755780017.jpg', 'admin/documents/passport-1755780017.JPG', NULL, '2025-08-21 11:40:18', '2025-08-21 11:57:43'),
-(14, 'Chanda Lloyd', 'xapegeb@mailinator.com', '51', NULL, NULL, NULL, NULL, 'Rerum debitis velit', 2, '$2y$12$.amR2j1aEAujoIuRqTj3Yer4tFD/DXmWEiDtQxkbqZ6DC7H8JqAQW', 'admin', 0, NULL, NULL, NULL, '2025-08-22 21:47:36', '2025-08-22 21:47:45');
+INSERT INTO `users` (`id`, `name`, `email`, `phone`, `dob`, `passport_expired_date`, `email_verified_at`, `passport_no`, `is_original_passport_given`, `address`, `gender`, `password`, `type`, `status`, `image`, `passport_doc`, `remember_token`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 'Solaman Badsha', 'solaman@hotmail.co.uk', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, '$2y$12$mOpRpVjMsySNEIe4.ckVU.cLQ8NWjY6sy5sEDNp2tbXH6LrZdvm4y', 'admin', 0, NULL, NULL, NULL, NULL, '', '2025-08-13 11:51:20', '2025-08-20 20:00:50'),
+(2, 'Admin-Solaman Badsha', 'admin@example.com', '01814944730', NULL, NULL, NULL, NULL, NULL, 'Dhaka, Bangladesh', 1, '$2y$12$IYtMNEo1Redn3633fROB7uz9ZjwM1djInm//D7HD4G4CP5Jppo7TS', 'admin', 1, 'admin/userImage/shagor_formal.jpg', NULL, NULL, '1', '', '2025-08-14 11:03:56', '2025-08-27 23:09:22'),
+(3, 'Manager User', 'manager@example.com', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, '$2y$12$NJqCy65OiFHmoJFR2HpItue3wDjIr2ebjF7JcZqOxpSWMYNiK08B.', 'manager', 0, NULL, NULL, NULL, '2', '', '2025-08-14 11:03:56', '2025-08-20 20:03:21'),
+(4, 'tommy', 'user@example.com', '31231232', NULL, NULL, NULL, '123123123', NULL, 'Canada', 2, '$2y$12$l/4FhPki03hOcX0I58Y/6eJzlORBsg4JUjh4Z8.Qd/ob98zo10ADa', 'user', 1, 'admin/userImage/user-1755471470.jpeg', 'admin/documents/passport-1755943940.jpg', NULL, '2', '', '2025-08-14 11:03:56', '2025-08-23 09:12:37'),
+(10, 'TAFAZZOL HOSSEN', 'john@example.com', '234352532', '01-02-2000', '30-10-2028', NULL, 'A15720219', 'NO', '36A n22 6ll', 1, '$2y$12$TZdMX/IINv8FYstX7U7UeOXoe3u87HVzQ1OXvG2eroqMVtq/N1uXq', 'user', 1, 'admin/userImage/user-1755733567.png', 'admin/documents/passport-1755943904.jpg', NULL, '2', '2', '2025-08-17 19:47:08', '2025-08-24 21:40:57'),
+(12, 'Leslie Petersen', 'vafifibuxu@mailinator.com', '234234', NULL, NULL, NULL, '2324', NULL, 'Voluptatem voluptas', 1, '$2y$12$nXyaqhPt5Se9zBC.APLrUue1qyeP8b8DppHkF4YxrtrYGHi6us/5G', 'manager', 1, NULL, NULL, NULL, '2', '', '2025-08-20 20:03:03', '2025-08-21 11:51:17'),
+(13, 'mr rahim', 'rahim@example.com', '51351341', NULL, '28-12-2029', NULL, 'A132423', 'NO', 'dhaka bangladesh', 1, '$2y$12$Ymf3StEubUDjsD/Do6ZViexIQYBgASNcz5Vu98MhirwtBJ7eiOU3O', 'user', 1, 'admin/userImage/client-bw4il1755780017.jpg', 'admin/documents/passport-1755943924.jpg', NULL, '2', '2', '2025-08-21 11:40:18', '2025-08-27 22:11:31'),
+(14, 'Chanda Lloyd', 'xapegeb@mailinator.com', '51', NULL, NULL, NULL, NULL, NULL, 'Rerum debitis velit', 2, '$2y$12$.amR2j1aEAujoIuRqTj3Yer4tFD/DXmWEiDtQxkbqZ6DC7H8JqAQW', 'admin', 0, NULL, NULL, NULL, '2', '', '2025-08-22 21:47:36', '2025-08-22 21:47:45');
 
 --
 -- Indexes for dumped tables
@@ -479,8 +494,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `phone`, `dob`, `email_verified_at`,
 --
 ALTER TABLE `agents`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `agents_email_unique` (`email`),
-  ADD UNIQUE KEY `agents_phone_unique` (`phone`);
+  ADD UNIQUE KEY `agents_phone_unique` (`phone`),
+  ADD UNIQUE KEY `agents_email_unique` (`email`);
 
 --
 -- Indexes for table `countries`
@@ -544,7 +559,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -556,7 +571,7 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `entries`
 --
 ALTER TABLE `entries`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -580,7 +595,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables

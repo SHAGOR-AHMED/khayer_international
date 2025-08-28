@@ -22,7 +22,8 @@ class IndexController extends Controller
     	return view('admin.entry.view',$data);
     }
 
-    public function details($id){
+    public function details($hashid){
+        $id = hashid_decode($hashid);
     	$data['single'] = Entry::with(['agent','user'])->findOrFail($id);
     	return view('admin.entry.details',$data);
     }
