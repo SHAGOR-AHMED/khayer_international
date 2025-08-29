@@ -73,7 +73,7 @@
 
                 <div class="form-group">
                     <label for="type">User Type <span class="text-red">*</span></label>
-                    <select class="form-control" name="type" required  id="type" onchange="doc_toggle()">
+                    <select class="form-control" name="type" required  id="type">
                       <option value="admin">Admin</option>
                       <option value="manager">Manager</option>
                     </select>
@@ -153,7 +153,7 @@
                     <div class="form-group">
                         <label for="address">Update Photograph</label>
                         <input type="file" id="userfile" class="form-control" name="image" value="" onchange="getPreview('userfile','img_preview','none');">
-                        <img src="<?= (empty($userByID->image))? asset('public/backend/img/unknown.png') : asset($userByID->image) ?>" style="width:100px; margin-top:5px" id="img_preview" class="img-responsive img-thumbnail"/><br>
+                        <img src="{{ imageShow($userByID->image) }}" style="width:100px; margin-top:5px" id="img_preview" class="img-responsive img-thumbnail"/><br>
                         <code>(Max photo size: 400x400, 512kb)</code>
                     </div>
 
@@ -233,14 +233,6 @@
             return true;
         }
 
-        // function doc_toggle() {
-        //   var u_type = document.getElementById("type").value;
-        //   if(u_type == 'user'){
-        //     document.getElementById("pass_doc").style.visibility = "visible";
-        //   }else{
-        //     document.getElementById("pass_doc").style.visibility = "hidden";
-        //   }
-        // }
     </script>
 
 @endsection

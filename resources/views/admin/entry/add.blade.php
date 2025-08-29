@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="box-body">
-          <form action="{{ route('entry.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form action="{{ route('entry.store') }}" method="post" name="form" enctype="multipart/form-data" onsubmit="return(validate())" autocomplete="off">
           @csrf
             <div class="row">
               <div class="col-md-6">
@@ -33,7 +33,7 @@
 
                 <div class="form-group">
                     <label for="type">RL No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="rl_no" placeholder="Enter RL No" value="" required>
+                    <input type="text" class="form-control" name="rl_no" placeholder="Enter RL No" value="{{ old('rl_no') }}" required>
                     <span class="text-danger">{{ $errors->has('rl_no') ? $errors->first('rl_no') : '' }}</span>
                 </div>
 
@@ -61,7 +61,7 @@
 
                 <div class="form-group">
                     <label for="Name">Kopil No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="kopil_no" placeholder="Enter Kopil No" value="" required>
+                    <input type="text" class="form-control" name="kopil_no" placeholder="Enter Kopil No" value="{{ old('kopil_no') }}" required>
                     <span class="text-danger">{{ $errors->has('kopil_no') ? $errors->first('kopil_no') : '' }}</span>
                 </div>
 
@@ -71,33 +71,35 @@
 
                 <div class="form-group">
                     <label for="password">PC Ref No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="pc_ref_no" placeholder="Enter PC Ref No" value="" required>
+                    <input type="text" class="form-control" name="pc_ref_no" placeholder="Enter PC Ref No" value="{{ old('pc_ref_no') }}" required>
                     <span class="text-danger">{{ $errors->has('pc_ref_no') ? $errors->first('pc_ref_no') : '' }}</span>
                 </div>
                 
                 <div class="form-group">
                     <label for="type">Medical Report</label>
-                    <select class="form-control" name="medical_report">
+                    <select class="form-control" id="medical_report" name="m_r" onchange="medical_toggle()">
                       <option value="">Please Select</option>
                       <option value="FIT">FIT</option>
                       <option value="UNFIT">UNFIT</option>
                       <option value="other">Other</option>
                     </select>
+                    <input type="text" class="form-control" id="mmm_report" name="medical_report" placeholder="Enter Reason" value="" style="display:none; margin-top:2px;">
                 </div>
 
                 <div class="form-group">
                     <label for="type">GCC Medical Report <span class="text-red">*</span></label>
-                    <select class="form-control" name="gcc_medical_report" required>
+                    <select class="form-control" id="gcc_m_report" name="gcc_m_r" required onchange="gccMedicalToggle()">
                       <option value="">Please Select</option>
                       <option value="FIT">FIT</option>
                       <option value="UNFIT">UNFIT</option>
                       <option value="other">Other</option>
                     </select>
+                    <input type="text" class="form-control" id="gcc_report" name="gcc_medical_report" placeholder="Enter Reason" value="" style="display:none; margin-top:2px;">
                 </div>
 
                 <div class="form-group">
                     <label>Note </label>
-                    <textarea class="form-control" name="note" placeholder="Enter Any Note"></textarea>
+                    <textarea class="form-control" name="note" placeholder="Enter Any Note">{{ old('note') }}</textarea>
                 </div>
               </div>
 
@@ -120,4 +122,40 @@
       @endisset
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
+
+  <script>
+    function medical_toggle() {
+      var m_report = $("#medical_report").val();
+      if(m_report == 'other'){
+        document.getElementById("mmm_report").style.display = "block";
+        $("#mmm_report").val('');
+      }else{
+        document.getElementById("mmm_report").style.display = "none";
+        $("#mmm_report").val(m_report);
+      }
+    }
+
+    function gccMedicalToggle() {
+      var gcc_report = $("#gcc_m_report").val();
+      if(gcc_report == 'other'){
+        document.getElementById("gcc_report").style.display = "block";
+        $("#gcc_report").val('');
+      }else{
+        document.getElementById("gcc_report").style.display = "none";
+        $("#gcc_report").val(gcc_report);
+      }
+    }
+
+    function validate(){
+      if(document.form.m_r.value == 'other' || document.form.gcc_m_r.value == 'other'){
+        if($("#mmm_report").val() == '' || $("#gcc_report").val() == ''){
+          alert("Required field can't be Empty");
+          document.getElementById("mmm_report").focus();
+          document.getElementById("gcc_report").focus();
+          return false;
+        }
+      }
+      return true;
+    }
+  </script>
 @endsection

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 28, 2025 at 12:10 AM
+-- Generation Time: Aug 28, 2025 at 11:49 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -44,9 +44,14 @@ CREATE TABLE `agents` (
 --
 
 INSERT INTO `agents` (`id`, `name`, `email`, `phone`, `address`, `image`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'TAUKIR BHAI', 'taukir@mailinator.com', '01814000000', 'dhaka', 'admin/userImage/agent-1755721147.jpg', 1, '2025-08-20 15:00:57', '2025-08-25 11:56:25'),
-(7, 'Natasha', 'natasha@mailinator.com', '0176536124361', 'dhaka', 'admin/userImage/agent-1755719880.jpg', 1, '2025-08-20 18:57:17', '2025-08-26 09:32:04'),
-(12, 'Keelie Carlson', 'nopip@mailinator.com', '+1 (261) 958-8781', 'Autem ut eum sunt un', NULL, 0, '2025-08-26 11:32:33', '2025-08-27 13:08:42');
+(15, 'BAHAR KSA', 'akhayerint@gmail.com', '01971002526', 'Gulf Tower (Level- 4/B), 30 Purana Paltan Line (Beside Hotel Victory), Dhaka-1000', NULL, 1, '2025-08-28 22:02:15', '2025-08-28 22:02:15'),
+(16, 'SALAUDDIN GULF TRAVELS', 'CORNEROFEARTH007@GMAIL.COM', '01921685258', 'NARAYANGANJ', NULL, 1, '2025-08-28 22:03:08', '2025-08-28 22:03:08'),
+(17, 'MIR HOSSEN BAI', 'AKHAYERINT@GAMIL.COM', '01841364074', '22GAON', NULL, 1, '2025-08-28 22:04:05', '2025-08-28 22:04:05'),
+(18, 'MONIR BAI', 'AKOFFICEWORK2235@GMAIL.COM', '01711364074', 'CUMILLA', NULL, 1, '2025-08-28 22:04:56', '2025-08-28 22:04:56'),
+(19, 'AZAD TALTO', 'JAHANGIR22@GMAIL.COM', '01757344097', 'LAKSAM', NULL, 1, '2025-08-28 22:05:25', '2025-08-28 22:05:25'),
+(20, 'AZIZ NIZ', 'MDABDULAZIZBD000@GMAIL.COM', '01922577015', 'CUMILLA', NULL, 1, '2025-08-28 22:05:52', '2025-08-28 22:05:52'),
+(21, 'LOKMAN', 'LOKMAN@GAMIL.COM', '01711254514', 'CUMILLA', NULL, 1, '2025-08-28 22:06:17', '2025-08-28 22:06:17'),
+(22, 'SAKIB JEDDAH', 'SAKIB@GMAIL.COM', '01401399032', 'CUMILLA', NULL, 1, '2025-08-28 22:06:42', '2025-08-28 22:06:42');
 
 -- --------------------------------------------------------
 
@@ -350,11 +355,14 @@ CREATE TABLE `entries` (
 --
 
 INSERT INTO `entries` (`id`, `agent_id`, `rl_no`, `country`, `client_id`, `kopil_no`, `pc_ref_no`, `medical_report`, `gcc_medical_report`, `note`, `status`, `mofa_no`, `visa_no`, `visa_issued_date`, `finger_ttc_note`, `manpower_date`, `delivered_date`, `is_returned`, `return_cause`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 'RL1717', 'Australia', 10, '123213', '131231', 'FIT', 'FIT', 'test', 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-20 23:15:24', '2025-08-23 09:12:57'),
-(2, 1, 'RL1717', 'Afghanistan', 4, '121312', '12313131', 'FIT', 'FIT', 'dummy', 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, 'YES', 'Application has been failed', '3', '2', '2025-08-21 11:15:01', '2025-08-24 22:59:14'),
-(3, 1, 'RL1717', 'Albania', 13, '112233', '007', 'FIT', 'FIT', 'application success', 'DELIVERED', 'dummy mofa no 123', 'dummy visa no 123', '26-08-2025', 'dummy text', '27-08-2025', '27-08-2025', NULL, NULL, '2', '2', '2025-08-21 11:58:18', '2025-08-27 17:45:19'),
-(5, 1, 'Recusandae Assumend', 'Wallis And Futuna Islands', 4, 'Qui ab quae sed repr', 'Autem reiciendis ut', 'FIT', 'FIT', 'Omnis veniam autem', 'EMBASSY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', '2', '2025-08-24 23:11:29', '2025-08-27 14:14:49'),
-(6, 7, 'Deserunt recusandae', 'Zambia', 13, 'Labore deserunt itaq', 'Eveniet consequatur', 'UNFIT', 'UNFIT', 'Delectus voluptates', 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', '2', '2025-08-26 10:11:47', '2025-08-27 19:33:58');
+(1, 21, 'RL1717', 'Saudi Arabia', 23, '0555454545', '05056565', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:43:06', '2025-08-28 22:43:06'),
+(2, 17, 'RL1717', 'Saudi Arabia', 28, '0545858585', '45454545', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:44:53', '2025-08-28 22:44:53'),
+(3, 18, 'RL1717', 'Saudi Arabia', 27, '0565252565', '05254522', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:45:36', '2025-08-28 22:45:36'),
+(4, 19, 'RL1717', 'Saudi Arabia', 26, '055458/2565', '45258595', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:46:13', '2025-08-28 22:46:13'),
+(5, 18, 'RL1717', 'Saudi Arabia', 25, '05565654585', '45452565', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:46:47', '2025-08-28 22:46:47'),
+(6, 18, 'RL1717', 'Saudi Arabia', 24, '055458522441', '454545', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:47:30', '2025-08-28 22:47:30'),
+(7, 22, 'RL1717', 'Saudi Arabia', 22, '0555522222222', '55522252555', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:48:13', '2025-08-28 22:48:13'),
+(8, 15, 'RL1717', 'Saudi Arabia', 21, '056352441', '5555555555', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:48:41', '2025-08-28 22:48:41');
 
 -- --------------------------------------------------------
 
@@ -479,11 +487,14 @@ INSERT INTO `users` (`id`, `name`, `email`, `phone`, `dob`, `passport_expired_da
 (1, 'Solaman Badsha', 'solaman@hotmail.co.uk', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, '$2y$12$mOpRpVjMsySNEIe4.ckVU.cLQ8NWjY6sy5sEDNp2tbXH6LrZdvm4y', 'admin', 0, NULL, NULL, NULL, NULL, '', '2025-08-13 11:51:20', '2025-08-20 20:00:50'),
 (2, 'Admin-Solaman Badsha', 'admin@example.com', '01814944730', NULL, NULL, NULL, NULL, NULL, 'Dhaka, Bangladesh', 1, '$2y$12$IYtMNEo1Redn3633fROB7uz9ZjwM1djInm//D7HD4G4CP5Jppo7TS', 'admin', 1, 'admin/userImage/shagor_formal.jpg', NULL, NULL, '1', '', '2025-08-14 11:03:56', '2025-08-27 23:09:22'),
 (3, 'Manager User', 'manager@example.com', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, '$2y$12$NJqCy65OiFHmoJFR2HpItue3wDjIr2ebjF7JcZqOxpSWMYNiK08B.', 'manager', 0, NULL, NULL, NULL, '2', '', '2025-08-14 11:03:56', '2025-08-20 20:03:21'),
-(4, 'tommy', 'user@example.com', '31231232', NULL, NULL, NULL, '123123123', NULL, 'Canada', 2, '$2y$12$l/4FhPki03hOcX0I58Y/6eJzlORBsg4JUjh4Z8.Qd/ob98zo10ADa', 'user', 1, 'admin/userImage/user-1755471470.jpeg', 'admin/documents/passport-1755943940.jpg', NULL, '2', '', '2025-08-14 11:03:56', '2025-08-23 09:12:37'),
-(10, 'TAFAZZOL HOSSEN', 'john@example.com', '234352532', '01-02-2000', '30-10-2028', NULL, 'A15720219', 'NO', '36A n22 6ll', 1, '$2y$12$TZdMX/IINv8FYstX7U7UeOXoe3u87HVzQ1OXvG2eroqMVtq/N1uXq', 'user', 1, 'admin/userImage/user-1755733567.png', 'admin/documents/passport-1755943904.jpg', NULL, '2', '2', '2025-08-17 19:47:08', '2025-08-24 21:40:57'),
-(12, 'Leslie Petersen', 'vafifibuxu@mailinator.com', '234234', NULL, NULL, NULL, '2324', NULL, 'Voluptatem voluptas', 1, '$2y$12$nXyaqhPt5Se9zBC.APLrUue1qyeP8b8DppHkF4YxrtrYGHi6us/5G', 'manager', 1, NULL, NULL, NULL, '2', '', '2025-08-20 20:03:03', '2025-08-21 11:51:17'),
-(13, 'mr rahim', 'rahim@example.com', '51351341', NULL, '28-12-2029', NULL, 'A132423', 'NO', 'dhaka bangladesh', 1, '$2y$12$Ymf3StEubUDjsD/Do6ZViexIQYBgASNcz5Vu98MhirwtBJ7eiOU3O', 'user', 1, 'admin/userImage/client-bw4il1755780017.jpg', 'admin/documents/passport-1755943924.jpg', NULL, '2', '2', '2025-08-21 11:40:18', '2025-08-27 22:11:31'),
-(14, 'Chanda Lloyd', 'xapegeb@mailinator.com', '51', NULL, NULL, NULL, NULL, NULL, 'Rerum debitis velit', 2, '$2y$12$.amR2j1aEAujoIuRqTj3Yer4tFD/DXmWEiDtQxkbqZ6DC7H8JqAQW', 'admin', 0, NULL, NULL, NULL, '2', '', '2025-08-22 21:47:36', '2025-08-22 21:47:45');
+(21, 'MD BELAYET HOSSAIN', 'AKTOURSINT@GMAIL.COM', '01816366220', '02-02-1984', '25-02-2026', NULL, 'A13386045', 'NO', 'FENI', 1, '$2y$12$pqoA9q0CXyN88Toxac./xO3ViPdtR9yT6zbkGnlFV8rHzjLzHd69W', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:11:48', '2025-08-28 22:11:48'),
+(22, 'MD SHAKIL AHAMED SUMON', 'SUMON@GMAIL.COM', '01401399032', '03-04-1993', '01-10-2034', NULL, 'A09268795', 'NO', 'KUSHTIA', 1, '$2y$12$PMWYWAwsyv9JU.iDAacXduIMnYKiEdbfezUAma15pS1iUZKSq0pRC', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:14:00', '2025-08-28 22:14:00'),
+(23, 'LOVELY YEASMIN', 'LOVELY@GAMIL.COM', '01706729412', '10-11-1984', '21-11-2027', NULL, 'A05824968', 'NO', 'KISHOREGANJ', 2, '$2y$12$GH33Mxh/QODzYfcOjL2dSOJxpBQjcooO/IbyxHjVIiQs44X4wmNby', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:15:22', '2025-08-28 22:15:22'),
+(24, 'MUS AFTARUN NESA', 'MUS@GMAIL.COM', '01711254574', '10-04-1993', '16-12-2029', NULL, 'A17226146', 'NO', 'HABIGANJ', 2, '$2y$12$HOTHzHGyUO8.YuPo4Hy9ze8eBRO4XxQ4wKvpJ/5Jz8c4BcGE9mI96', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:16:30', '2025-08-28 22:16:30'),
+(25, 'FARHANA AKTHER', 'FARHANA@GMAIL.COM', '01711584875', '01-03-1998', '30-07-2027', NULL, 'B00707422', 'NO', 'HABIGANJ', 2, '$2y$12$ak013T6XKRNXmJO.jRSXB.xOtgJOHGtpe3U/JTqvDgq8rgdSPmAh6', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:17:47', '2025-08-28 22:17:47'),
+(26, 'JAHANGIR ALAM', 'JANGIR@GAMIL.COM', '01752457485', '05-03-1985', '07-06-2027', NULL, 'EK0587403', 'NO', 'CUMILLA', 1, '$2y$12$LQadHHyC2kxDihIoSgLjf.lVdhc.7WL0U/4A6DGC2uI7mOk.xqLAO', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:19:06', '2025-08-28 22:19:06'),
+(27, 'MST MALEKA AKTER', 'MST@GMAIL.COM', '01819524174', '01-01-2000', '11-01-2030', NULL, 'A17526623', 'NO', 'HABIGANJ', 2, '$2y$12$IwqNrhAp7I8Y.dbnEcxiS.QPMpaoAU6LW8.LOwWIUguhSuNoZHNRC', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:20:04', '2025-08-28 22:20:04'),
+(28, 'ABDUL AHAD', 'ABDUL@GMAIL.COM', '01922588471', '27-10-1988', '11-03-2035', NULL, 'A18277860', 'NO', 'SYLHET', 1, '$2y$12$U2xD1hC66evspUwj5Ytv5.29sNXqSofM/pEVaTdMo4zMOL/L1gZgq', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:21:11', '2025-08-28 22:21:11');
 
 --
 -- Indexes for dumped tables
@@ -559,7 +570,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -571,7 +582,7 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `entries`
 --
 ALTER TABLE `entries`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -595,7 +606,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Constraints for dumped tables
