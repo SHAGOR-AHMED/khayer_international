@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="type">Passenger <span class="text-red">*</span></label>
+                    <label for="type">Passenger Name<span class="text-red">*</span></label>
                     <select class="form-control" name="client_id" required>
                       <option value="">Please Select</option>
                       @foreach($all_clients as $client)
@@ -60,9 +60,33 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Name">Kopil No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="kopil_no" placeholder="Enter Kopil No" value="{{ old('kopil_no') }}" required>
-                    <span class="text-danger">{{ $errors->has('kopil_no') ? $errors->first('kopil_no') : '' }}</span>
+                    <label for="Name">Profession <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="profession" placeholder="Enter Profession" value="{{ old('profession') }}" required>
+                    <span class="text-danger">{{ $errors->has('profession') ? $errors->first('profession') : '' }}</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="type">Office Visa<span class="text-red">*</span></label>
+                    <select class="form-control" id="ofc_visa" name="ofc_visa" onchange="globalToggle('ofc_visa','visa_type')">
+                      <option value="">Please Select</option>
+                      <option value="B2B">B2B</option>
+                      <option value="Direct">Direct</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <input type="text" class="form-control" id="visa_type" name="office_visa" placeholder="Enter here" value="" style="display:none; margin-top:2px;">
+                    <span class="text-danger">{{ $errors->has('office_visa') ? $errors->first('office_visa') : '' }}</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="type">Processing<span class="text-red">*</span></label>
+                    <select class="form-control" id="processing_time" name="processing_time" onchange="globalToggle('processing_time','visa_processing')">
+                      <option value="">Please Select</option>
+                      <option value="3 Month">3 Month</option>
+                      <option value="12 Month">12 Month</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <input type="text" class="form-control" id="visa_processing" name="processing" placeholder="Enter here" value="" style="display:none; margin-top:2px;">
+                    <span class="text-danger">{{ $errors->has('processing') ? $errors->first('processing') : '' }}</span>
                 </div>
 
               </div>
@@ -70,14 +94,25 @@
               <div class="col-md-6">
 
                 <div class="form-group">
+                    <label for="Name">Kopil No <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="kopil_no" placeholder="Enter Kopil No" value="{{ old('kopil_no') }}" required>
+                    <span class="text-danger">{{ $errors->has('kopil_no') ? $errors->first('kopil_no') : '' }}</span>
+                </div>
+
+                <div class="form-group">
                     <label for="password">PC Ref No <span class="text-red">*</span></label>
                     <input type="text" class="form-control" name="pc_ref_no" placeholder="Enter PC Ref No" value="{{ old('pc_ref_no') }}" required>
                     <span class="text-danger">{{ $errors->has('pc_ref_no') ? $errors->first('pc_ref_no') : '' }}</span>
                 </div>
+
+                <div class="form-group">
+                    <label for="Name">Sponsor No </label>
+                    <input type="text" class="form-control" name="sponsor_no" placeholder="Enter Sponsor No" value="{{ old('sponsor_no') }}">
+                </div>
                 
                 <div class="form-group">
                     <label for="type">Medical Report</label>
-                    <select class="form-control" id="medical_report" name="m_r" onchange="medical_toggle()">
+                    <select class="form-control" id="medical_report" name="m_r" onchange="globalToggle('medical_report','mmm_report')">
                       <option value="">Please Select</option>
                       <option value="FIT">FIT</option>
                       <option value="UNFIT">UNFIT</option>
@@ -88,7 +123,7 @@
 
                 <div class="form-group">
                     <label for="type">GCC Medical Report <span class="text-red">*</span></label>
-                    <select class="form-control" id="gcc_m_report" name="gcc_m_r" required onchange="gccMedicalToggle()">
+                    <select class="form-control" id="gcc_m_report" name="gcc_m_r" required onchange="globalToggle('gcc_m_report','gcc_report')">
                       <option value="">Please Select</option>
                       <option value="FIT">FIT</option>
                       <option value="UNFIT">UNFIT</option>
@@ -124,38 +159,40 @@
   </div><!-- /.content-wrapper -->
 
   <script>
-    function medical_toggle() {
-      var m_report = $("#medical_report").val();
-      if(m_report == 'other'){
-        document.getElementById("mmm_report").style.display = "block";
-        $("#mmm_report").val('');
-      }else{
-        document.getElementById("mmm_report").style.display = "none";
-        $("#mmm_report").val(m_report);
-      }
-    }
+                 
+    function globalToggle(para1, para2) {
+      var report = $("#" + para1).val();
 
-    function gccMedicalToggle() {
-      var gcc_report = $("#gcc_m_report").val();
-      if(gcc_report == 'other'){
-        document.getElementById("gcc_report").style.display = "block";
-        $("#gcc_report").val('');
-      }else{
-        document.getElementById("gcc_report").style.display = "none";
-        $("#gcc_report").val(gcc_report);
+      if (report === 'other') {
+        $("#" + para2).show().val('');
+      } else {
+        $("#" + para2).hide().val(report);
       }
     }
 
     function validate(){
-      if(document.form.m_r.value == 'other' || document.form.gcc_m_r.value == 'other'){
-        if($("#mmm_report").val() == '' || $("#gcc_report").val() == ''){
-          alert("Required field can't be Empty");
-          document.getElementById("mmm_report").focus();
-          document.getElementById("gcc_report").focus();
+      if(document.form.m_r.value == 'other' || document.form.gcc_m_r.value == 'other' || document.form.ofc_visa.value == 'other' || document.form.processing_time.value == 'other'){
+        if($("#mmm_report").val() == ''){
+          alert("Medical Report field can't be Empty");
+          $("#mmm_report").focus();
+          return false;
+        }else if($("#gcc_report").val() == ''){
+          alert("GCC Report field can't be Empty");
+          $("#gcc_report").focus();
+          return false;
+        }else if($("#visa_type").val() == ''){
+          alert("Visa Type field can't be Empty");
+          $("#visa_type").focus();
+          return false;
+        }else if($("#visa_processing").val() == ''){
+          alert("Processing field can't be Empty");
+          $("#visa_processing").focus();
           return false;
         }
       }
       return true;
     }
+
   </script>
+
 @endsection

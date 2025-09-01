@@ -40,6 +40,26 @@
               </div>
 
               <div class="form-group">
+                  <label>Profession: </label>
+                  {{ ($single->profession) ? $single->profession : 'N/A' }}
+              </div>
+
+              <div class="form-group">
+                  <label>Office Visa: </label>
+                  {{ ($single->office_visa) ? $single->office_visa : 'N/A' }}
+              </div>
+
+              <div class="form-group">
+                  <label>Processing: </label>
+                  {{ ($single->processing) ? $single->processing : 'N/A' }}
+              </div>
+
+              <div class="form-group">
+                  <label>Sponsor No: </label>
+                  {{ ($single->sponsor_no) ? $single->sponsor_no : 'N/A' }}
+              </div>
+
+              <div class="form-group">
                   <label for="Name">Kopil No:</label>
                   {{ $single->kopil_no }}
               </div>

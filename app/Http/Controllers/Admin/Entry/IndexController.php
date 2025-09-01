@@ -62,15 +62,22 @@ class IndexController extends Controller
             'country'=>'required',
             'client_id'=>'required',
             'kopil_no'=>'required',
+            'profession'=>'required',
+            'office_visa'=>'required',
+            'processing'=>'required',
             'pc_ref_no'=>'required',
             'gcc_medical_report'=>'required',
         ]);
 
-        $data = new Entry();
+        $data                      = new Entry();
         $data->agent_id            = $request->agent_id;
         $data->rl_no               = $request->rl_no;
         $data->country             = $request->country;
         $data->client_id           = $request->client_id;
+        $data->profession          = $request->profession;
+        $data->office_visa         = $request->office_visa;
+        $data->processing          = $request->processing;
+        $data->sponsor_no          = $request->sponsor_no;
         $data->kopil_no            = $request->kopil_no;
         $data->pc_ref_no           = $request->pc_ref_no;
         $data->medical_report      = $request->medical_report;
