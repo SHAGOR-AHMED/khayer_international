@@ -23,8 +23,6 @@
                       <th>BD Office</th>
                       <th>Country</th>
                       <th>Client Details</th>
-                      <th>Kopil No</th>
-                      <th>PC Ref No</th>
                       <th>GCC Medical Report</th>
                       <th>Entry Date</th>
                       <th>Status</th>
@@ -46,24 +44,11 @@
                             <b>Passport No:</b> {{ $data->user->passport_no }}<br>
                             <b>Expired Date:</b> {{ $data->user->passport_expired_date }}
                           </td>
-                          <td>{{ $data->kopil_no }}</td>
-                          <td>{{ $data->pc_ref_no }}</td>
                           <td>{{ $data->gcc_medical_report }}</td>
                           <td>{{ $data->created_at }}</td>
                           <td>
-                            @if($data->is_returned == 'YES')
-                              <span class="badge btn-danger">RETURNED</span><br><br>
-                            @else
-                              @if($data->status == 'PENDING')
-                              <span class="badge btn-primary">PENDING</span><br><br>
-                              @elseif($data->status == 'EMBASSY')
-                                <span class="badge btn-info">EMBASSY</span><br><br>
-                              @elseif($data->status == 'MANPOWER')
-                                <span class="badge btn-warning">MANPOWER</span><br><br>
-                              @elseif($data->status == 'DELIVERED')
-                                <span class="badge btn-success">DELIVERED</span><br><br>
-                              @endif
-                            @endif
+                              <span class="badge btn-warning">MANPOWER</span><br><br>
+                              <button class="btn btn-default" id="next_stage_modal" data-toggle="modal" data-id="{{ $data->id }}" data-target="#staticBackdrop">Next Stage</button>
                           </td>
                           <td>
                               <a href="{{ route('manpower.details',hashid_encode($data->id)) }}" style="color: green;" title="Details">View <i class="fa fa-eye fa-lg" style="color: green;"></i></a> | 
@@ -80,6 +65,46 @@
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
 
+    <!-- Next Stage Modal HTML -->
+    <div id="staticBackdrop" class="modal fade" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Next Stage</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="box-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <form action="{{ route('manpower.nextStage') }}" method="post" name="form" enctype="multipart/form-data" onsubmit="return(validate())">
+                          @csrf
+
+                            <input type="hidden" class="form-control" value="" id="myInput" name="id">
+                            <div class="form-group">
+                              <label for="type">Next Stage<span class="text-red">*</span></label>
+                              <select class="form-control" name="status" required>
+                                <option value="0">Please Select</option>
+                                <option value="COLLECT">Ready to Collect</option>
+                              </select>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">OK</button>
+                            </div>
+
+                          </form> 
+                        </div>
+                      </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Log Modal HTML -->
     <div id="staticBackdrop2" class="modal fade" data-backdrop="static">
         <div class="modal-dialog">
@@ -100,26 +125,39 @@
     </div>
 
     <script type="text/javascript">
+       $(document).on("click", "#next_stage_modal", function () {
+          var entry_id = $(this).data("id");
+          $("#myInput").val(entry_id);
+      });
+
+      function validate(){
+          if(document.form.status.value == '0'){
+              alert("Select Next Stage")
+              return false;
+          }
+          return true;
+      }
+
       $(document).on("click","#log_modal",function () {
-            var entry_id = $(this).data("id");
-             $.ajax({
-                url:"{{route("embassy.log")}}",
-                type:"get",
-                dataType:"json",
-                data:{"entry_id":entry_id},
-                beforeSend:function(){
-                    $("#overlay").fadeIn(300);　
-                 },
-                success:function(data){
-                    $("#show_log").html(data.html);
-                    $("#overlay").fadeOut(300);
+          var entry_id = $(this).data("id");
+            $.ajax({
+              url:"{{route("embassy.log")}}",
+              type:"get",
+              dataType:"json",
+              data:{"entry_id":entry_id},
+              beforeSend:function(){
+                  $("#overlay").fadeIn(300);　
                 },
-                error:function (e) {
-                    $.Notification.autoHideNotify('error', 'top right',"Something Wrong. Please try again");
-                    $("#overlay").fadeOut(300);
-                }
-            });
-        });
+              success:function(data){
+                  $("#show_log").html(data.html);
+                  $("#overlay").fadeOut(300);
+              },
+              error:function (e) {
+                  $.Notification.autoHideNotify('error', 'top right',"Something Wrong. Please try again");
+                  $("#overlay").fadeOut(300);
+              }
+          });
+      });
     </script>
 
 @endsection

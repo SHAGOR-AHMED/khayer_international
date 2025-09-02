@@ -41,30 +41,37 @@ class IndexController extends Controller
     }
 
     public function update(Request $request){
-
-        $this->validate($request,[
-            'mofa_no'=>'required',
-            'visa_no'=>'required',
-            'visa_issued_date'=>'required',
-            'finger_ttc_note'=>'required',
-        ]);
-       
-        $data                     = Entry::findOrFail($request->id);
-        $data->mofa_no            = $request->mofa_no;
-        $data->visa_no            = $request->visa_no;
-        $data->visa_issued_date   = $request->visa_issued_date;
-        $data->finger_ttc_note    = $request->finger_ttc_note;
-        $data->status             = 'MANPOWER';
-        $data->updated_by         = logged_in_user_id();
-        $success                  = $data->save();
+        $data                       = Entry::findOrFail($request->id);
+        $data->visa_no              = $request->visa_no;
+        $data->id_no                = $request->id_no;
+        $data->wakala_date          = $request->wakala_date;
+        $data->mofa_no              = $request->mofa_no;
+        $data->tasheer_finger_date  = $request->tasheer_finger_date;
+        $data->visa_issued_date     = $request->visa_issued_date;
+        $data->finger_ttc_note      = $request->finger_ttc_note;
+        $data->updated_by           = logged_in_user_id();
+        $success                    = $data->save();
 
         if($success){
             notify()->success(updated_success(),"Success","topRight");
         }else{
             notify()->error(exception(),"Error","topRight");
         }
-        return redirect()->route('manpower.index');
+        return redirect()->route('embassy.index');
         
     }//update
+
+    public function nextStage(Request $request){
+        $data               = Entry::findOrFail($request->id);
+        $data->status       = $request->status;
+        $data->updated_by   = logged_in_user_id();
+        $success            = $data->save();
+        if($success){
+            notify()->success(updated_success(),"Success","topRight");
+        }else{
+            notify()->error(exception(),"Error","topRight");
+        }
+        return redirect()->route('manpower.index');
+    }
 
 }

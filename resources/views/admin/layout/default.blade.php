@@ -26,9 +26,14 @@
     <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('admin/backend/plugins/datatables/dataTables.bootstrap.css') }}">
-     <link href="{{ asset('css/iziToast.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/iziToast.css') }}" rel="stylesheet">
     <!-- jQuery 2.1.4 -->
     <script src="{{ asset('admin/backend/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
     <!-- Site wrapper -->

@@ -37,6 +37,13 @@
     @include('vendor.lara-izitoast.toast')
 
     <script type="text/javascript">
+      $(document).ready(function() {
+        $('.liveSearch').select2({
+          placeholder: "Please Select",
+          allowClear: true
+        });
+      });
+
       $('.datepicker').datepicker({
           autoclose: true,
           weekStart: 6,

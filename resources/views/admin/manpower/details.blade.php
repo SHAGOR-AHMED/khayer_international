@@ -17,81 +17,8 @@
         <div class="box-body">
         
           <div class="row">
-            <div class="col-md-4">
-
-              <div class="form-group">
-                  <label>Agent Name: </label>
-                  {{ $single->agent->name }}
-              </div>
-
-              <div class="form-group">
-                  <label>RL No: </label>
-                  {{ $single->rl_no }}
-              </div>
-
-              <div class="form-group">
-                  <label>Country: </label>
-                  {{ $single->country }}
-              </div>
-
-              <div class="form-group">
-                  <label>Passenger Name: </label>
-                  {{ $single->user->name }}
-              </div>
-
-              <div class="form-group">
-                  <label for="Name">Kopil No:</label>
-                  {{ $single->kopil_no }}
-              </div>
-
-              <div class="form-group">
-                  <label for="password">PC Ref No:</label>
-                  {{ $single->pc_ref_no }}
-              </div>
-
-              <div class="form-group">
-                  <label>Medical Report:</label>
-                  {{ $single->medical_report }}
-              </div>
-
-              <div class="form-group">
-                  <label>GCC Medical Report:</label>
-                  {{ $single->gcc_medical_report }}
-              </div>
-
-              <div class="form-group">
-                  <label>Note: </label>
-                  {{ ($single->note) ? $single->note : 'N/A' }}
-              </div>
-
-            </div>
-
-            <div class="col-md-4">
-              <div class="form-group">
-                  <label>MOFA NO: </label>
-                  {{ ($single->mofa_no) ? $single->mofa_no : 'N/A' }}
-              </div>
-
-              <div class="form-group">
-                  <label>Visa NO: </label>
-                  {{ ($single->visa_no) ? $single->visa_no : 'N/A' }}
-              </div>
-
-              <div class="form-group">
-                  <label>Visa Issued Date: </label>
-                  {{ ($single->visa_issued_date) ? $single->visa_issued_date : 'N/A' }}
-              </div>
-
-              <div class="form-group">
-                  <label>Finger And TTC Note: </label>
-                  {{ ($single->finger_ttc_note) ? $single->finger_ttc_note : 'N/A' }}
-              </div>
-
-              <div class="form-group">
-                  <label>Manpower Date: </label>
-                  {{ ($single->manpower_date) ? $single->manpower_date : 'N/A' }}
-              </div>
-            </div>
+            
+            @include('admin.common.details')
 
             <div class="col-md-4">
               @if($single->is_returned != 'YES')

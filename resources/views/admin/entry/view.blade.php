@@ -23,8 +23,6 @@
                       <th>BD Office</th>
                       <th>Country</th>
                       <th>Client Details</th>
-                      <th>Kopil No</th>
-                      <th>PC Ref No</th>
                       <th>GCC Medical Report</th>
                       <th>Entry Date</th>
                       <th>Status</th>
@@ -46,8 +44,6 @@
                             <b>Passport No:</b> {{ $data->user->passport_no }}<br>
                             <b>Expired Date:</b> {{ $data->user->passport_expired_date }}
                           </td>
-                          <td>{{ $data->kopil_no }}</td>
-                          <td>{{ $data->pc_ref_no }}</td>
                           <td>{{ $data->gcc_medical_report }}</td>
                           <td>{{ $data->created_at }}</td>
                           <td>

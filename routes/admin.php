@@ -70,6 +70,7 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::get('/index',                'IndexController@index')->name('index');
 			Route::post('/update',              'IndexController@update')->name('update');
 			Route::get('/details/{id}',         'IndexController@details')->name('details');
+			Route::post('/nextStage',           'IndexController@nextStage')->name('nextStage');
 			Route::get('/log',                  'IndexController@log')->name('log');
 		});
 
@@ -78,6 +79,7 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::get('/index',                'IndexController@index')->name('index');
 			Route::post('/update',              'IndexController@update')->name('update');
 			Route::get('/details/{id}',         'IndexController@details')->name('details');
+			Route::post('/nextStage',           'IndexController@nextStage')->name('nextStage');
 			Route::get('/log',                  'IndexController@log')->name('log');
 		});
 

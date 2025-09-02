@@ -46,7 +46,6 @@ class IndexController extends Controller
        
         $data                     = Entry::findOrFail($request->id);
         $data->manpower_date      = $request->manpower_date;
-        $data->status             = 'COLLECT';
         $data->updated_by         = logged_in_user_id();
         $success                  = $data->save();
 
@@ -55,8 +54,21 @@ class IndexController extends Controller
         }else{
             notify()->error(exception(),"Error","topRight");
         }
-        return redirect()->route('delivery.index');
+        return redirect()->route('manpower.index');
         
     }//update
+
+    public function nextStage(Request $request){
+        $data               = Entry::findOrFail($request->id);
+        $data->status       = $request->status;
+        $data->updated_by   = logged_in_user_id();
+        $success            = $data->save();
+        if($success){
+            notify()->success(updated_success(),"Success","topRight");
+        }else{
+            notify()->error(exception(),"Error","topRight");
+        }
+        return redirect()->route('delivery.index');
+    }
 
 }

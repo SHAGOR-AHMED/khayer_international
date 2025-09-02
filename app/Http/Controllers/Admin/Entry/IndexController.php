@@ -61,11 +61,9 @@ class IndexController extends Controller
             'rl_no'=>'required',
             'country'=>'required',
             'client_id'=>'required',
-            'kopil_no'=>'required',
             'profession'=>'required',
             'office_visa'=>'required',
             'processing'=>'required',
-            'pc_ref_no'=>'required',
             'gcc_medical_report'=>'required',
         ]);
 
@@ -78,7 +76,6 @@ class IndexController extends Controller
         $data->office_visa         = $request->office_visa;
         $data->processing          = $request->processing;
         $data->sponsor_no          = $request->sponsor_no;
-        $data->kopil_no            = $request->kopil_no;
         $data->pc_ref_no           = $request->pc_ref_no;
         $data->medical_report      = $request->medical_report;
         $data->gcc_medical_report  = $request->gcc_medical_report;

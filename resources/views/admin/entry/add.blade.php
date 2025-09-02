@@ -22,8 +22,8 @@
               <div class="col-md-6">
 
                 <div class="form-group">
-                    <label for="type">Agent <span class="text-red">*</span></label>
-                    <select class="form-control" name="agent_id" required>
+                    <label for="type">Agent Name<span class="text-red">*</span></label>
+                    <select class="form-control liveSearch" name="agent_id" required>
                       @foreach($all_agents as $id => $name)
                         <option value="{{ $id }}">{{ $name }}</option>
                       @endforeach
@@ -39,21 +39,29 @@
 
                 <div class="form-group">
                     <label for="type">Country <span class="text-red">*</span></label>
-                    <select class="form-control" name="country" required>
+                    <select class="form-control" name="country_name" id="country_name" required onchange="globalToggle('country_name','country')">
                       <option value="">Please Select</option>
-                      @foreach($all_countries as $country)
-                        <option value="{{ $country->con_name }}">{{ $country->con_name }}</option>
-                      @endforeach
+                      <option value="SAUDI ARABIA">SAUDI ARABIA</option>
+                      <option value="MALAYASIA">MALAYASIA</option>
+                      <option value="DUBAI">DUBAI</option>
+                      <option value="SINGAPORE">SINGAPORE</option>
+                      <option value="KUWAIT">KUWAIT</option>
+                      <option value="PNG">PNG</option>
+                      <option value="ITALY">ITALY</option>
+                      <option value="PORTUGAL">PORTUGAL</option>
+                      <option value="QATAR">QATAR</option>
+                      <option value="other">OTHER</option>
                     </select>
+                    <input type="text" class="form-control" id="country" name="country" placeholder="Please Specify..." value="" style="display:none; margin-top:2px;">
                     <span class="text-danger">{{ $errors->has('country') ? $errors->first('country') : '' }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="type">Passenger Name<span class="text-red">*</span></label>
-                    <select class="form-control" name="client_id" required>
+                    <select class="form-control liveSearch" name="client_id" required>
                       <option value="">Please Select</option>
                       @foreach($all_clients as $client)
-                        <option value="{{ $client->id }}">{{ $client->name }}-({{ $client->phone }})</option>
+                        <option value="{{ $client->id }}">{{ $client->name }}-({{ $client->passport_no }})</option>
                       @endforeach
                     </select>
                     <span class="text-danger">{{ $errors->has('client_id') ? $errors->first('client_id') : '' }}</span>
@@ -66,27 +74,27 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="type">Office Visa<span class="text-red">*</span></label>
-                    <select class="form-control" id="ofc_visa" name="ofc_visa" onchange="globalToggle('ofc_visa','visa_type')">
+                    <label for="type">Processing<span class="text-red">*</span></label>
+                      <select class="form-control" id="processing_time" name="processing_time" onchange="globalToggle('processing_time','visa_processing')">
                       <option value="">Please Select</option>
                       <option value="B2B">B2B</option>
                       <option value="Direct">Direct</option>
                       <option value="other">Other</option>
                     </select>
-                    <input type="text" class="form-control" id="visa_type" name="office_visa" placeholder="Enter here" value="" style="display:none; margin-top:2px;">
-                    <span class="text-danger">{{ $errors->has('office_visa') ? $errors->first('office_visa') : '' }}</span>
+                    <input type="text" class="form-control" id="visa_processing" name="processing" placeholder="Please Specify..." value="" style="display:none; margin-top:2px;">
+                    <span class="text-danger">{{ $errors->has('processing') ? $errors->first('processing') : '' }}</span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="type">Processing<span class="text-red">*</span></label>
-                    <select class="form-control" id="processing_time" name="processing_time" onchange="globalToggle('processing_time','visa_processing')">
+                    <label for="type">Office Visa<span class="text-red">*</span></label>
+                    <select class="form-control" id="ofc_visa" name="ofc_visa" onchange="globalToggle('ofc_visa','visa_type')">
                       <option value="">Please Select</option>
                       <option value="3 Month">3 Month</option>
                       <option value="12 Month">12 Month</option>
                       <option value="other">Other</option>
                     </select>
-                    <input type="text" class="form-control" id="visa_processing" name="processing" placeholder="Enter here" value="" style="display:none; margin-top:2px;">
-                    <span class="text-danger">{{ $errors->has('processing') ? $errors->first('processing') : '' }}</span>
+                    <input type="text" class="form-control" id="visa_type" name="office_visa" placeholder="Please Specify..." value="" style="display:none; margin-top:2px;">
+                    <span class="text-danger">{{ $errors->has('office_visa') ? $errors->first('office_visa') : '' }}</span>
                 </div>
 
               </div>
@@ -94,15 +102,8 @@
               <div class="col-md-6">
 
                 <div class="form-group">
-                    <label for="Name">Kopil No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="kopil_no" placeholder="Enter Kopil No" value="{{ old('kopil_no') }}" required>
-                    <span class="text-danger">{{ $errors->has('kopil_no') ? $errors->first('kopil_no') : '' }}</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">PC Ref No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="pc_ref_no" placeholder="Enter PC Ref No" value="{{ old('pc_ref_no') }}" required>
-                    <span class="text-danger">{{ $errors->has('pc_ref_no') ? $errors->first('pc_ref_no') : '' }}</span>
+                    <label for="password">PC Ref No</label>
+                    <input type="text" class="form-control" name="pc_ref_no" placeholder="Enter PC Ref No" value="{{ old('pc_ref_no') }}">
                 </div>
 
                 <div class="form-group">
@@ -111,14 +112,14 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="type">Medical Report</label>
+                    <label for="type">Test Medical Report</label>
                     <select class="form-control" id="medical_report" name="m_r" onchange="globalToggle('medical_report','mmm_report')">
                       <option value="">Please Select</option>
                       <option value="FIT">FIT</option>
                       <option value="UNFIT">UNFIT</option>
                       <option value="other">Other</option>
                     </select>
-                    <input type="text" class="form-control" id="mmm_report" name="medical_report" placeholder="Enter Reason" value="" style="display:none; margin-top:2px;">
+                    <input type="text" class="form-control" id="mmm_report" name="medical_report" placeholder="Please Specify..." value="" style="display:none; margin-top:2px;">
                 </div>
 
                 <div class="form-group">
@@ -129,12 +130,12 @@
                       <option value="UNFIT">UNFIT</option>
                       <option value="other">Other</option>
                     </select>
-                    <input type="text" class="form-control" id="gcc_report" name="gcc_medical_report" placeholder="Enter Reason" value="" style="display:none; margin-top:2px;">
+                    <input type="text" class="form-control" id="gcc_report" name="gcc_medical_report" placeholder="Please Specify..." value="" style="display:none; margin-top:2px;">
                 </div>
 
                 <div class="form-group">
                     <label>Note </label>
-                    <textarea class="form-control" name="note" placeholder="Enter Any Note">{{ old('note') }}</textarea>
+                    <textarea rows="8" class="form-control" name="note" placeholder="Enter Any Note">{{ old('note') }}</textarea>
                 </div>
               </div>
 
@@ -171,8 +172,12 @@
     }
 
     function validate(){
-      if(document.form.m_r.value == 'other' || document.form.gcc_m_r.value == 'other' || document.form.ofc_visa.value == 'other' || document.form.processing_time.value == 'other'){
-        if($("#mmm_report").val() == ''){
+      if(document.form.m_r.value == 'other' || document.form.gcc_m_r.value == 'other' || document.form.ofc_visa.value == 'other' || document.form.processing_time.value == 'other' || document.form.country_name.value == 'other'){
+        if($("#country").val() == ''){
+          alert("Country field can't be Empty");
+          $("#country").focus();
+          return false;
+        }else if($("#mmm_report").val() == ''){
           alert("Medical Report field can't be Empty");
           $("#mmm_report").focus();
           return false;
