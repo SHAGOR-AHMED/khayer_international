@@ -34,57 +34,46 @@ class IndexController extends Controller
             'passport_expired_date'=>'required',
             'is_original_passport_given'=>'required',
             'address'=>'required|max:255',
-            'password' => 'min:6|required_with:confirm_password|same:confirm_password',
         ]);
 
-       $password         = $request->password;
-       $confirm_password = $request->confirm_password;
+        $data           = new User();
 
-       if($password == $confirm_password){
+        // Save Image 
+        $imagePath      = 'admin/userImage/';
+        $imgFor = 'passenger-';
+        $current_image  = $request->file('image'); 
+        if($current_image){
+            $imgName= $this->imageUplaodByName($current_image, null, $imagePath, $imgFor); 
+            $data->image = $imgName;
+        }
 
-            $data           = new User();
+        // Save Doc
+        $path = 'admin/documents/';
+        $current_doc  = $request->file('passport_doc'); 
+        if($current_doc){
+            $docName= $this->documentUpload($current_doc, null, $path); 
+            $data->passport_doc = $docName;
+        }
 
-            // Save Image 
-            $imagePath      = 'admin/userImage/';
-            $imgFor = 'passenger-';
-            $current_image  = $request->file('image'); 
-            if($current_image){
-                $imgName= $this->imageUplaodByName($current_image, null, $imagePath, $imgFor); 
-                $data->image = $imgName;
-            }
+        $data->name                         = $request->name;
+        $data->email                        = $request->email;
+        $data->phone                        = $request->phone;
+        $data->dob                          = $request->dob;
+        $data->passport_no                  = $request->passport_no;
+        $data->passport_expired_date        = $request->passport_expired_date;
+        $data->is_original_passport_given   = $request->is_original_passport_given;
+        $data->gender                       = $request->gender;
+        $data->address                      = $request->address;
+        $data->password                     = Hash::make('12345678');
+        $data->created_by                   = logged_in_user_id();
+        $success                            = $data->save();
 
-            // Save Doc
-            $path = 'admin/documents/';
-            $current_doc  = $request->file('passport_doc'); 
-            if($current_doc){
-                $docName= $this->documentUpload($current_doc, null, $path); 
-                $data->passport_doc = $docName;
-            }
-
-            $data->name                         = $request->name;
-            $data->email                        = $request->email;
-            $data->phone                        = $request->phone;
-            $data->dob                          = $request->dob;
-            $data->passport_no                  = $request->passport_no;
-            $data->passport_expired_date        = $request->passport_expired_date;
-            $data->is_original_passport_given   = $request->is_original_passport_given;
-            $data->gender                       = $request->gender;
-            $data->address                      = $request->address;
-            $data->password                     = Hash::make($request->password);
-            $data->created_by                   = logged_in_user_id();
-            $success                            = $data->save();
-
-            if($success){
-                notify()->success(saved_success(),"Success","topRight");
-            }else{
-                notify()->error(exception(),"Error","topRight");
-            }
-            return redirect()->route('client.index');
-
-       }else{
-            notify()->error("Password and Confirm Password does not match !!!","Error","topRight");
-            return redirect()->route('client.add');
-       }
+        if($success){
+            notify()->success(saved_success(),"Success","topRight");
+        }else{
+            notify()->error(exception(),"Error","topRight");
+        }
+        return redirect()->route('client.index');
 
     }//store
 

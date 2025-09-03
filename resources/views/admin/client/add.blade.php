@@ -22,8 +22,8 @@
               <div class="col-md-6">
 
                 <div class="form-group">
-                    <label for="Name">Name <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="name" placeholder="Enter Name" value="{{ old('name') }}" required>
+                    <label for="Name">Passenger Name <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter Passenger Name" value="{{ old('name') }}" required>
                     <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
                 </div>
 
@@ -41,18 +41,6 @@
                 <div class="form-group">
                     <label for="password">Date Of Birth</label>
                     <input type="text" class="form-control datepicker" name="dob" value="{{ old('dob') }}">
-                </div>
-
-                <div class="form-group">
-                    <label>Passport No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="passport_no" placeholder="Enter Passport No" value="{{ old('passport_no') }}" required>
-                    <span class="text-danger">{{ $errors->has('passport_no') ? $errors->first('passport_no') : '' }}</span>
-                </div>
-
-                 <div class="form-group">
-                    <label for="password">Passport Expired Date <span class="text-red">*</span></label>
-                    <input type="text" class="form-control datepicker" name="passport_expired_date" value="{{ old('passport_expired_date') }}" required>
-                    <span class="text-danger">{{ $errors->has('passport_expired_date') ? $errors->first('passport_expired_date') : '' }}</span>
                 </div>
 
                 <div class="form-group">
@@ -74,16 +62,25 @@
               <div class="col-md-6">
 
                 <div class="form-group">
-                    <label for="password">Password <span class="text-red">*</span></label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" value="" required>
-                    <span class="text-danger">{{ $errors->has('password') ? $errors->first('password') : '' }}</span>
+                    <label>Passport No <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="passport_no" placeholder="Enter Passport No" value="{{ old('passport_no') }}" required>
+                    <span class="text-danger">{{ $errors->has('passport_no') ? $errors->first('passport_no') : '' }}</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Confirm Password <span class="text-red">*</span></label>
-                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Enter Confirm Password" value="" required onkeyup="checkPass();">
-                    <span class="text-danger">{{ $errors->has('confirm_password') ? $errors->first('confirm_password') : '' }}</span>
-                    <span id="confirmMessage" class="confirmMessage"></span>
+                    <label for="password">Passport Expired Date <span class="text-red">*</span></label>
+                    <input type="text" class="form-control datepicker" name="passport_expired_date" id="passport_expiry" value="{{ old('passport_expired_date') }}" onchange="checkExpiryDate(this)" required>
+
+                    <span class="text-danger">{{ $errors->has('passport_expired_date') ? $errors->first('passport_expired_date') : '' }}</span>
+                    <div id="expiry_message" style="margin-top: 5px; font-weight: bold;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Is Original Passport Given? <span class="text-red">*</span></label>
+                    <select class="form-control" name="is_original_passport_given" required>
+                      <option value="YES">YES</option>
+                      <option value="NO">NO</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -99,13 +96,6 @@
                     <code>(Max size: 512kb)</code>
                 </div>
 
-                <div class="form-group">
-                    <label for="gender">Is Original Passport Given? <span class="text-red">*</span></label>
-                    <select class="form-control" name="is_original_passport_given" required>
-                      <option value="YES">YES</option>
-                      <option value="NO">NO</option>
-                    </select>
-                </div>
               </div>
 
             </div>
@@ -125,23 +115,55 @@
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
 
-   <script type="text/javascript">
-        function checkPass(){
-            var password = document.getElementById('password');
-            var confirm_password = document.getElementById('confirm_password');
-            var message = document.getElementById('confirmMessage');
-            var goodColor = "#66cc66";
-            var badColor = "#ff6666";
-            if(password.value == confirm_password.value){
-                confirm_password.style.backgroundColor = goodColor;
-                message.style.color = goodColor;
-                message.innerHTML = "Password Match!"
-            }else{
-                confirm_password.style.backgroundColor = badColor;
-                message.style.color = badColor;
-                message.innerHTML = "Password Does Not Match!"
+  <script>
+    function checkExpiryDate(input) {
+        let parts = input.value.split("-"); // dd-mm-yyyy
+        if (parts.length !== 3) return;
+
+        let day = parseInt(parts[0]);
+        let month = parseInt(parts[1]) - 1; // JS months are 0-based
+        let year = parseInt(parts[2]);
+
+        let expiryDate = new Date(year, month, day);
+        let today = new Date();
+        today.setHours(0,0,0,0);
+
+        let msgDiv = document.getElementById('expiry_message');
+
+        if (expiryDate < today) {
+            msgDiv.innerHTML = "❌ Passport is expired.";
+            msgDiv.style.color = "red";
+        } else {
+            // Calculate difference in months & years
+            let years = year - today.getFullYear();
+            let months = month - today.getMonth();
+            let days = day - today.getDate();
+
+            if (days < 0) {
+                months -= 1;
+                days += new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+            }
+            if (months < 0) {
+                years -= 1;
+                months += 12;
+            }
+
+            let remaining = "";
+            if (years > 0) remaining += years + " year" + (years > 1 ? "s " : " ");
+            if (months > 0) remaining += months + " month" + (months > 1 ? "s " : " ");
+            if (years === 0 && months === 0) remaining = days + " day(s) ";
+
+            // Check if less than 6 months
+            let totalMonths = years * 12 + months;
+            if (totalMonths < 6) {
+                msgDiv.innerHTML = "⚠️ Passport valid for " + remaining.trim() + " — Please renew soon.";
+                msgDiv.style.color = "orange";
+            } else {
+                msgDiv.innerHTML = "✅ Passport is valid for " + remaining.trim();
+                msgDiv.style.color = "green";
             }
         }
-    </script>
+    }
+  </script>
 
 @endsection
