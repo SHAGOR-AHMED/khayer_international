@@ -38,6 +38,19 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="type">Passenger Name<span class="text-red">*</span></label>
+                    <select class="form-control liveSearch" name="client_id" id="passenger" required>
+                      <option value="">Please Select</option>
+                      @foreach($all_clients as $client)
+                        <option value="{{ $client->id }}" data-dob="{{ $client->dob }}">{{ $client->name }}-({{ $client->passport_no }})</option>
+                      @endforeach
+                    </select>
+                    <span class="text-danger">{{ $errors->has('client_id') ? $errors->first('client_id') : '' }}</span>
+                    <!-- Warning Message -->
+                    <p id="eligibilityMsg" style="color:red; display:none;"></p>
+                </div>
+
+                 <div class="form-group">
                     <label for="type">Country <span class="text-red">*</span></label>
                     <select class="form-control" name="country_name" id="country_name" required onchange="globalToggle('country_name','country')">
                       <option value="">Please Select</option>
@@ -54,17 +67,6 @@
                     </select>
                     <input type="text" class="form-control" id="country" name="country" placeholder="Please Specify..." value="" style="display:none; margin-top:2px;">
                     <span class="text-danger">{{ $errors->has('country') ? $errors->first('country') : '' }}</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="type">Passenger Name<span class="text-red">*</span></label>
-                    <select class="form-control liveSearch" name="client_id" required>
-                      <option value="">Please Select</option>
-                      @foreach($all_clients as $client)
-                        <option value="{{ $client->id }}">{{ $client->name }}-({{ $client->passport_no }})</option>
-                      @endforeach
-                    </select>
-                    <span class="text-danger">{{ $errors->has('client_id') ? $errors->first('client_id') : '' }}</span>
                 </div>
 
                 <div class="form-group">
@@ -160,6 +162,50 @@
   </div><!-- /.content-wrapper -->
 
   <script>
+
+    // function to calculate age from DOB (dd-mm-yyyy)
+    function calculateAge(dob) {
+        if (!dob) return null;
+        let parts = dob.split('-'); // ["10","04","1994"]
+        let day = parseInt(parts[0], 10);
+        let month = parseInt(parts[1], 10) - 1; // months are 0-based
+        let year = parseInt(parts[2], 10);
+
+        let birthDate = new Date(year, month, day);
+        let today = new Date();
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        let m = today.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    function checkEligibility() {
+        let country = document.getElementById('country_name').value;
+        let passengerSelect = document.getElementById('passenger');
+        let dob = passengerSelect.options[passengerSelect.selectedIndex]?.getAttribute('data-dob');
+        let msg = document.getElementById('eligibilityMsg');
+
+        
+
+        let age = calculateAge(dob);
+
+        if (country === 'SAUDI ARABIA' && age !== null && age < 21) {
+            msg.innerText = "⚠ This passenger is not eligible for Saudi Arabia (age must be 21+).";
+            msg.style.display = "block";
+        } else {
+            msg.style.display = "none";
+        }
+    }
+
+    document.getElementById('country_name').addEventListener('change', checkEligibility);
+    document.getElementById('passenger').addEventListener('change', checkEligibility);
+    
+
+
                  
     function globalToggle(para1, para2) {
       var report = $("#" + para1).val();
