@@ -71,8 +71,10 @@
                             @else
                                 <a onclick="return confirm('Are You Sure?')" href="{{ route('client.control',hashid_encode($user->id)) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
                             @endif
-                            <a href="{{ route('client.edit',hashid_encode($user->id))}}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a> | 
-                            <a href="{{ route('client.delete',hashid_encode($user->id))}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash-o fa-lg" style="color: red;"></i></a>
+                            <a href="{{ route('client.edit',hashid_encode($user->id))}}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a>
+                            @if(!existed('entries', 'client_id', $user->id))
+                              | <a href="{{ route('client.delete',hashid_encode($user->id))}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash-o fa-lg" style="color: red;"></i></a>
+                            @endif
                         </td>
                     </tr>
                   <?php } } ?>

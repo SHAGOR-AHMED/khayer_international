@@ -101,7 +101,7 @@
                       <a class="btn btn-default btn-flat" href="{{ route('logout') }}"
                           onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
-                          Sign out
+                          <i class="fa fa-power-off"></i>&nbsp;Sign out
                       </a>
 
                       <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -110,7 +110,7 @@
                     </div>
 
                     <div class="pull-left">
-                      <a href="{{ route('user.edit', hashid_encode(logged_in_user_id())) }}" class="btn btn-default btn-flat">Change Profile</a>
+                      <a href="{{ route('user.edit', hashid_encode(logged_in_user_id())) }}" class="btn btn-default btn-flat"><i class="fa fa-user-md" aria-hidden="true"></i>&nbsp;Change Profile</a>
                     </div>
                   </li>
                 </ul>

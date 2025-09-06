@@ -53,9 +53,10 @@
                               @else
                                   <a onclick="return confirm('Are You Sure?')" href="{{ route('agent.control',hashid_encode($data->id)) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
                               @endif
-                              <a href="{{ route('agent.edit',hashid_encode($data->id)) }}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a> | 
-                              
-                              <a href="{{ route('agent.delete',hashid_encode($data->id))}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash fa-lg" style="color: red;"></i></a>
+                              <a href="{{ route('agent.edit',hashid_encode($data->id)) }}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a>
+                              @if(!existed('entries', 'agent_id', $data->id))
+                                | <a href="{{ route('agent.delete',hashid_encode($data->id))}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash fa-lg" style="color: red;"></i></a>
+                              @endif
                           </td>
                       </tr>
                     @endforeach

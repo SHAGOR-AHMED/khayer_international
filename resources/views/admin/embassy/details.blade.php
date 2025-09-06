@@ -27,40 +27,40 @@
                   
                   <div class="form-group">
                       <label for="password">VISA NO</label>
-                      <input type="text" class="form-control" name="visa_no" placeholder="Enter VISA NO" value="">
+                      <input type="text" class="form-control" name="visa_no" placeholder="Enter VISA NO" value="{{ $single->visa_no }}">
                   </div>
 
                   <div class="form-group">
                       <label for="Name">ID NO</label>
-                      <input type="text" class="form-control" name="id_no" placeholder="Enter ID NO" value="">
+                      <input type="text" class="form-control" name="id_no" placeholder="Enter ID NO" value="{{ $single->id_no }}">
                   </div>
 
                   <div class="form-group">
                       <label for="password">Wakala Date</label>
-                      <input type="text" class="form-control datepicker" name="wakala_date" placeholder="Enter Wakala Date" value="">
+                      <input type="text" class="form-control datepicker" name="wakala_date" placeholder="Enter Wakala Date" value="{{ $single->wakala_date }}">
                   </div>
 
                   <div class="form-group">
                       <label for="Name">MOFA NO</label>
-                      <input type="text" class="form-control" name="mofa_no" placeholder="Enter MOFA NO" value="">
+                      <input type="text" class="form-control" name="mofa_no" placeholder="Enter MOFA NO" value="{{ $single->mofa_no }}">
                   </div>
 
                   <div class="form-group">
                       <label for="password">Tasheer Finger Date</label>
-                      <input type="text" class="form-control datepicker" name="tasheer_finger_date" placeholder="Enter Tasheer Finger Date" value="">
+                      <input type="text" class="form-control datepicker" name="tasheer_finger_date" placeholder="Enter Tasheer Finger Date" value="{{ $single->tasheer_finger_date }}">
                   </div>
 
                   <div class="form-group">
                       <label for="password">Visa Issued Date</label>
-                      <input type="text" class="form-control datepicker" name="visa_issued_date" placeholder="Enter Visa Issued Date" value="">
+                      <input type="text" class="form-control datepicker" name="visa_issued_date" placeholder="Enter Visa Issued Date" value="{{ $single->visa_issued_date }}">
                   </div>
 
                   <div class="form-group">
                       <label>Finger And TTC Note</label>
-                      <textarea class="form-control" name="finger_ttc_note" placeholder="Finger And TTC Note"></textarea>
+                      <textarea class="form-control" name="finger_ttc_note" placeholder="Finger And TTC Note">{{ $single->finger_ttc_note }}</textarea>
                   </div>
 
-                  <input type="hidden" name="id" value="<?php echo $single->id; ?>"  />
+                  <input type="hidden" name="id" value="{{ $single->id }}"  />
 
                   <div>
                     <button style="width:100%" type="submit" name="submit" class="btn btn-success"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Data</button>

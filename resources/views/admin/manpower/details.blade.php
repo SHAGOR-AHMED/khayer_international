@@ -27,11 +27,11 @@
                   
                   <div class="form-group">
                       <label for="password">Manpower Date<span class="text-red">*</span></label>
-                      <input type="text" class="form-control datepicker" name="manpower_date" placeholder="Enter Manpower Date" value="" required>
+                      <input type="text" class="form-control datepicker" name="manpower_date" placeholder="Enter Manpower Date" value="{{ $single->manpower_date }}" required>
                       <span class="text-danger">{{ $errors->has('manpower_date') ? $errors->first('manpower_date') : '' }}</span>
                   </div>
 
-                  <input type="hidden" name="id" value="<?php echo $single->id; ?>"  />
+                  <input type="hidden" name="id" value="{{ $single->id }}" />
 
                   <div>
                     <button style="width:100%" type="submit" name="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Data</button>
