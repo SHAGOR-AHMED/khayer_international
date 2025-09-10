@@ -26,8 +26,9 @@
                 @csrf
                   
                   <div class="form-group">
-                      <label for="password">VISA NO</label>
-                      <input type="text" class="form-control" name="visa_no" placeholder="Enter VISA NO" value="{{ $single->visa_no }}">
+                      <label for="password">VISA NO <span class="text-red">*</span></label>
+                      <input type="text" class="form-control" name="visa_no" placeholder="Enter VISA NO" value="{{ $single->visa_no }}" required>
+                      <span class="text-danger">{{ $errors->has('visa_no') ? $errors->first('visa_no') : '' }}</span>
                   </div>
 
                   <div class="form-group">
@@ -41,8 +42,9 @@
                   </div>
 
                   <div class="form-group">
-                      <label for="Name">MOFA NO</label>
-                      <input type="text" class="form-control" name="mofa_no" placeholder="Enter MOFA NO" value="{{ $single->mofa_no }}">
+                      <label for="Name">MOFA NO <span class="text-red">*</span></label>
+                      <input type="text" class="form-control" name="mofa_no" placeholder="Enter MOFA NO" value="{{ $single->mofa_no }}" required>
+                      <span class="text-danger">{{ $errors->has('mofa_no') ? $errors->first('mofa_no') : '' }}</span>
                   </div>
 
                   <div class="form-group">

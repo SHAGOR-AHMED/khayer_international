@@ -72,6 +72,25 @@ function slug($str=NULL)
     return str_replace(' ', '-' , $str);
 }
 
+// Auto id generate with prefix
+function make_id($tableName = NULL, $fieldName = NULL, $prefix = NULL) {
+    $row = DB::table($tableName)
+            ->select($fieldName)
+            ->orderby($fieldName, 'DESC')
+            ->limit(1)
+            ->first();
+	if (isset($row)) {
+		$lastId = $row->$fieldName;
+		$restId = str_replace($prefix, '', $lastId);
+		$newId = $prefix . sprintf("%06d", ($restId + 1));
+	} else {
+		$iniId = 1;
+		$newId = $prefix . sprintf("%06d", $iniId);
+	}
+	return $newId;
+	//echo make_id('tableName', 'fieldName', 'prefix');
+}
+
 // Compare date month year  
 $timezone = "Asia/Dhaka";
 if(function_exists('date_default_timezone_set')) {

@@ -27,9 +27,8 @@ class IndexController extends Controller
 
     public function store(Request $request){
 
-       $this->validate($request,[
+        $this->validate($request,[
             'name'=>'required',
-            'phone'=>'required|digits_between:11,14',
             'address'=>'required',
         ]);
 
@@ -70,7 +69,6 @@ class IndexController extends Controller
 
         $this->validate($request,[
             'name'=>'required',
-            'phone'=>'required|digits_between:11,14',
             'address'=>'required',
         ]);
        

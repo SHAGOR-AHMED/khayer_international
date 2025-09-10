@@ -3,7 +3,7 @@
 	// This function check hacking V.V.I.
 	function goodbye() 
 	{
-		redirect("admin-panel");
+		redirect("login");
 	}
 	
 	// Notify message for save/update/delete/error	

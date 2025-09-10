@@ -1,25 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Bank;
+namespace App\Http\Controllers\Admin\Payment;
 
-use App\Models\Bank;
-use App\Models\BankLedger;
-use Illuminate\Support\Str;
+use App\Models\Payment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class IndexController extends Controller
 {
     public function index(){
-    	$data['allData'] = Bank::get();
-    	return view('admin.bank.view',$data);
+    	$data['allData'] = Payment::get();
+    	return view('admin.payment.view',$data);
     }
 
     public function create(){
         $data['add'] = TRUE;
-        return view('admin.bank.add', $data);
+        return view('admin.payment.add', $data);
     }
 
     public function store(Request $request){
@@ -33,10 +30,7 @@ class IndexController extends Controller
 
         return DB::transaction(function () use ($request) {
 
-            // $bank_id = make_id('banks', 'id', 'BANK');
-
-            $data                     = new Bank();
-            // $data->id                 = $bank_id;
+            $data                     = new Payment();
             $data->bank_name          = $request->bank_name;
             $data->account_name       = $request->account_name;
             $data->account_no         = $request->account_no;
@@ -64,7 +58,7 @@ class IndexController extends Controller
             }else{
                 notify()->error(exception(),"Error","topRight");
             }
-            return redirect()->route('bank.index');
+            return redirect()->route('payment.index');
 
         });
 
@@ -73,8 +67,8 @@ class IndexController extends Controller
     public function edit($id){
     	$data['edit'] = TRUE;
         $id = hashid_decode($id);
-    	$data['single'] = Bank::findOrFail($id);
-    	return view('admin.bank.add', $data);
+    	$data['single'] = Payment::findOrFail($id);
+    	return view('admin.payment.add', $data);
     }
 
     public function update(Request $request){
@@ -85,7 +79,7 @@ class IndexController extends Controller
             'address'=>'required',
         ]);
        
-        $data               = Bank::findOrFail($request->id);
+        $data               = Payment::findOrFail($request->id);
         $data->name         = $request->name;
         $data->email        = $request->email;
         $data->phone        = $request->phone;
@@ -97,14 +91,14 @@ class IndexController extends Controller
         }else{
             notify()->error(exception(),"Error","topRight");
         }
-        return redirect()->route('bank.index');
+        return redirect()->route('payment.index');
         
     }//update
 
     //control
     public function status($id){
         $id         = hashid_decode($id);
-        $data       = Bank::findOrFail($id);
+        $data       = Payment::findOrFail($id);
         if($data){
             $status = $data->bank_status;
             if($status == 'ACTIVE'){
@@ -118,31 +112,15 @@ class IndexController extends Controller
             }else{
                 Alert::toast(exception(), 'error');
             }
-            return redirect()->route('bank.index');
+            return redirect()->route('payment.index');
         }
     }
 
     // destroy
     public function delete($id){
 
-        return DB::transaction(function () use ($id) {
-            $id         = hashid_decode($id);
-            $data       = Bank::findOrFail($id);
-            $success    = $data->delete();
-
-            if ($success) {
-                BankLedger::where('bank_id',$id)->delete();
-            }
-            
-            if($success){
-                Alert::success('Deleted!', deleted_success());
-            }else{
-                Alert::error('Error!', exception());
-            }
-            return redirect()->route('bank.index');
-
-        });
+        dd('not done');
         
     }
-
+    
 }

@@ -41,6 +41,12 @@ class IndexController extends Controller
     }
 
     public function update(Request $request){
+
+        $this->validate($request,[
+            'visa_no'=>'required',
+            'mofa_no'=>'required',
+        ]);
+
         $data                       = Entry::findOrFail($request->id);
         $data->visa_no              = $request->visa_no;
         $data->id_no                = $request->id_no;
@@ -62,16 +68,22 @@ class IndexController extends Controller
     }//update
 
     public function nextStage(Request $request){
-        $data               = Entry::findOrFail($request->id);
-        $data->status       = $request->status;
-        $data->updated_by   = logged_in_user_id();
-        $success            = $data->save();
-        if($success){
-            notify()->success(updated_success(),"Success","topRight");
+        if(($request->visa_no == NULL) && ($request->mofa_no == NULL)){
+            notify()->error("Visa No and Mofa No Mendatory","Error","topRight");
+            return redirect()->route('embassy.index');
         }else{
-            notify()->error(exception(),"Error","topRight");
+            $data               = Entry::findOrFail($request->id);
+            $data->status       = $request->status;
+            $data->updated_by   = logged_in_user_id();
+            $success            = $data->save();
+            if($success){
+                notify()->success(updated_success(),"Success","topRight");
+            }else{
+                notify()->error(exception(),"Error","topRight");
+            }
+            return redirect()->route('manpower.index');
         }
-        return redirect()->route('manpower.index');
+        
     }
 
 }

@@ -18,7 +18,7 @@ class IndexController extends Controller
     use ImageUpload;
 
     public function index(){
-    	$data['allData'] = Entry::with(['agent','user'])->latest()->get();
+    	$data['allData'] = Entry::with(['agent','user'])->where('status','!=','DELIVERED')->latest()->get();
     	return view('admin.entry.view',$data);
     }
 

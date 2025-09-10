@@ -48,7 +48,7 @@
                           <td>{{ $data->created_at }}</td>
                           <td>
                               <span class="badge btn-warning">MANPOWER</span><br><br>
-                              <button class="btn btn-default" id="next_stage_modal" data-toggle="modal" data-id="{{ $data->id }}" data-target="#staticBackdrop">Next Stage</button>
+                              <button class="btn btn-default" id="next_stage_modal" data-toggle="modal" data-id="{{ $data->id }}" data-manpower="{{ $data->manpower_date }}" data-target="#staticBackdrop">Next Stage</button>
                           </td>
                           <td>
                               <a href="{{ route('manpower.details',hashid_encode($data->id)) }}" style="color: green;" title="Details">View <i class="fa fa-eye fa-lg" style="color: green;"></i></a> | 
@@ -82,6 +82,7 @@
                           @csrf
 
                             <input type="hidden" class="form-control" value="" id="myInput" name="id">
+                            <input type="hidden" class="form-control" value="" id="manpowerDate" name="manpower_date">
                             <div class="form-group">
                               <label for="type">Next Stage<span class="text-red">*</span></label>
                               <select class="form-control" name="status" required>
@@ -125,17 +126,23 @@
     </div>
 
     <script type="text/javascript">
+
        $(document).on("click", "#next_stage_modal", function () {
           var entry_id = $(this).data("id");
+          var manpower_date = $(this).data("manpower");
           $("#myInput").val(entry_id);
+          $("#manpowerDate").val(manpower_date);
       });
 
       function validate(){
-          if(document.form.status.value == '0'){
-              alert("Select Next Stage")
-              return false;
-          }
-          return true;
+        if(document.form.status.value == '0'){
+          alert("Select Next Stage")
+          return false;
+        }else if(document.form.manpower_date.value == ''){
+          alert("Manpower Date Empty")
+          return false;
+        }
+        return true;
       }
 
       $(document).on("click","#log_modal",function () {

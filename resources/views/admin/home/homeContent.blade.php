@@ -82,7 +82,7 @@
             <div class="small-box" style="background-color: #3540dcff!important; color:#fff">
             <div class="inner">
                 <h3 class="count" data-target="{{ $total_client }}">0</h3>
-                <p>Total Client</p>
+                <p>Total Passenger</p>
             </div>
             <div class="icon">
                 <i class="ion ion-pie-graph"></i>
