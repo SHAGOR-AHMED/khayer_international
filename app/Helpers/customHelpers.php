@@ -187,6 +187,59 @@ function imageDeleteManager($old_image)
     }
 }
 
+function bd_money_format($amount) {
+	
+	$sign = '';
+	if ($amount < 0) {
+		$amount = substr($amount, 1);
+		$sign = '-';
+	}
+
+	$output_string = '';
+	$fraction = '';
+	$tokens = explode('.', $amount ?? '');
+	$number = $tokens[0];
+
+	if (count($tokens) > 1) {
+		$fraction = (double) ('0.' . $tokens[1]);
+		$fraction = $fraction * 100;
+		$fraction = round($fraction, 0);
+		$fraction = '.' . $fraction;
+	}
+
+	$number = $number . '';
+	$spl = str_split($number);
+	$lpcount = count($spl);
+	$rem = $lpcount - 3;
+
+	//even one
+	if ($lpcount % 2 == 0) {
+		for ($i = 0; $i <= $lpcount - 1; $i++) {
+
+			if ($i % 2 != 0 && $i != 0 && $i != $lpcount - 1) {
+				$output_string .= ",";
+			}
+			$output_string .= $spl[$i];
+		}
+	}
+
+	//odd one
+	if ($lpcount % 2 != 0) {
+		for ($i = 0; $i <= $lpcount - 1; $i++) {
+			if ($i % 2 == 0 && $i != 0 && $i != $lpcount - 1) {
+				$output_string .= ",";
+			}
+			$output_string .= $spl[$i];
+		}
+	}
+
+	if ($fraction == NULL || $fraction == 0) {
+		return $sign . $output_string . '.00';
+	} else {
+		return $sign . $output_string . $fraction;
+	}
+}
+
 function limit_words($string, $wordsreturned) {
     
     $string = strip_tags($string); // Remove html tag

@@ -33,6 +33,7 @@
         },
         "files": [
 			"app/Helpers/customHelpers.php",
+			"app/Helpers/currency_helper.php",
             "app/Helpers/copyright_helper.php"
 		]
     },

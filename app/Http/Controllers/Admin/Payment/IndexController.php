@@ -15,7 +15,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 class IndexController extends Controller
 {
     public function index(){
-    	$data['allData'] = Payment::get();
+    	$data['allData'] = Payment::with(['agent'])->get();
     	return view('admin.payment.view',$data);
     }
 
@@ -158,27 +158,6 @@ class IndexController extends Controller
         return redirect()->route('payment.index');
         
     }//update
-
-    //control
-    public function status($id){
-        $id         = hashid_decode($id);
-        $data       = Payment::findOrFail($id);
-        if($data){
-            $status = $data->bank_status;
-            if($status == 'ACTIVE'){
-                $data->bank_status = 'INACTIVE';
-            }else{
-                $data->bank_status = 'ACTIVE';
-            }
-            $success    =  $data->save();
-            if($success){
-                Alert::toast(updated_success(), 'info');
-            }else{
-                Alert::toast(exception(), 'error');
-            }
-            return redirect()->route('payment.index');
-        }
-    }
 
     // destroy
     public function delete($id){

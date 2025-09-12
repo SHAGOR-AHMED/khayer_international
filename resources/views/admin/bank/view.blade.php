@@ -27,7 +27,7 @@ use App\Models\BankLedger;
                       <th>Bank Name</th>
                       <th>Account Name</th>
                       <th>Acount No</th>
-                      <th>Balance</th>
+                      <th>Current Balance</th>
                       <th>Remarks</th>
                       <th>Status</th>
                       <th>Action</th>
@@ -41,7 +41,7 @@ use App\Models\BankLedger;
                           <td>{{ $data->bank_name }}</td>
                           <td>{{ $data->account_name }}</td>
                           <td>{{ $data->account_no }}</td>
-                          <td>{{ $data->account_balance }}</td>
+                          <td>{{ bd_money_format($data->account_balance) }}</td>
                           <td>{{ $data->bank_remarks }}</td>
                           <td>
                             @if($data->bank_status == 'ACTIVE')

@@ -20,6 +20,9 @@
                 <thead>
                   <tr>
                       <th>SN</th>
+                      <th>Trans. Date</th>
+                      <th>Agent Name</th>
+                      <th>Payment From</th>
                       <th>Amount</th>
                       <th>Remarks</th>
                       <th>Status</th>
@@ -28,11 +31,33 @@
                 </thead>
                 <tbody>
                   @if(!empty($allData))
+                  @php
+                    $grand_total = 0;
+                  @endphp
                   	@foreach ($allData as $key => $data)
                       <tr>
-                          <td>{{ ++$key }}</td>
-                          <td>{{ $data->amount }}</td>
-                          <td>{{ $data->remarks }}</td>
+                          <td>{{ sprintf("%02d", ++$key); }}</td>
+                          <td>{{ $data->transaction_date }}</td>
+                          <td>{{ $data->agent->name }}</td>
+                          <td>{{ $data->payment_mode }}</td>
+                          <td>{{ bd_money_format($data->amount) }}</td>
+                          <td>
+                            {{ $data->remarks }}
+                            <a href="#entry' . $data->id . '" role="button" class="btn btn-warning btn-xs" data-toggle="modal">Log</a>
+                            <div id="entry' . $data->id . '" class="modal fade">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                    <h4 id="myModalLabel1"> Log </h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    {{ $data->log }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
                           <td>
                             @if($data->status == 'Active')
                               <span class="badge btn-success">Active</span>
@@ -41,17 +66,24 @@
                             @endif
                           </td>
                           <td>
-                              @if($data->status == 'Active')
-                                  <a onclick="return confirm('Are You Sure?')" href="{{ route('payment.control',hashid_encode($data->id)) }}" >Inactive <i class="fa fa-times-circle fa-lg"></i></a> | 
-                              @else
-                                  <a onclick="return confirm('Are You Sure?')" href="{{ route('payment.control',hashid_encode($data->id)) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
-                              @endif
                               <a href="{{ route('payment.edit',hashid_encode($data->id)) }}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a>
-                              
                           </td>
                       </tr>
+                        @php
+                          $grand_total = $grand_total + $data->amount;
+                        @endphp
                     @endforeach
                   @endif
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td><p class='text-right' style='font-weight:bold'>Grand Total= </p></td>
+                      <td><p style='font-weight:bold'>{{ bd_money_format($grand_total) }}</p></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
                 </tbody>
               </table>        
         </div><!-- /.box-body -->
