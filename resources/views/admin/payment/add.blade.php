@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('title')
-  Create New Bank
+  Create New Payment
 @endsection
 @section('content')
 
@@ -10,44 +10,66 @@
       @isset($add)
         <div class="box box-warning">
           <div class="box-header with-border">
-            <h3 class="box-title">Create New Bank</h3>
+            <h3 class="box-title">Create New Payment</h3>
             <div class="box-tools pull-right">
-              <a href="{{ route('bank.index') }}" class="btn btn-success"><i class="fa fa-eye"></i>&nbsp;View All</a>
+              <a href="{{ route('payment.index') }}" class="btn btn-success"><i class="fa fa-eye"></i>&nbsp;View All</a>
             </div>
           </div>
           <div class="box-body">
-          <form action="{{ route('bank.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form action="{{ route('payment.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
           @csrf
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                    <label for="Name">Bank Name <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="bank_name" placeholder="Enter Bank Name" value="{{ old('bank_name') }}" required>
-                    <span class="text-danger">{{ $errors->has('bank_name') ? $errors->first('bank_name') : '' }}</span>
+                    <label for="Name">Transaction Date <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="transaction_date" placeholder="Enter Date" value="{{ date('d-m-Y') }}" required>
+                    <span class="text-danger">{{ $errors->has('transaction_date') ? $errors->first('transaction_date') : '' }}</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="Name">Account Name <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="account_name" placeholder="Enter Account Name" value="{{ old('account_name') }}" required>
-                    <span class="text-danger">{{ $errors->has('account_name') ? $errors->first('account_name') : '' }}</span>
+                    <label for="Name">Agent Name <span class="text-red">*</span></label>
+                    <select class="form-control liveSearch" name="agent_id" required>
+                      @foreach($all_agents as $id => $name)
+                        <option value="{{ $id }}">{{ $name }}</option>
+                      @endforeach
+                    </select>
+                    <span class="text-danger">{{ $errors->has('agent_id') ? $errors->first('agent_id') : '' }}</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Account No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="account_no" placeholder="Enter Account No" value="{{ old('account_no') }}" required>
-                    <span class="text-danger">{{ $errors->has('account_no') ? $errors->first('account_no') : '' }}</span>
+                    <label for="password">Payment Mode<span class="text-red">*</span></label>
+                    <select class="form-control" name="payment_mode" required>
+                      <option value="">Please Select</option>
+                      <option value="Cash">Cash</option>
+                      <option value="Cheque">Bank</option>
+                    </select>
+                    <span class="text-danger">{{ $errors->has('payment_mode') ? $errors->first('payment_mode') : '' }}</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="Name">Account Balance <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="account_balance" placeholder="Enter Account Balance" value="{{ old('account_balance') }}" required>
-                    <span class="text-danger">{{ $errors->has('account_balance') ? $errors->first('account_balance') : '' }}</span>
+                    <label for="Name">Amount <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="amount" placeholder="Enter Amount" value="{{ old('amount') }}" required>
+                    <span class="text-danger">{{ $errors->has('amount') ? $errors->first('amount') : '' }}</span>
+                </div>
+
+                 <div class="form-group">
+                    <label for="Name">Money Receipt No <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="money_receipt_no" placeholder="Enter Money Receipt No" value="{{ old('money_receipt_no') }}" required>
+                    <span class="text-danger">{{ $errors->has('money_receipt_no') ? $errors->first('money_receipt_no') : '' }}</span>
                 </div>
 
                 <div class="form-group">
                     <label>Remarks</label>
-                    <textarea class="form-control" name="bank_remarks" placeholder="Enter Remarks">{{ old('bank_remarks') }}</textarea>
+                    <textarea class="form-control" name="remarks" placeholder="Enter Remarks">{{ old('remarks') }}</textarea>
                 </div>
+
+                <div class="form-group">
+                    <label for="address">Attached</label>
+                    <input type="file" id="userfile" class="form-control" name="image" value="" onchange="getPreview('userfile','img_preview','none');">
+                    <img src="<?= asset('admin/img/unknown.png'); ?>" style="width:100px; margin-top:5px" id="img_preview" class="img-responsive img-thumbnail"/><br>
+                    <code>(Max photo size: 400x400, 512kb)</code>
+                </div>
+
               </div>
 
               <div class="form-group">
@@ -61,64 +83,7 @@
         </div><!-- /.box -->
       @endisset
       @isset($edit)
-        <div class="box box-warning">
-          <div class="box-header with-border">
-            <h3 class="box-title">Update Information</h3>
-            <div class="box-tools pull-right">
-            </div>
-          </div>
-          <div class="box-body">
-            <form action="{{ route('agent.update') }}" name="form" method="post" name="edit" enctype="multipart/form-data" autocomplete="off">
-                @csrf
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="form-group">
-                      <label for="regional_branch_name">Name <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" name="name" placeholder="Enter Name" value="{{ $single->name }}" required>
-                      <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
-                  </div>
-
-                  <div class="form-group">
-                      <label for="password">Email</label>
-                      <input type="email" class="form-control" name="email" placeholder="Enter Email" value="{{ $single->email }}">
-                  </div>
-
-                  <div class="form-group">
-                      <label for="password">Phone No <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ $single->phone }}" required>
-                      <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Address <span class="text-red">*</span></label>
-                    <textarea class="form-control" name="address" placeholder="Enter Address" required>{{ $single->address }}</textarea>
-                    <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
-                  </div>
-
-                  <input type="hidden" name="id" value="{{ $single->id }}"  />
-
-                  <div class="form-group">
-                      <label for="address">Update Photograph</label>
-                      <input type="file" id="userfile" class="form-control" name="image" value="" onchange="getPreview('userfile','img_preview','none');">
-                      <code>(Max photo size: 400x400, 512kb)</code>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <img src="{{ imageShow($single->image) }}" id="img_preview" class="img-responsive img-thumbnail"/>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                  <div>
-                    <button style="width:100%" type="submit" name="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Data</button>
-                  </div>
-                </div>
-              </div>
-              
-            </form>
-          </div><!-- /.box-body -->
-        </div><!-- /.box -->
+        
       @endisset
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->

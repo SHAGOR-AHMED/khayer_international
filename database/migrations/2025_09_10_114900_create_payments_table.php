@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('agent_id')->nullable()->constrained('agents');
+            $table->foreignId('agent_id')->nullable();
             $table->string('transaction_date');
             $table->string('payment_mode');
             $table->decimal('amount', total: 12, places: 2);
-            $table->foreignId('bank_id')->nullable()->constrained('banks');
+            $table->foreignId('bank_id')->nullable();
             $table->string('cheque_no')->nullable();
             $table->string('cheque_date')->nullable();
             $table->string('transaction_point')->nullable();

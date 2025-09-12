@@ -31,6 +31,14 @@
 	{
 		return "Failure, please try again.";
 	}
+
+	function limit_crossed() {
+		return "Sorry, Cash Balance out of limit.";
+	}
+
+	function due_limit_crossed() {
+		return "Sorry, Balance out of maximum due.";
+	}
 	
 	function unauthorized() 
 	{

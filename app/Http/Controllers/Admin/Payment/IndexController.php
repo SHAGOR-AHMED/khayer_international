@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Payment;
 
+use App\Models\Bank;
+use App\Models\Agent;
 use App\Models\Payment;
+use App\Models\BankLedger;
+use App\Models\AgentLedger;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -16,48 +21,107 @@ class IndexController extends Controller
 
     public function create(){
         $data['add'] = TRUE;
+        $data['all_agents'] = Agent::query()
+                            ->where('status',1)
+                            ->pluck('name', 'id')
+                            ->prepend('Please Select', '')
+                            ->toArray();
         return view('admin.payment.add', $data);
     }
 
     public function store(Request $request){
 
        $this->validate($request,[
-            'bank_name'=>'required',
-            'account_name'=>'required',
-            'account_no'=>'required',
-            'account_balance'=>'required',
+            'transaction_date'  =>'required',
+            'agent_id'          =>'required',
+            'payment_mode'      =>'required',
+            'amount'            =>'required',
+            'money_receipt_no'  =>'required',
         ]);
 
         return DB::transaction(function () use ($request) {
 
+            $payment_mode = $request->payment_mode;
+            $status = "Active";
+            $bank_id = '';
+
             $data                     = new Payment();
-            $data->bank_name          = $request->bank_name;
-            $data->account_name       = $request->account_name;
-            $data->account_no         = $request->account_no;
-            $data->account_balance    = $request->account_balance;
-            $data->bank_remarks       = $request->bank_remarks;
+            $data->transaction_date   = date('d-m-Y', strtotime($request->transaction_date));
+            $data->agent_id           = $request->agent_id;
+
+            if ($payment_mode == 'Cash') {
+				$bank_id = '1';
+			} else if ($payment_mode == 'Cheque') {
+				$bank_id = $this->input->post('bank_id');
+				$cheque_no = $this->input->post('cheque_no');
+				$cheque_date = date('Y-m-d', strtotime($this->input->post('cheque_date')));
+				$status = "Pending";
+			} else if ($payment_mode == 'Online') {
+				$bank_id = $this->input->post('bank_id');
+				$transaction_point = $this->input->post('transaction_point');
+				$destination_point = $this->input->post('destination_point');
+			}
+            
+            $data->amount             = $request->amount;
+            $data->payment_mode       = $payment_mode;
+            $data->bank_id            = $bank_id;
+            $data->status             = $status;
+            $data->money_receipt_no   = $request->money_receipt_no;
+            $data->remarks            = $request->remarks;
             $data->created_by         = logged_in_user_id();
+            $data->log                = logged_in_user_name() . "<br/>" .  $data->transaction_date;
             $success                  = $data->save();
 
             if ($success) {
-                // Create bank ledger
-                $ledgerData = array(
-                    'id' => make_id('bank_ledger', 'id', 'BL'),
-                    'bank_id' => $data->id,
-                    'transaction_date' => date('d-m-Y'),
-                    'transaction_type' => "Initial Balance",
-                    'amount' => $request->account_balance,
-                    'ledger_status' => "Active",
-                );
 
-                BankLedger::insert($ledgerData);
-            }
+                if ($bank_id == '1') {
+					// Check cash balance limitation
+					$cash = Bank::where('id',1)->first();
+					if ($request->amount > $cash->account_balance) {
+						notify()->error(limit_crossed(),"Error","topRight");
+						return redirect()->route('payment.index');
+					}
+				}
 
-            if($success){
+                if($payment_mode != 'Cheque') {
+					// Update party balance
+					//$this->db->query("UPDATE tbl_party SET balance=balance+'" . $amount . "' WHERE id='" . $party_id . "' ");
+					// Create agent ledger
+					$Aldata = array(
+						'id'               => make_id('agent_ledger', 'id', 'AL'),
+						'agent_id'         => $request->agent_id,
+						'billing_date'     => $data->transaction_date,
+						'transaction_type' => "Payment",
+						'reference_no'     => $data->id,
+						'amount'           => $request->amount,
+						'ledger_status'    => $status,
+					);
+					AgentLedger::insert($Aldata);
+					
+					// Update bank account balance
+                    Bank::where('id',$bank_id)
+                        ->update([
+                            'account_balance' => DB::raw('account_balance - ' . (int) $request->amount),
+                        ]);
+					// Create bank ledger
+					$Bldata = array(
+						'id'               => make_id('bank_ledger', 'id', 'BL'),
+						'bank_id'          => $bank_id,
+						'transaction_date' => $data->transaction_date,
+						'transaction_type' => "Payment",
+						'reference_no'     => $data->id,
+						'amount'           => $request->amount,
+						'ledger_status'    => $status,
+					);
+					BankLedger::insert($Bldata);
+				}
+
                 notify()->success(saved_success(),"Success","topRight");
+
             }else{
                 notify()->error(exception(),"Error","topRight");
             }
+
             return redirect()->route('payment.index');
 
         });

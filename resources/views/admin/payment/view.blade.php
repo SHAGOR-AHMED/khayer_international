@@ -32,16 +32,16 @@
                       <tr>
                           <td>{{ ++$key }}</td>
                           <td>{{ $data->amount }}</td>
-                          <td>{{ $data->bank_remarks }}</td>
+                          <td>{{ $data->remarks }}</td>
                           <td>
-                            @if($data->status == 'ACTIVE')
+                            @if($data->status == 'Active')
                               <span class="badge btn-success">Active</span>
                             @else
                               <span class="badge btn-danger">Inactive</span>
                             @endif
                           </td>
                           <td>
-                              @if($data->status == 'ACTIVE')
+                              @if($data->status == 'Active')
                                   <a onclick="return confirm('Are You Sure?')" href="{{ route('payment.control',hashid_encode($data->id)) }}" >Inactive <i class="fa fa-times-circle fa-lg"></i></a> | 
                               @else
                                   <a onclick="return confirm('Are You Sure?')" href="{{ route('payment.control',hashid_encode($data->id)) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
