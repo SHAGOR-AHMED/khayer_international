@@ -12,8 +12,8 @@
         <div class="box-header with-border">
           <h3 class="box-title">Manage Payment's</h3>
           <div class="box-tools pull-right">
-            <a href="{{ route('payment.add') }}" class="btn btn-success"> <i class="fa fa-plus"></i>&nbsp;Add New</a>
-            <a href="{{ route('payment.report') }}" target="_blank" style="float: right; font-size: 20px;"><i class="fa fa-file-pdf-o"></i></a>
+            <a href="{{ route('payment.report') }}" target="_blank" style="float: left; font-size: 20px; padding-right:5px;"><i class="fa fa-file-pdf-o"></i></a>
+            <a href="{{ route('payment.add') }}" class="btn btn-success btn-sm"> <i class="fa fa-plus"></i>&nbsp;Add New</a>
           </div>
         </div>
         <div class="box-body color-black">

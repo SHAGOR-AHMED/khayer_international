@@ -177,10 +177,11 @@ class IndexController extends Controller
 
     public function report(){
         $data['title'] = 'Payment Report';
-        $data['allData'] = Payment::with(['agent'])->get();
-        $pdf = PDF::loadView('admin.payment.report', $data);
+        $data['allData'] = Payment::with(['agent', 'bank'])->get();
+        $pdf = PDF::loadHtml(view('admin.payment.report', $data));
+        return $pdf->stream('payment-report'.date('m-d-Y').'.pdf');
+        //$pdf = PDF::loadView('admin.payment.report', $data);
         //return view('admin.payment.report', $data);
-        return $pdf->download('payment-report'.date('m-d-Y').'.pdf');
         //return $pdf->stream('payment-report'.date('m-d-Y').'.pdf');
     }
 
