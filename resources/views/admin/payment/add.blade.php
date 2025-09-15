@@ -22,7 +22,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                     <label for="Name">Transaction Date <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="transaction_date" placeholder="Enter Date" value="{{ date('d-m-Y') }}" required>
+                    <input type="text" class="form-control datepicker" name="transaction_date" placeholder="Enter Date" value="{{ date('d-m-Y') }}" required>
                     <span class="text-danger">{{ $errors->has('transaction_date') ? $errors->first('transaction_date') : '' }}</span>
                 </div>
 
@@ -38,12 +38,36 @@
 
                 <div class="form-group">
                     <label for="password">Payment Mode<span class="text-red">*</span></label>
-                    <select class="form-control" name="payment_mode" required>
+                    <select class="form-control" name="payment_mode" id="payment_mode" required onchange="globalToggle('payment_mode','cheque')">
                       <option value="">Please Select</option>
                       <option value="Cash">Cash</option>
                       <option value="Cheque">Bank</option>
                     </select>
                     <span class="text-danger">{{ $errors->has('payment_mode') ? $errors->first('payment_mode') : '' }}</span>
+                </div>
+                <!-- for bank payment -->
+                <div style="display:none; margin-top:2px;" id="cheque">
+                  <div class="form-group">
+                    <label for="Name">Bank Name <span class="text-red">*</span></label>
+                    <select class="form-control" name="bank_id">
+                      @foreach($all_banks as $id => $bank_name)
+                        <option value="{{ $id }}">{{ $bank_name }}</option>
+                      @endforeach
+                    </select>
+                    <span class="text-danger">{{ $errors->has('bank_id') ? $errors->first('bank_id') : '' }}</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="Name">Cheque No <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="cheque_no" placeholder="Enter Cheque No" value="{{ old('cheque_no') }}" required>
+                    <span class="text-danger">{{ $errors->has('cheque_no') ? $errors->first('cheque_no') : '' }}</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="Name">Cheque Date <span class="text-red">*</span></label>
+                    <input type="text" class="form-control datepicker" name="cheque_date" placeholder="Enter Date" value="">
+                    <span class="text-danger">{{ $errors->has('cheque_date') ? $errors->first('cheque_date') : '' }}</span>
+                  </div>
                 </div>
 
                 <div class="form-group">
@@ -87,4 +111,15 @@
       @endisset
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
+
+  <script>
+    function globalToggle(para1, para2) {
+      var payment = $("#" + para1).val();
+      if (payment === 'Cheque') {
+        $("#" + para2).show();
+      } else {
+        $("#" + para2).hide();
+      }
+    }
+  </script>
 @endsection

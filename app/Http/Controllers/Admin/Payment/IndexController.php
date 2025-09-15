@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Payment;
 
+use PDF;
 use App\Models\Bank;
 use App\Models\Agent;
 use App\Models\Payment;
@@ -11,11 +12,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Http\Controllers\Common\ImageUpload;
 
 class IndexController extends Controller
 {
+    use ImageUpload;
+
     public function index(){
-    	$data['allData'] = Payment::with(['agent'])->get();
+    	$data['allData'] = Payment::with(['agent', 'bank'])->get();
     	return view('admin.payment.view',$data);
     }
 
@@ -24,6 +28,11 @@ class IndexController extends Controller
         $data['all_agents'] = Agent::query()
                             ->where('status',1)
                             ->pluck('name', 'id')
+                            ->prepend('Please Select', '')
+                            ->toArray();
+        $data['all_banks'] = Bank::query()
+                            ->where('id','!=',1)
+                            ->pluck('bank_name', 'id')
                             ->prepend('Please Select', '')
                             ->toArray();
         return view('admin.payment.add', $data);
@@ -44,27 +53,36 @@ class IndexController extends Controller
             $payment_mode = $request->payment_mode;
             $status = "Active";
             $bank_id = '';
+            $cheque_no = '';
+            $cheque_date = '';
 
             $data                     = new Payment();
+
+            $imagePath      = 'admin/documents/';
+            $imgFor = 'payment-';
+            // Save Image 
+            $current_image  = $request->file('image'); 
+            if($current_image){
+                $imgName= $this->imageUplaodByName($current_image, null, $imagePath, $imgFor); 
+                $data->image = $imgName;
+            }
+
             $data->transaction_date   = date('d-m-Y', strtotime($request->transaction_date));
             $data->agent_id           = $request->agent_id;
 
             if ($payment_mode == 'Cash') {
 				$bank_id = '1';
 			} else if ($payment_mode == 'Cheque') {
-				$bank_id = $this->input->post('bank_id');
-				$cheque_no = $this->input->post('cheque_no');
-				$cheque_date = date('Y-m-d', strtotime($this->input->post('cheque_date')));
-				$status = "Pending";
-			} else if ($payment_mode == 'Online') {
-				$bank_id = $this->input->post('bank_id');
-				$transaction_point = $this->input->post('transaction_point');
-				$destination_point = $this->input->post('destination_point');
+				$bank_id = $request->bank_id;
+				$cheque_no = $request->cheque_no;
+				$cheque_date = date('d-m-Y', strtotime($request->cheque_date));
 			}
             
             $data->amount             = $request->amount;
             $data->payment_mode       = $payment_mode;
             $data->bank_id            = $bank_id;
+            $data->cheque_no          = $cheque_no;
+            $data->cheque_date        = $cheque_date;
             $data->status             = $status;
             $data->money_receipt_no   = $request->money_receipt_no;
             $data->remarks            = $request->remarks;
@@ -83,39 +101,37 @@ class IndexController extends Controller
 					}
 				}
 
-                if($payment_mode != 'Cheque') {
-					// Update party balance
-					//$this->db->query("UPDATE tbl_party SET balance=balance+'" . $amount . "' WHERE id='" . $party_id . "' ");
-					// Create agent ledger
-					$Aldata = array(
-						'id'               => make_id('agent_ledger', 'id', 'AL'),
-						'agent_id'         => $request->agent_id,
-						'billing_date'     => $data->transaction_date,
-						'transaction_type' => "Payment",
-						'reference_no'     => $data->id,
-						'amount'           => $request->amount,
-						'ledger_status'    => $status,
-					);
-					AgentLedger::insert($Aldata);
-					
-					// Update bank account balance
-                    Bank::where('id',$bank_id)
-                        ->update([
-                            'account_balance' => DB::raw('account_balance - ' . (int) $request->amount),
-                        ]);
-					// Create bank ledger
-					$Bldata = array(
-						'id'               => make_id('bank_ledger', 'id', 'BL'),
-						'bank_id'          => $bank_id,
-						'transaction_date' => $data->transaction_date,
-						'transaction_type' => "Payment",
-						'reference_no'     => $data->id,
-						'amount'           => $request->amount,
-						'ledger_status'    => $status,
-					);
-					BankLedger::insert($Bldata);
-				}
-
+                // Update party balance
+                //$this->db->query("UPDATE tbl_party SET balance=balance+'" . $amount . "' WHERE id='" . $party_id . "' ");
+                // Create agent ledger
+                $Aldata = array(
+                    'id'               => make_id('agent_ledger', 'id', 'AL'),
+                    'agent_id'         => $request->agent_id,
+                    'billing_date'     => $data->transaction_date,
+                    'transaction_type' => "Payment",
+                    'reference_no'     => $data->id,
+                    'amount'           => $request->amount,
+                    'ledger_status'    => $status,
+                );
+                AgentLedger::insert($Aldata);
+                
+                // Update bank account balance
+                Bank::where('id',$bank_id)
+                    ->update([
+                        'account_balance' => DB::raw('account_balance - ' . (int) $request->amount),
+                    ]);
+                // Create bank ledger
+                $Bldata = array(
+                    'id'               => make_id('bank_ledger', 'id', 'BL'),
+                    'bank_id'          => $bank_id,
+                    'transaction_date' => $data->transaction_date,
+                    'transaction_type' => "Payment",
+                    'reference_no'     => $data->id,
+                    'amount'           => $request->amount,
+                    'ledger_status'    => $status,
+                );
+                BankLedger::insert($Bldata);
+				
                 notify()->success(saved_success(),"Success","topRight");
 
             }else{
@@ -158,6 +174,15 @@ class IndexController extends Controller
         return redirect()->route('payment.index');
         
     }//update
+
+    public function report(){
+        $data['title'] = 'Payment Report';
+        $data['allData'] = Payment::with(['agent'])->get();
+        $pdf = PDF::loadView('admin.payment.report', $data);
+        //return view('admin.payment.report', $data);
+        return $pdf->download('payment-report'.date('m-d-Y').'.pdf');
+        //return $pdf->stream('payment-report'.date('m-d-Y').'.pdf');
+    }
 
     // destroy
     public function delete($id){

@@ -13,6 +13,7 @@
           <h3 class="box-title">Manage Payment's</h3>
           <div class="box-tools pull-right">
             <a href="{{ route('payment.add') }}" class="btn btn-success"> <i class="fa fa-plus"></i>&nbsp;Add New</a>
+            <a href="{{ route('payment.report') }}" target="_blank" style="float: right; font-size: 20px;"><i class="fa fa-file-pdf-o"></i></a>
           </div>
         </div>
         <div class="box-body color-black">
@@ -31,15 +32,23 @@
                 </thead>
                 <tbody>
                   @if(!empty($allData))
-                  @php
-                    $grand_total = 0;
-                  @endphp
+                    @php
+                      $grand_total = 0;
+                    @endphp
                   	@foreach ($allData as $key => $data)
                       <tr>
                           <td>{{ sprintf("%02d", ++$key); }}</td>
                           <td>{{ $data->transaction_date }}</td>
                           <td>{{ $data->agent->name }}</td>
-                          <td>{{ $data->payment_mode }}</td>
+                          <td>
+                            {{ $data->payment_mode }}
+                            @if($data->image)
+                              <a href="{{ asset($data->image) }}" target='_blank'><i class='fa fa-eye'></i></a>
+                            @endif
+                            @if($data->payment_mode == 'Cheque')
+                              <p>{{ $data->bank->bank_name }} <{{ $data->cheque_no }}> <{{ $data->cheque_date }}></p>
+                            @endif
+                          </td>
                           <td>{{ bd_money_format($data->amount) }}</td>
                           <td>
                             {{ $data->remarks }}
