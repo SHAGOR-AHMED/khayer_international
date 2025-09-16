@@ -59,7 +59,7 @@
 
                   <div class="form-group">
                     <label for="Name">Cheque No <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="cheque_no" placeholder="Enter Cheque No" value="{{ old('cheque_no') }}" required>
+                    <input type="text" class="form-control" name="cheque_no" placeholder="Enter Cheque No" value="{{ old('cheque_no') }}">
                     <span class="text-danger">{{ $errors->has('cheque_no') ? $errors->first('cheque_no') : '' }}</span>
                   </div>
 

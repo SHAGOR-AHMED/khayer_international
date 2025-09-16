@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Bank;
 
+use PDF;
 use App\Models\Bank;
+use App\Models\Payment;
 use App\Models\BankLedger;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -121,6 +123,53 @@ class IndexController extends Controller
             return redirect()->route('bank.index');
         }
     }
+
+    public function ledger(){
+        $data['all_banks'] = Bank::query()
+                            ->where('bank_status','ACTIVE')
+                            ->pluck('bank_name', 'id')
+                            ->prepend('Please Select', '')
+                            ->toArray();
+    	return view('admin.bank.ledger',$data);
+    }
+
+    public function report(Request $request){
+
+        $from_date = $request->date_range_from;
+		$to_date = $request->date_range_to;
+		$bank_id = $request->bank_id;
+
+        $data['title'] = "Ledger Account";
+		$data['bank'] = Bank::find($bank_id);
+		$data['results'] = $this->ledger_report($from_date, $to_date, $bank_id);
+		$data['from_date'] = $from_date;
+		$data['to_date'] = $to_date;
+
+        return view('admin.bank.ledger_report', $data);
+
+        $pdf = PDF::loadHtml(view('admin.bank.ledger_report', $data));
+        return $pdf->stream('ledger-report'.date('m-d-Y').'.pdf');
+    }
+
+    public function ledger_report($from_date = NULL, $to_date=NULL, $bank_id=NULL) {
+
+        return BankLedger::where('bank_id',$bank_id)->where('transaction_date','>=', $from_date)->where('transaction_date','<=', $to_date)->orderBy('transaction_date', 'ASC')->get();
+	}
+
+
+    public function previous_blance($bank_id = NULL, $from_date = NULL) {
+		$balance = 0; 
+        $query = BankLedger::where('bank_id',$bank_id)->where('transaction_date','<', $from_date)->orderBy('transaction_date', 'ASC')->get();
+		foreach ($query as $row) {
+			if ($row->transaction_type == 'Payment' || $row->transaction_type == 'Expense') {
+				$balance = $balance - $row->amount;
+			} else {
+				$balance = $balance + $row->amount;
+			}
+		}
+		return $balance;
+	}
+
 
     // destroy
     public function delete($id){

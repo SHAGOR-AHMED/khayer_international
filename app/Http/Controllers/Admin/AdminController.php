@@ -18,7 +18,7 @@ class AdminController extends Controller
         $data['total_user'] = User::where('type','!=','user')->count();
         $data['total_agent'] = Agent::count();
         $data['total_client'] = User::where('type','user')->count();
-        $data['total_entry'] = Entry::count();
+        $data['total_entry'] = Entry::where('status','!=','DELIVERED')->count();
         return view('admin.home.homeContent', $data);
     }
 

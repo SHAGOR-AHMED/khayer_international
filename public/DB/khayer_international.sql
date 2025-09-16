@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 28, 2025 at 11:49 PM
+-- Generation Time: Sep 16, 2025 at 05:36 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -51,7 +51,93 @@ INSERT INTO `agents` (`id`, `name`, `email`, `phone`, `address`, `image`, `statu
 (19, 'AZAD TALTO', 'JAHANGIR22@GMAIL.COM', '01757344097', 'LAKSAM', NULL, 1, '2025-08-28 22:05:25', '2025-08-28 22:05:25'),
 (20, 'AZIZ NIZ', 'MDABDULAZIZBD000@GMAIL.COM', '01922577015', 'CUMILLA', NULL, 1, '2025-08-28 22:05:52', '2025-08-28 22:05:52'),
 (21, 'LOKMAN', 'LOKMAN@GAMIL.COM', '01711254514', 'CUMILLA', NULL, 1, '2025-08-28 22:06:17', '2025-08-28 22:06:17'),
-(22, 'SAKIB JEDDAH', 'SAKIB@GMAIL.COM', '01401399032', 'CUMILLA', NULL, 1, '2025-08-28 22:06:42', '2025-08-28 22:06:42');
+(22, 'SAKIB JEDDAH', 'SAKIB@GMAIL.COM', '01401399032', 'CUMILLA', NULL, 1, '2025-08-28 22:06:42', '2025-08-28 22:06:42'),
+(24, 'DAUD BAI', NULL, '01830194601', 'IQRA', NULL, 1, '2025-09-16 16:31:08', '2025-09-16 16:31:08'),
+(25, 'MILON BAI GH', NULL, '01307807928', 'GREEN HOLYDAY', NULL, 1, '2025-09-16 16:31:34', '2025-09-16 16:31:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `agent_ledger`
+--
+
+CREATE TABLE `agent_ledger` (
+  `id` varchar(10) NOT NULL COMMENT 'PK',
+  `agent_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'FK',
+  `billing_date` varchar(15) NOT NULL,
+  `transaction_type` varchar(255) NOT NULL COMMENT 'Initial Balance / Purchase / Purchase Return / Sales / Sales Return / Payment / Received / Payment Handover Credit / Payment Handover Debit',
+  `transaction_no` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'FK',
+  `reference_no` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'purchase_id / purchase_return_id / sales_id / sales_return_id / payment_id / received_id / payment_handover_id',
+  `cheque_status` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '1st / 2nd / 3rd (Confirm & Bounce)',
+  `amount` decimal(12,2) NOT NULL,
+  `ledger_status` varchar(10) NOT NULL COMMENT 'Active / Cancel / Confirm / Bounce'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `agent_ledger`
+--
+
+INSERT INTO `agent_ledger` (`id`, `agent_id`, `billing_date`, `transaction_type`, `transaction_no`, `reference_no`, `cheque_status`, `amount`, `ledger_status`) VALUES
+('AL000001', '15', '12-09-2025', 'Payment', NULL, '5', NULL, 2000.00, 'Active'),
+('AL000002', '15', '15-09-2025', 'Payment', NULL, '6', NULL, 3000.00, 'Active'),
+('AL000003', '15', '16-09-2025', 'Payment', NULL, '7', NULL, 4000.00, 'Active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `banks`
+--
+
+CREATE TABLE `banks` (
+  `id` bigint UNSIGNED NOT NULL,
+  `bank_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `account_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `account_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `account_balance` decimal(12,2) NOT NULL COMMENT 'CURRENT BALANCE',
+  `bank_remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bank_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ACTIVE' COMMENT 'ACTIVE/INACTIVE',
+  `created_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `updated_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `banks`
+--
+
+INSERT INTO `banks` (`id`, `bank_name`, `account_name`, `account_no`, `account_balance`, `bank_remarks`, `bank_status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 'CASH', 'A Khayer Intl', '...', 44000.00, 'Company Cash Balance', 'ACTIVE', '1', NULL, '2025-09-12 20:38:38', '2025-09-16 14:31:33'),
+(2, 'DBBL 6067', 'M/S. Khayer Intl', '2601100006067', 17000.00, 'Dutch-Bangla Bank, Hasnabad Branch, Routing: 090272569', 'ACTIVE', '1', NULL, '2025-09-12 22:09:01', '2025-09-15 10:46:54');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bank_ledger`
+--
+
+CREATE TABLE `bank_ledger` (
+  `id` varchar(10) NOT NULL COMMENT 'PK',
+  `bank_id` varchar(10) NOT NULL COMMENT 'FK',
+  `transaction_date` varchar(15) NOT NULL,
+  `transaction_type` varchar(255) NOT NULL COMMENT 'Initial Balance / Purchase / Purchase Return / Sales / Sales Return / Payment / Received / Expense / Income / LC / LC Returned / Tender / Deposit Credit / Deposit Debit / Withdrawal Credit / Withdrawal Debit / Balance Transfer Credit / Balance Transfer Debit / Pay Order / Pay Order Return / Tender Inflow / Tender Outflow / Tender Fund Transfer Inflow / Tender Fund Transfer Outflow',
+  `transaction_no` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'FK',
+  `reference_no` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'purchase_id / purchase_return_id / sales_id / sales_return_id / payment_id / received_id / expense_id / income_id / lc_id / tender_id / bank_deposit_id / cash_widthdrawal_id / balance_transfer_id / pay_order_id / tender_inflow_id / tender_outflow_id / tender_fund_transfer_id',
+  `cheque_status` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '1st / 2nd / 3rd (Confirm & Bounce)',
+  `amount` decimal(12,2) NOT NULL,
+  `ledger_status` varchar(10) NOT NULL COMMENT 'Active / Cancel / Confirm / Bounce'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `bank_ledger`
+--
+
+INSERT INTO `bank_ledger` (`id`, `bank_id`, `transaction_date`, `transaction_type`, `transaction_no`, `reference_no`, `cheque_status`, `amount`, `ledger_status`) VALUES
+('BL000001', '1', '12-09-2025', 'Initial Balance', NULL, NULL, NULL, 50000.00, 'Active'),
+('BL000002', '1', '12-09-2025', 'Payment', NULL, '5', NULL, 2000.00, 'Active'),
+('BL000003', '2', '12-09-2025', 'Initial Balance', NULL, NULL, NULL, 20000.00, 'Active'),
+('BL000004', '2', '15-09-2025', 'Payment', NULL, '6', NULL, 3000.00, 'Active'),
+('BL000005', '1', '16-09-2025', 'Payment', NULL, '7', NULL, 4000.00, 'Active');
 
 -- --------------------------------------------------------
 
@@ -330,14 +416,20 @@ CREATE TABLE `entries` (
   `rl_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'RL1717',
   `country` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `client_id` bigint UNSIGNED DEFAULT NULL,
-  `kopil_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `profession` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `office_visa` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `processing` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sponsor_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pc_ref_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `medical_report` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gcc_medical_report` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `note` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `status` enum('PENDING','EMBASSY','MANPOWER','COLLECT','DELIVERED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDING',
-  `mofa_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `note` longtext COLLATE utf8mb4_unicode_ci,
+  `status` enum('PENDING','EMBASSY','MANPOWER','COLLECT','DELIVERED') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDING',
   `visa_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `wakala_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mofa_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tasheer_finger_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `visa_issued_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `finger_ttc_note` longtext COLLATE utf8mb4_unicode_ci,
   `manpower_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -354,15 +446,25 @@ CREATE TABLE `entries` (
 -- Dumping data for table `entries`
 --
 
-INSERT INTO `entries` (`id`, `agent_id`, `rl_no`, `country`, `client_id`, `kopil_no`, `pc_ref_no`, `medical_report`, `gcc_medical_report`, `note`, `status`, `mofa_no`, `visa_no`, `visa_issued_date`, `finger_ttc_note`, `manpower_date`, `delivered_date`, `is_returned`, `return_cause`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 21, 'RL1717', 'Saudi Arabia', 23, '0555454545', '05056565', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:43:06', '2025-08-28 22:43:06'),
-(2, 17, 'RL1717', 'Saudi Arabia', 28, '0545858585', '45454545', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:44:53', '2025-08-28 22:44:53'),
-(3, 18, 'RL1717', 'Saudi Arabia', 27, '0565252565', '05254522', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:45:36', '2025-08-28 22:45:36'),
-(4, 19, 'RL1717', 'Saudi Arabia', 26, '055458/2565', '45258595', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:46:13', '2025-08-28 22:46:13'),
-(5, 18, 'RL1717', 'Saudi Arabia', 25, '05565654585', '45452565', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:46:47', '2025-08-28 22:46:47'),
-(6, 18, 'RL1717', 'Saudi Arabia', 24, '055458522441', '454545', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:47:30', '2025-08-28 22:47:30'),
-(7, 22, 'RL1717', 'Saudi Arabia', 22, '0555522222222', '55522252555', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:48:13', '2025-08-28 22:48:13'),
-(8, 15, 'RL1717', 'Saudi Arabia', 21, '056352441', '5555555555', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:48:41', '2025-08-28 22:48:41');
+INSERT INTO `entries` (`id`, `agent_id`, `rl_no`, `country`, `client_id`, `profession`, `office_visa`, `processing`, `sponsor_no`, `pc_ref_no`, `medical_report`, `gcc_medical_report`, `note`, `status`, `visa_no`, `id_no`, `wakala_date`, `mofa_no`, `tasheer_finger_date`, `visa_issued_date`, `finger_ttc_note`, `manpower_date`, `delivered_date`, `is_returned`, `return_cause`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 21, 'RL1717', 'Saudi Arabia', 23, NULL, NULL, NULL, NULL, '05056565', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:43:06', '2025-08-28 22:43:06'),
+(2, 17, 'RL1717', 'Saudi Arabia', 28, NULL, NULL, NULL, NULL, '45454545', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:44:53', '2025-08-28 22:44:53'),
+(3, 18, 'RL1717', 'Saudi Arabia', 27, NULL, NULL, NULL, NULL, '05254522', 'FIT', 'FIT', NULL, 'MANPOWER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', '2', '2025-08-28 22:45:36', '2025-09-09 08:07:34'),
+(4, 19, 'RL1717', 'Saudi Arabia', 26, NULL, NULL, NULL, NULL, '45258595', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:46:13', '2025-08-28 22:46:13'),
+(5, 18, 'RL1717', 'Saudi Arabia', 25, NULL, NULL, NULL, NULL, '45452565', 'FIT', 'FIT', NULL, 'PENDING', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:46:47', '2025-08-28 22:46:47'),
+(6, 18, 'RL1717', 'Saudi Arabia', 24, NULL, NULL, NULL, NULL, '454545', 'FIT', 'FIT', NULL, 'EMBASSY', '1907065360', '1091734226', '02-09-2025', 'E798547772', '08-09-2025', '01-09-2025', 'OK', NULL, NULL, NULL, NULL, '2', '2', '2025-08-28 22:47:30', '2025-09-14 08:49:12'),
+(7, 22, 'RL1717', 'Saudi Arabia', 22, NULL, NULL, NULL, NULL, '55522252555', 'FIT', 'FIT', NULL, 'DELIVERED', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '03-08-2025', '14-09-2025', NULL, NULL, '2', '2', '2025-08-28 22:48:13', '2025-09-14 08:54:15'),
+(8, 15, 'RL1717', 'Saudi Arabia', 21, NULL, NULL, NULL, NULL, '5555555555', 'FIT', 'FIT', NULL, 'DELIVERED', 'Nulla suscipit neque', 'Eveniet magna velit', '02-09-2025', 'Nihil iure rerum et', '09-09-2025', '16-09-2025', 'Odio duis libero dol', '23-09-2025', '30-09-2025', NULL, NULL, '2', '1', '2025-08-28 22:48:41', '2025-09-02 18:09:39'),
+(14, 23, '1717', 'SAUDI ARABIA', 34, 'LOAD UNLOAD', 'P', 'B2B', '00', '00', 'FIT', 'FIT', NULL, 'COLLECT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', '2', '2025-09-07 10:49:44', '2025-09-07 13:30:58'),
+(15, 23, '1717', 'SAUDI ARABIA', 33, 'LOAD UNLOAD', 'P', 'B2B', '00', '1CG26GG', 'FIT', 'FIT', NULL, 'COLLECT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', '2', '2025-09-07 10:53:07', '2025-09-08 09:04:40'),
+(16, 23, '1717', 'SAUDI ARABIA', 32, 'LOAD UNLOAD', 'P', 'B2B', '00', '00', 'FIT', 'FIT', NULL, 'DELIVERED', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '10-09-2025', NULL, NULL, '2', '2', '2025-09-07 10:54:49', '2025-09-10 08:31:58'),
+(17, 23, '1717', 'SAUDI ARABIA', 31, 'LOAD UNLOAD', 'P', 'B2B', '00', '00', 'FIT', 'FIT', NULL, 'DELIVERED', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '08-09-2025', NULL, NULL, '2', '2', '2025-09-07 10:55:39', '2025-09-08 09:06:54'),
+(18, 23, '1717', 'SAUDI ARABIA', 30, 'LOAD UNLOAD', 'P', 'B2B', '00', '00', 'FIT', 'FIT', NULL, 'DELIVERED', '1907065360', '1091734226', '02-09-2025', 'E798547772', '08-09-2025', '01-09-2025', 'OK', NULL, '08-09-2025', NULL, NULL, '2', '2', '2025-09-07 10:56:24', '2025-09-08 09:06:46'),
+(19, 24, '1717', 'SAUDI ARABIA', 35, 'LOAD UNLOAD', '3 Month', 'B2B', '00', '00', 'FIT', 'FIT', NULL, 'DELIVERED', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '07-09-2025', NULL, NULL, '2', '2', '2025-09-07 11:00:46', '2025-09-07 13:14:50'),
+(20, 24, '1717', 'SAUDI ARABIA', 36, 'LOAD UNLOAD', '3 Month', 'B2B', '00', '00', 'FIT', 'FIT', NULL, 'DELIVERED', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '07-09-2025', NULL, NULL, '2', '2', '2025-09-07 11:03:08', '2025-09-07 12:59:26'),
+(21, 24, '1717', 'SAUDI ARABIA', 37, 'LOAD UNLOAD', '3 Month', 'B2B', '00', '00', 'FIT', 'FIT', NULL, 'DELIVERED', '1907065360', '1091734226', '02-09-2025', 'E798547772', NULL, '03-09-2025', 'TTC F OK', NULL, '07-09-2025', NULL, NULL, '2', '2', '2025-09-07 11:06:46', '2025-09-07 13:14:38'),
+(22, 23, '1717', 'SAUDI ARABIA', 38, 'LOAD', 'P', 'B2B', '00', '00', 'FIT', 'FIT', NULL, 'DELIVERED', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '07-09-2025', NULL, NULL, '2', '2', '2025-09-07 11:10:01', '2025-09-07 11:50:57'),
+(23, 23, '1717', 'SAUDI ARABIA', 39, 'LOAD', '3 Month', 'B2B', '111', '111', 'FIT', 'FIT', NULL, 'DELIVERED', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '07-09-2025', '07-09-2025', NULL, NULL, '2', '2', '2025-09-07 11:14:59', '2025-09-07 11:50:45');
 
 -- --------------------------------------------------------
 
@@ -404,7 +506,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '2014_10_12_100000_create_password_resets_table', 2),
 (6, '2025_08_17_180356_create_clients_table', 3),
 (7, '2025_08_18_133234_create_agents_table', 4),
-(8, '2025_08_20_225455_create_entries_table', 5);
+(8, '2025_08_20_225455_create_entries_table', 5),
+(9, '2025_09_06_221119_create_banks_table', 6),
+(11, '2025_09_10_114900_create_payments_table', 7);
 
 -- --------------------------------------------------------
 
@@ -433,6 +537,44 @@ CREATE TABLE `password_reset_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` bigint UNSIGNED NOT NULL,
+  `agent_id` bigint UNSIGNED DEFAULT NULL COMMENT 'FK',
+  `transaction_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payment_mode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Cash / Cheque / Online',
+  `amount` decimal(12,2) NOT NULL,
+  `bank_id` bigint UNSIGNED DEFAULT NULL COMMENT 'FK',
+  `cheque_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'For Bank Transaction',
+  `cheque_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'For Bank Transaction',
+  `transaction_point` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'For online transaction',
+  `destination_point` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'For online transaction',
+  `money_receipt_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cancel_remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Active / Cancel / Pending / Confirm / Bounce',
+  `created_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `log` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `agent_id`, `transaction_date`, `payment_mode`, `amount`, `bank_id`, `cheque_no`, `cheque_date`, `transaction_point`, `destination_point`, `money_receipt_no`, `remarks`, `image`, `cancel_remarks`, `status`, `created_by`, `updated_by`, `log`, `created_at`, `updated_at`) VALUES
+(5, 15, '12-09-2025', 'Cash', 2000.00, 1, NULL, NULL, NULL, NULL, '123', 'made a payment', NULL, NULL, 'Active', '1', NULL, 'Solaman Badsha<br/>12-09-2025', '2025-09-12 20:47:56', '2025-09-12 20:47:56'),
+(6, 15, '15-09-2025', 'Cheque', 3000.00, 2, 'demo cheque no 123', '15-09-2025', NULL, NULL, NULL, 'testing bank payment', 'admin/documents/payment-lbqwf1757936811.jpg', NULL, 'Active', '1', NULL, 'Solaman Badsha<br/>15-09-2025', '2025-09-15 10:46:54', '2025-09-15 10:46:54'),
+(7, 15, '16-09-2025', 'Cash', 4000.00, 1, '', '', NULL, NULL, '789', 'test 3', NULL, NULL, 'Active', '1', NULL, 'Solaman Badsha<br/>16-09-2025', '2025-09-16 14:31:33', '2025-09-16 14:31:33');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `personal_access_tokens`
 --
 
@@ -457,24 +599,24 @@ CREATE TABLE `personal_access_tokens` (
 
 CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dob` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `passport_expired_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `passport_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `passport_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_original_passport_given` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `gender` tinyint DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
   `status` tinyint NOT NULL DEFAULT '1',
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `passport_doc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `passport_doc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_by` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `updated_by` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_by` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -484,17 +626,27 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `phone`, `dob`, `passport_expired_date`, `email_verified_at`, `passport_no`, `is_original_passport_given`, `address`, `gender`, `password`, `type`, `status`, `image`, `passport_doc`, `remember_token`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 'Solaman Badsha', 'solaman@hotmail.co.uk', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, '$2y$12$mOpRpVjMsySNEIe4.ckVU.cLQ8NWjY6sy5sEDNp2tbXH6LrZdvm4y', 'admin', 0, NULL, NULL, NULL, NULL, '', '2025-08-13 11:51:20', '2025-08-20 20:00:50'),
-(2, 'Admin-Solaman Badsha', 'admin@example.com', '01814944730', NULL, NULL, NULL, NULL, NULL, 'Dhaka, Bangladesh', 1, '$2y$12$IYtMNEo1Redn3633fROB7uz9ZjwM1djInm//D7HD4G4CP5Jppo7TS', 'admin', 1, 'admin/userImage/shagor_formal.jpg', NULL, NULL, '1', '', '2025-08-14 11:03:56', '2025-08-27 23:09:22'),
+(1, 'Solaman Badsha', 'solaman@hotmail.co.uk', '01814944730', NULL, NULL, NULL, NULL, NULL, 'UK', NULL, '$2y$12$IYtMNEo1Redn3633fROB7uz9ZjwM1djInm//D7HD4G4CP5Jppo7TS', 'admin', 1, 'admin/userImage/shagor_formal.jpg', NULL, NULL, NULL, '', '2025-08-13 11:51:20', '2025-08-20 20:00:50'),
+(2, 'Admin-Solaman Badsha', 'admin@example.com', '01814000000', NULL, NULL, NULL, NULL, NULL, 'Dhaka, Bangladesh', 1, '$2y$12$IYtMNEo1Redn3633fROB7uz9ZjwM1djInm//D7HD4G4CP5Jppo7TS', 'admin', 1, 'admin/userImage/1400967008479.jpeg', NULL, NULL, '1', '', '2025-08-14 11:03:56', '2025-08-29 00:06:18'),
 (3, 'Manager User', 'manager@example.com', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, '$2y$12$NJqCy65OiFHmoJFR2HpItue3wDjIr2ebjF7JcZqOxpSWMYNiK08B.', 'manager', 0, NULL, NULL, NULL, '2', '', '2025-08-14 11:03:56', '2025-08-20 20:03:21'),
-(21, 'MD BELAYET HOSSAIN', 'AKTOURSINT@GMAIL.COM', '01816366220', '02-02-1984', '25-02-2026', NULL, 'A13386045', 'NO', 'FENI', 1, '$2y$12$pqoA9q0CXyN88Toxac./xO3ViPdtR9yT6zbkGnlFV8rHzjLzHd69W', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:11:48', '2025-08-28 22:11:48'),
+(21, 'MD BELAYET HOSSAIN', 'AKTOURSINT@GMAIL.COM', '01816366220', '02-02-1984', '25-02-2026', NULL, 'A13386045', 'YES', 'FENI', 1, '$2y$12$pqoA9q0CXyN88Toxac./xO3ViPdtR9yT6zbkGnlFV8rHzjLzHd69W', 'user', 1, NULL, NULL, NULL, '2', '2', '2025-08-28 22:11:48', '2025-09-01 10:25:18'),
 (22, 'MD SHAKIL AHAMED SUMON', 'SUMON@GMAIL.COM', '01401399032', '03-04-1993', '01-10-2034', NULL, 'A09268795', 'NO', 'KUSHTIA', 1, '$2y$12$PMWYWAwsyv9JU.iDAacXduIMnYKiEdbfezUAma15pS1iUZKSq0pRC', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:14:00', '2025-08-28 22:14:00'),
 (23, 'LOVELY YEASMIN', 'LOVELY@GAMIL.COM', '01706729412', '10-11-1984', '21-11-2027', NULL, 'A05824968', 'NO', 'KISHOREGANJ', 2, '$2y$12$GH33Mxh/QODzYfcOjL2dSOJxpBQjcooO/IbyxHjVIiQs44X4wmNby', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:15:22', '2025-08-28 22:15:22'),
 (24, 'MUS AFTARUN NESA', 'MUS@GMAIL.COM', '01711254574', '10-04-1993', '16-12-2029', NULL, 'A17226146', 'NO', 'HABIGANJ', 2, '$2y$12$HOTHzHGyUO8.YuPo4Hy9ze8eBRO4XxQ4wKvpJ/5Jz8c4BcGE9mI96', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:16:30', '2025-08-28 22:16:30'),
 (25, 'FARHANA AKTHER', 'FARHANA@GMAIL.COM', '01711584875', '01-03-1998', '30-07-2027', NULL, 'B00707422', 'NO', 'HABIGANJ', 2, '$2y$12$ak013T6XKRNXmJO.jRSXB.xOtgJOHGtpe3U/JTqvDgq8rgdSPmAh6', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:17:47', '2025-08-28 22:17:47'),
 (26, 'JAHANGIR ALAM', 'JANGIR@GAMIL.COM', '01752457485', '05-03-1985', '07-06-2027', NULL, 'EK0587403', 'NO', 'CUMILLA', 1, '$2y$12$LQadHHyC2kxDihIoSgLjf.lVdhc.7WL0U/4A6DGC2uI7mOk.xqLAO', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:19:06', '2025-08-28 22:19:06'),
 (27, 'MST MALEKA AKTER', 'MST@GMAIL.COM', '01819524174', '01-01-2000', '11-01-2030', NULL, 'A17526623', 'NO', 'HABIGANJ', 2, '$2y$12$IwqNrhAp7I8Y.dbnEcxiS.QPMpaoAU6LW8.LOwWIUguhSuNoZHNRC', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:20:04', '2025-08-28 22:20:04'),
-(28, 'ABDUL AHAD', 'ABDUL@GMAIL.COM', '01922588471', '27-10-1988', '11-03-2035', NULL, 'A18277860', 'NO', 'SYLHET', 1, '$2y$12$U2xD1hC66evspUwj5Ytv5.29sNXqSofM/pEVaTdMo4zMOL/L1gZgq', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:21:11', '2025-08-28 22:21:11');
+(28, 'ABDUL AHAD', 'ABDUL@GMAIL.COM', '01922588471', '27-10-1988', '11-03-2035', NULL, 'A18277860', 'NO', 'SYLHET', 1, '$2y$12$U2xD1hC66evspUwj5Ytv5.29sNXqSofM/pEVaTdMo4zMOL/L1gZgq', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-08-28 22:21:11', '2025-08-28 22:21:11'),
+(30, 'MD ISRAFIL', NULL, '01761588663', '25-10-1999', '01-02-2033', NULL, 'A06890502', 'YES', 'CUMILLA', 1, '$2y$12$2q8lAdSk1VzDO6OJ/jgJ1OYNX6o4n/nGUgdGqlyKtIt0OmLd/nida', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-09-07 10:41:12', '2025-09-07 10:41:12'),
+(31, 'MD ESARUL SHAKE', NULL, '01727996107', '01-01-1993', '10-01-2034', NULL, 'A13681645', 'YES', 'SIRAJGANJ', 1, '$2y$12$.YsOkxHuOJEaY/Ygmlursez5A8jzJ3V8OGKrqLW4xeRO2Lr/sPQ2O', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-09-07 10:42:36', '2025-09-07 10:42:36'),
+(32, 'ALAMIN', NULL, '01936645883', '01-02-1980', '19-03-2035', NULL, 'A18255410', 'YES', 'NARAYANGANJ', 1, '$2y$12$OFQEhGfiJS1HA1IR7/DZFu6HD7BSn9x9H6QTsVrRW8KRYKxlEfxgu', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-09-07 10:44:08', '2025-09-07 10:44:08'),
+(33, 'MITHU MIA', NULL, '01915140724', '01-01-1982', '11-03-2035', NULL, 'A18190850', 'YES', 'MADARIPUR', 1, '$2y$12$Z56kA.eEwK/KuDUKrV6C5uHRGRTIXh8xiyHkXZDoOsFOfMPrBgRo.', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-09-07 10:45:19', '2025-09-07 10:45:19'),
+(34, 'MD TOFAJJAL MIAH', NULL, '01670315888', '01-01-2004', '30-09-2033', NULL, 'A12496572', 'YES', 'BRAHMANBARIA', 1, '$2y$12$vktCAG2NzVvqle0HwSf28e3pbmxYVhxCCxIIw2PlYsbSuFT6ytfAq', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-09-07 10:48:18', '2025-09-07 10:48:18'),
+(35, 'MD SHIHAD ALI', NULL, '01737642622', '21-07-2003', '05-02-2034', NULL, 'A13975538', 'YES', 'LALMONIRHAT', 1, '$2y$12$pUoanOd4U5lsTpOWkNN.nOBiqEzXT0P8kfGAPqRDLPLVYTmgC.iVm', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-09-07 11:00:11', '2025-09-07 11:00:11'),
+(36, 'MD AKIB HOSEN', NULL, '01783118265', '31-12-1997', '20-03-2033', NULL, 'A07278366', 'YES', 'LALMONIRHAT', 1, '$2y$12$7t9fetUqnXX/nch.HguBe.90t3YlxTIcm65cy1jzgrlr1sRpK/ej6', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-09-07 11:02:23', '2025-09-07 11:02:23'),
+(37, 'MAZHARUL ISLAM', NULL, '01890621468', '03-03-2004', '21-01-2033', NULL, 'A06683284', 'YES', 'CUMILLA', 1, '$2y$12$a0O3uKPVEuIPB7JjomDuMe3EZIoKiv9EYl9QVTnsFE3evneaMITeG', 'user', 1, 'admin/userImage/passenger-HdW6h1757243160.jpg', 'admin/documents/1757243160qyTvY2ttNBlFT2H.jpg', NULL, '2', NULL, '2025-09-07 11:06:01', '2025-09-07 11:06:01'),
+(38, 'MD FOYSAL', NULL, '01714146750', '01-03-2004', '27-01-2034', NULL, 'A13818936', 'YES', 'BHOLA', 1, '$2y$12$DFwMhrKKqiqmkm8NnErmJeVSDM4MXeyXBJljkGrD2iYYsx/KUeARG', 'user', 1, 'admin/userImage/passenger-fuJ7x1757243334.jpg', 'admin/documents/1757243353jIB6QBjNSHQEtxy.jpg', NULL, '2', '2', '2025-09-07 11:08:54', '2025-09-07 11:09:14'),
+(39, 'IBRAHIM HOWLADER', NULL, '01846881939', '29-11-1994', '01-06-2035', NULL, 'A18912214', 'YES', 'BARISHAL', 1, '$2y$12$lqEOXH329rVG2ZcTUgqqGuwU6Z5yixvY4dYKhBf6EpRzN86Uy16sy', 'user', 1, NULL, NULL, NULL, '2', NULL, '2025-09-07 11:14:20', '2025-09-07 11:14:20');
 
 --
 -- Indexes for dumped tables
@@ -507,6 +659,24 @@ ALTER TABLE `agents`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `agents_phone_unique` (`phone`),
   ADD UNIQUE KEY `agents_email_unique` (`email`);
+
+--
+-- Indexes for table `agent_ledger`
+--
+ALTER TABLE `agent_ledger`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `banks`
+--
+ALTER TABLE `banks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `bank_ledger`
+--
+ALTER TABLE `bank_ledger`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `countries`
@@ -548,6 +718,14 @@ ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
 
 --
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `payments_agent_id_foreign` (`agent_id`),
+  ADD KEY `payments_bank_id_foreign` (`bank_id`);
+
+--
 -- Indexes for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
@@ -570,7 +748,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `banks`
+--
+ALTER TABLE `banks`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -582,7 +766,7 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `entries`
 --
 ALTER TABLE `entries`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -594,7 +778,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -606,18 +796,18 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `entries`
+-- Constraints for table `payments`
 --
-ALTER TABLE `entries`
-  ADD CONSTRAINT `entries_agent_id_foreign` FOREIGN KEY (`agent_id`) REFERENCES `agents` (`id`),
-  ADD CONSTRAINT `entries_client_id_foreign` FOREIGN KEY (`client_id`) REFERENCES `users` (`id`);
+ALTER TABLE `payments`
+  ADD CONSTRAINT `payments_agent_id_foreign` FOREIGN KEY (`agent_id`) REFERENCES `agents` (`id`),
+  ADD CONSTRAINT `payments_bank_id_foreign` FOREIGN KEY (`bank_id`) REFERENCES `banks` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

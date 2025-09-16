@@ -175,6 +175,28 @@ class IndexController extends Controller
         
     }//update
 
+
+    public function particulars($reference_no = NULL) {
+		$particular = $payment_mode = $money_receipt = $remarks =  '';
+		
+		$payment = Payment::with('bank')->find($reference_no);
+		if ($payment->payment_mode == 'Cheque') {
+			$payment_mode =  $payment->bank->bank_name. " A/C # ". $payment->bank->account_no." Issued Cheque  #". $payment->cheque_no;
+		} else {
+			$payment_mode = $payment->payment_mode;
+		}
+		
+		if($payment->money_receipt_no) {
+			$money_receipt = " {Money Receipt No #  ".$payment->money_receipt_no. " }";
+		}
+			
+		if ($payment->remarks) {
+			$remarks = "<i>[" . $payment->remarks . "]</i>";
+		}
+		
+		return "<span style='font-size:11px'>" . $particular . $payment_mode. $money_receipt .  $remarks . "</span>";
+	}
+
     public function report(){
         $data['title'] = 'Payment Report';
         $data['allData'] = Payment::with(['agent', 'bank'])->get();

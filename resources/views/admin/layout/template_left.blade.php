@@ -68,20 +68,20 @@
 
 			<li class="treeview">
 				<a href="javascript:">
-					<i class="fa fa-usd fa-lg"></i> <span>Bank Module</span> <i class="fa fa-angle-left pull-right"></i>
+					<i class="fa fa-calculator fa-lg"></i> <span>Accounts Module</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="{{ route('bank.index') }}"><i class="fa fa-plus"></i>Manage Bank</a></li>
-					<li><a href="#"><i class="fa fa-bar-chart"></i>Bank Ledger</a></li>
+					<li><a href="{{ route('payment.index') }}"><i class="fa fa-eye"></i>Manage Payment</a></li>
 				</ul>
             </li>
 
 			<li class="treeview">
 				<a href="javascript:">
-					<i class="fa fa-calculator fa-lg"></i> <span>Accounts Module</span> <i class="fa fa-angle-left pull-right"></i>
+					<i class="fa fa-usd fa-lg"></i> <span>Bank Module</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="{{ route('payment.index') }}"><i class="fa fa-eye"></i>Manage Payment</a></li>
+					<li><a href="{{ route('bank.index') }}"><i class="fa fa-plus"></i>Manage Bank</a></li>
+					<li><a href="{{ route('bank.ledger') }}"><i class="fa fa-bar-chart"></i>Bank Ledger</a></li>
 				</ul>
             </li>
 

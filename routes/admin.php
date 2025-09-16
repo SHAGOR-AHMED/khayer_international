@@ -100,6 +100,8 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::post('/update',              'IndexController@update')->name('update');
 			Route::get('/status/{id}',          'IndexController@status')->name('control');
 			Route::get('/delete/{id}',          'IndexController@delete')->name('delete');
+			Route::get('/ledger',               'IndexController@ledger')->name('ledger');
+			Route::post('/report',              'IndexController@report')->name('report');
 		});
 
 		/*---Payment---*/
