@@ -119,6 +119,8 @@
 
                             if ($row->transaction_type == 'Payment') {
                                 $particulars = app(\App\Http\Controllers\Admin\Payment\IndexController::class)->particulars($row->reference_no);
+                            } else if ($row->transaction_type == 'Expense') {
+                                $particulars = app(\App\Http\Controllers\Admin\Expense\IndexController::class)->particulars($row->reference_no);
                             }
 
                             echo "<tr>";

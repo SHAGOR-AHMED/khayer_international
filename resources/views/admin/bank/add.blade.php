@@ -19,7 +19,7 @@
           <form action="{{ route('bank.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
           @csrf
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
                     <label for="Name">Bank Name <span class="text-red">*</span></label>
                     <input type="text" class="form-control" name="bank_name" placeholder="Enter Bank Name" value="{{ old('bank_name') }}" required>
@@ -48,14 +48,13 @@
                     <label>Remarks</label>
                     <textarea class="form-control" name="bank_remarks" placeholder="Enter Remarks">{{ old('bank_remarks') }}</textarea>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <button style="width:100%" type="submit" name="submit" class="btn btn-success"><i class="fa fa-bookmark" aria-hidden="true"></i> Save Data</button>
-              </div>
+                <div class="form-group">
+                  <button style="width:100%" type="submit" name="submit" class="btn btn-success"><i class="fa fa-bookmark" aria-hidden="true"></i> Save Data</button>
+                </div>
 
+              </div>
             </div>
-
           </form>         
           </div><!-- /.box-body -->
         </div><!-- /.box -->
@@ -68,54 +67,47 @@
             </div>
           </div>
           <div class="box-body">
-            <form action="{{ route('agent.update') }}" name="form" method="post" name="edit" enctype="multipart/form-data" autocomplete="off">
-                @csrf
+            <form action="{{ route('bank.update') }}" name="form" method="post" name="edit" enctype="multipart/form-data">
+            @csrf
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6 col-md-offset-3">
                   <div class="form-group">
-                      <label for="regional_branch_name">Name <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" name="name" placeholder="Enter Name" value="{{ $single->name }}" required>
-                      <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
+                    <label for="Name">Bank Name <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="bank_name" placeholder="Enter Bank Name" value="{{ $single->bank_name }}" required>
+                    <span class="text-danger">{{ $errors->has('bank_name') ? $errors->first('bank_name') : '' }}</span>
                   </div>
 
                   <div class="form-group">
-                      <label for="password">Email</label>
-                      <input type="email" class="form-control" name="email" placeholder="Enter Email" value="{{ $single->email }}">
+                      <label for="Name">Account Name <span class="text-red">*</span></label>
+                      <input type="text" class="form-control" name="account_name" placeholder="Enter Account Name" value="{{ $single->account_name }}" required>
+                      <span class="text-danger">{{ $errors->has('account_name') ? $errors->first('account_name') : '' }}</span>
                   </div>
 
                   <div class="form-group">
-                      <label for="password">Phone No <span class="text-red">*</span></label>
-                      <input type="text" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ $single->phone }}" required>
-                      <span class="text-danger">{{ $errors->has('phone') ? $errors->first('phone') : '' }}</span>
+                      <label for="password">Account No <span class="text-red">*</span></label>
+                      <input type="text" class="form-control" name="account_no" placeholder="Enter Account No" value="{{ $single->account_no }}" required>
+                      <span class="text-danger">{{ $errors->has('account_no') ? $errors->first('account_no') : '' }}</span>
                   </div>
 
                   <div class="form-group">
-                    <label>Address <span class="text-red">*</span></label>
-                    <textarea class="form-control" name="address" placeholder="Enter Address" required>{{ $single->address }}</textarea>
-                    <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
+                      <label for="Name">Account Balance <span class="text-red">*</span></label>
+                      <input type="text" class="form-control" name="account_balance" placeholder="Enter Account Balance" value="{{ $single->account_balance }}" readonly>
+                  </div>
+
+                  <div class="form-group">
+                      <label>Remarks</label>
+                      <textarea class="form-control" name="bank_remarks" placeholder="Enter Remarks">{{ $single->bank_remarks }}</textarea>
                   </div>
 
                   <input type="hidden" name="id" value="{{ $single->id }}"  />
 
-                  <div class="form-group">
-                      <label for="address">Update Photograph</label>
-                      <input type="file" id="userfile" class="form-control" name="image" value="" onchange="getPreview('userfile','img_preview','none');">
-                      <code>(Max photo size: 400x400, 512kb)</code>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <img src="{{ imageShow($single->image) }}" id="img_preview" class="img-responsive img-thumbnail"/>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
                   <div>
                     <button style="width:100%" type="submit" name="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Data</button>
                   </div>
+
                 </div>
+                
               </div>
-              
             </form>
           </div><!-- /.box-body -->
         </div><!-- /.box -->

@@ -116,6 +116,18 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::get('/report',               'IndexController@report')->name('report');
 		});
 
+		/*---Expense---*/
+		Route::namespace('Expense')->prefix('/expense')->name('expense.')->group(function(){
+			Route::get('/index',                'IndexController@index')->name('index');
+			Route::get('/create',               'IndexController@create')->name('add');
+			Route::post('/store',               'IndexController@store')->name('store');
+			Route::get('edit/{user_id}',        'IndexController@edit')->name('edit');
+			Route::post('/update',              'IndexController@update')->name('update');
+			Route::get('/status/{id}',          'IndexController@status')->name('control');
+			Route::get('/delete/{id}',          'IndexController@delete')->name('delete');
+			Route::get('/report',               'IndexController@report')->name('report');
+		});
+
 		
 	});
 

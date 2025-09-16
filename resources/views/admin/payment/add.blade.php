@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('title')
-  Create New Payment
+  Add Payment
 @endsection
 @section('content')
 
@@ -12,14 +12,15 @@
           <div class="box-header with-border">
             <h3 class="box-title">Create New Payment</h3>
             <div class="box-tools pull-right">
-              <a href="{{ route('payment.index') }}" class="btn btn-success"><i class="fa fa-eye"></i>&nbsp;View All</a>
+              <a href="{{ route('payment.index') }}" class="btn btn-success btn-sm" style="margin-left: 250px;"><i class="fa fa-eye"></i>&nbsp;View All</a>
             </div>
           </div>
+          
           <div class="box-body">
           <form action="{{ route('payment.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
           @csrf
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
                     <label for="Name">Transaction Date <span class="text-red">*</span></label>
                     <input type="text" class="form-control datepicker" name="transaction_date" placeholder="Enter Date" value="{{ date('d-m-Y') }}" required>
@@ -94,14 +95,13 @@
                     <code>(Max photo size: 400x400, 512kb)</code>
                 </div>
 
-              </div>
+                <div class="form-group">
+                  <button style="width:100%" type="submit" name="submit" class="btn btn-success"><i class="fa fa-bookmark" aria-hidden="true"></i> Save Data</button>
+                </div>
 
-              <div class="form-group">
-                <button style="width:100%" type="submit" name="submit" class="btn btn-success"><i class="fa fa-bookmark" aria-hidden="true"></i> Save Data</button>
               </div>
 
             </div>
-
           </form>         
           </div><!-- /.box-body -->
         </div><!-- /.box -->

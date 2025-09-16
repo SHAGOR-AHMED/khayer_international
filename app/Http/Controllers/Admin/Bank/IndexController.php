@@ -26,7 +26,7 @@ class IndexController extends Controller
 
     public function store(Request $request){
 
-       $this->validate($request,[
+        $this->validate($request,[
             'bank_name'=>'required',
             'account_name'=>'required',
             'account_no'=>'required',
@@ -82,17 +82,17 @@ class IndexController extends Controller
     public function update(Request $request){
 
         $this->validate($request,[
-            'name'=>'required',
-            'phone'=>'required|digits_between:11,14',
-            'address'=>'required',
+            'bank_name'=>'required',
+            'account_name'=>'required',
+            'account_no'=>'required',
         ]);
        
-        $data               = Bank::findOrFail($request->id);
-        $data->name         = $request->name;
-        $data->email        = $request->email;
-        $data->phone        = $request->phone;
-        $data->address      = $request->address;
-        $success            = $data->save();
+        $data                = Bank::findOrFail($request->id);
+        $data->bank_name     = $request->bank_name;
+        $data->account_name  = $request->account_name;
+        $data->account_no    = $request->account_no;
+        $data->bank_remarks  = $request->bank_remarks;
+        $success             = $data->save();
 
         if($success){
             notify()->success(updated_success(),"Success","topRight");

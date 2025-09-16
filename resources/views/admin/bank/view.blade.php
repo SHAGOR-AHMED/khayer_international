@@ -51,15 +51,17 @@ use App\Models\BankLedger;
                             @endif
                           </td>
                           <td>
+                            @if($data->id != 1)
                               @if($data->bank_status == 'ACTIVE')
-                                  <a onclick="return confirm('Are You Sure?')" href="{{ route('bank.control',hashid_encode($data->id)) }}" >Inactive <i class="fa fa-times-circle fa-lg"></i></a> | 
+                                <a onclick="return confirm('Are You Sure?')" href="{{ route('bank.control',hashid_encode($data->id)) }}" >Inactive <i class="fa fa-times-circle fa-lg"></i></a> | 
                               @else
-                                  <a onclick="return confirm('Are You Sure?')" href="{{ route('bank.control',hashid_encode($data->id)) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
+                                <a onclick="return confirm('Are You Sure?')" href="{{ route('bank.control',hashid_encode($data->id)) }}" >Active <i class="fa fa-check-circle fa-lg"></i></a> | 
                               @endif
-                              <a href="{{ route('bank.edit',hashid_encode($data->id)) }}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a>
+                                <a href="{{ route('bank.edit',hashid_encode($data->id)) }}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a>
                               @if(BankLedger::where('bank_id',$data->id)->count() <= 1)
                                 | <a href="{{ route('bank.delete',hashid_encode($data->id))}}" style="color: red;" title="Delete" onclick="return confirm('Are you sure to delete this ?')" >Delete <i class="fa fa-trash fa-lg" style="color: red;"></i></a>
                               @endif
+                            @endif
                           </td>
                       </tr>
                     @endforeach

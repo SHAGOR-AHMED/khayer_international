@@ -48,6 +48,14 @@ class IndexController extends Controller
             'money_receipt_no'  =>'required',
         ]);
 
+        if($request->payment_mode == 'Cheque'){
+            $this->validate($request,[
+                'bank_id'      =>'required',
+                'cheque_no'    =>'required',
+                'cheque_date'  =>'required',
+            ]);
+        }
+
         return DB::transaction(function () use ($request) {
 
             $payment_mode = $request->payment_mode;
@@ -87,7 +95,7 @@ class IndexController extends Controller
             $data->money_receipt_no   = $request->money_receipt_no;
             $data->remarks            = $request->remarks;
             $data->created_by         = logged_in_user_id();
-            $data->log                = logged_in_user_name() . "<br/>" .  $data->transaction_date;
+            $data->log                = logged_in_user_name() . "<br/>" .  $request->transaction_date;
             $success                  = $data->save();
 
             if ($success) {
@@ -107,7 +115,7 @@ class IndexController extends Controller
                 $Aldata = array(
                     'id'               => make_id('agent_ledger', 'id', 'AL'),
                     'agent_id'         => $request->agent_id,
-                    'billing_date'     => $data->transaction_date,
+                    'billing_date'     => $request->transaction_date,
                     'transaction_type' => "Payment",
                     'reference_no'     => $data->id,
                     'amount'           => $request->amount,
@@ -124,7 +132,7 @@ class IndexController extends Controller
                 $Bldata = array(
                     'id'               => make_id('bank_ledger', 'id', 'BL'),
                     'bank_id'          => $bank_id,
-                    'transaction_date' => $data->transaction_date,
+                    'transaction_date' => $request->transaction_date,
                     'transaction_type' => "Payment",
                     'reference_no'     => $data->id,
                     'amount'           => $request->amount,
