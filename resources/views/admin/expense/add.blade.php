@@ -28,11 +28,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Expense From<span class="text-red">*</span></label>
-                    <select class="form-control" name="payment_mode" required>
-                      <option value="Cash">Cash</option>
+                    <label for="Name">Expense From<span class="text-red">*</span></label>
+                    <select class="form-control" name="bank_id" required>
+                      @foreach($all_banks as $id => $bank_name)
+                        <option value="{{ $id }}">{{ $bank_name }}</option>
+                      @endforeach
                     </select>
-                    <span class="text-danger">{{ $errors->has('payment_mode') ? $errors->first('payment_mode') : '' }}</span>
+                    <span class="text-danger">{{ $errors->has('bank_id') ? $errors->first('bank_id') : '' }}</span>
                 </div>
 
                 <div class="form-group">

@@ -28,13 +28,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Name">Supplier Name <span class="text-red">*</span></label>
-                    <select class="form-control liveSearch" name="supplier_id" required>
-                      @foreach($all_suppliers as $id => $office_name)
-                        <option value="{{ $id }}">{{ $office_name }}</option>
+                    <label for="Name">Agent Name <span class="text-red">*</span></label>
+                    <select class="form-control liveSearch" name="agent_id" required>
+                      @foreach($all_agents as $id => $name)
+                        <option value="{{ $id }}">{{ $name }}</option>
                       @endforeach
                     </select>
-                    <span class="text-danger">{{ $errors->has('supplier_id') ? $errors->first('supplier_id') : '' }}</span>
+                    <span class="text-danger">{{ $errors->has('agent_id') ? $errors->first('agent_id') : '' }}</span>
                 </div>
 
                 <div class="form-group">

@@ -39,6 +39,17 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::get('/delete/{id}',          'IndexController@delete')->name('delete');
 		});
 
+		/*---Supplier---*/
+		Route::namespace('Supplier')->prefix('/supplier')->name('supplier.')->group(function(){
+			Route::get('/index',                'IndexController@index')->name('index');
+			Route::get('/create',               'IndexController@create')->name('add');
+			Route::post('/store',               'IndexController@store')->name('store');
+			Route::get('/edit/{id}',            'IndexController@edit')->name('edit');
+			Route::post('/update',              'IndexController@update')->name('update');
+			Route::get('/status/{id}',          'IndexController@status')->name('control');
+			Route::get('/delete/{id}',          'IndexController@delete')->name('delete');
+		});
+
 		/*---Client---*/
 		Route::namespace('Client')->prefix('/client')->name('client.')->group(function(){
 			Route::get('/index',                'IndexController@index')->name('index');

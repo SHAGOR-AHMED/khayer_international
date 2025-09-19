@@ -35,10 +35,7 @@ class IndexController extends Controller
 
         return DB::transaction(function () use ($request) {
 
-            // $bank_id = make_id('banks', 'id', 'BANK');
-
             $data                     = new Bank();
-            // $data->id                 = $bank_id;
             $data->bank_name          = $request->bank_name;
             $data->account_name       = $request->account_name;
             $data->account_no         = $request->account_no;

@@ -26,7 +26,6 @@ class IndexController extends Controller
     public function create(){
         $data['add'] = TRUE;
         $data['all_banks'] = Bank::query()
-                            ->where('id','!=',1)
                             ->pluck('bank_name', 'id')
                             ->prepend('Please Select', '')
                             ->toArray();
@@ -37,16 +36,15 @@ class IndexController extends Controller
 
        $this->validate($request,[
             'transaction_date'  =>'required',
-            'payment_mode'      =>'required',
+            'bank_id'           =>'required',
             'amount'            =>'required',
             'description'       =>'required',
         ]);
 
         return DB::transaction(function () use ($request) {
 
-            $payment_mode = $request->payment_mode;
             $status = "Active";
-            $bank_id = '';
+            $bank_id = $request->bank_id;
 
             $data                     = new Expense();
 
@@ -58,13 +56,6 @@ class IndexController extends Controller
                 $imgName= $this->imageUplaodByName($current_image, null, $imagePath, $imgFor); 
                 $data->image = $imgName;
             }
-
-            if ($payment_mode == 'Cash') {
-				$bank_id = '1';
-			} else {
-				$bank_id = $request->bank_id;
-			}
-            
             $data->transaction_date   = date('d-m-Y', strtotime($request->transaction_date));
             $data->bank_id            = $bank_id;
             $data->amount             = $request->amount;
@@ -113,6 +104,7 @@ class IndexController extends Controller
         });
 
     }//store
+
 
     public function edit($id){
     	$data['edit'] = TRUE;

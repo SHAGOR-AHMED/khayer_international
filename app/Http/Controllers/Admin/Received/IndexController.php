@@ -10,7 +10,6 @@ use App\Models\Supplier;
 use App\Models\BankLedger;
 use App\Models\AgentLedger;
 use Illuminate\Http\Request;
-use App\Models\SupplierLedger;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -21,13 +20,13 @@ class IndexController extends Controller
     use ImageUpload;
 
     public function index(){
-    	$data['allData'] = Payment::with(['supplier', 'bank'])->get();
+    	$data['allData'] = Payment::with(['agent', 'bank'])->get();
     	return view('admin.payment.view',$data);
     }
 
     public function create(){
         $data['add'] = TRUE;
-        $data['all_suppliers'] = Supplier::query()
+        $data['all_agents'] = Supplier::query()
                             ->where('status',1)
                             ->pluck('office_name', 'id')
                             ->prepend('Please Select', '')
@@ -44,7 +43,7 @@ class IndexController extends Controller
 
        $this->validate($request,[
             'transaction_date'  =>'required',
-            'supplier_id'       =>'required',
+            'agent_id'          =>'required',
             'payment_mode'      =>'required',
             'amount'            =>'required',
             'money_receipt_no'  =>'required',
@@ -66,7 +65,7 @@ class IndexController extends Controller
             $cheque_no = '';
             $cheque_date = '';
 
-            $data                    = new Payment();
+            $data                     = new Payment();
 
             $imagePath      = 'admin/documents/';
             $imgFor = 'payment-';
@@ -77,6 +76,9 @@ class IndexController extends Controller
                 $data->image = $imgName;
             }
 
+            $data->transaction_date   = date('d-m-Y', strtotime($request->transaction_date));
+            $data->agent_id           = $request->agent_id;
+
             if ($payment_mode == 'Cash') {
 				$bank_id = '1';
 			} else if ($payment_mode == 'Cheque') {
@@ -84,9 +86,7 @@ class IndexController extends Controller
 				$cheque_no = $request->cheque_no;
 				$cheque_date = date('d-m-Y', strtotime($request->cheque_date));
 			}
-
-            $data->transaction_date   = date('d-m-Y', strtotime($request->transaction_date));
-            $data->supplier_id        = $request->supplier_id;
+            
             $data->amount             = $request->amount;
             $data->payment_mode       = $payment_mode;
             $data->bank_id            = $bank_id;
@@ -110,22 +110,19 @@ class IndexController extends Controller
 					}
 				}
 
-                // Update supplier balance
-                Supplier::where('id',$request->supplier_id)
-                    ->update([
-                        'balance' => DB::raw('balance + ' . (int) $request->amount),
-                    ]);
-                // Create supplier ledger
+                // Update party balance
+                //$this->db->query("UPDATE tbl_party SET balance=balance+'" . $amount . "' WHERE id='" . $party_id . "' ");
+                // Create agent ledger
                 $Aldata = array(
-                    'id'               => make_id('supplier_ledger', 'id', 'SL'),
-                    'supplier_id'      => $request->supplier_id,
+                    'id'               => make_id('agent_ledger', 'id', 'AL'),
+                    'agent_id'         => $request->agent_id,
                     'billing_date'     => $request->transaction_date,
                     'transaction_type' => "Payment",
                     'reference_no'     => $data->id,
                     'amount'           => $request->amount,
                     'ledger_status'    => $status,
                 );
-                SupplierLedger::insert($Aldata);
+                AgentLedger::insert($Aldata);
                 
                 // Update bank account balance
                 Bank::where('id',$bank_id)
@@ -164,8 +161,6 @@ class IndexController extends Controller
     }
 
     public function update(Request $request){
-
-        dd('yoo');
 
         $this->validate($request,[
             'name'=>'required',
@@ -213,7 +208,7 @@ class IndexController extends Controller
 
     public function report(){
         $data['title'] = 'Payment Report';
-        $data['allData'] = Payment::with(['supplier', 'bank'])->get();
+        $data['allData'] = Payment::with(['agent', 'bank'])->get();
         $pdf = PDF::loadHtml(view('admin.payment.report', $data));
         return $pdf->stream('payment-report'.date('m-d-Y').'.pdf');
         //$pdf = PDF::loadView('admin.payment.report', $data);

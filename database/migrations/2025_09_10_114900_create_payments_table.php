@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('agent_id')->nullable();
+            $table->foreignId('supplier_id')->nullable();
             $table->string('transaction_date');
             $table->string('payment_mode');
             $table->decimal('amount', total: 12, places: 2);

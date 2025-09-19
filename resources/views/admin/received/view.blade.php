@@ -22,7 +22,7 @@
                   <tr>
                       <th>SN</th>
                       <th>Trans. Date</th>
-                      <th>Supplier</th>
+                      <th>Agent Name</th>
                       <th>Payment From</th>
                       <th>Amount</th>
                       <th>Remarks</th>
@@ -39,7 +39,7 @@
                       <tr>
                           <td>{{ sprintf("%02d", ++$key); }}</td>
                           <td>{{ $data->transaction_date }}</td>
-                          <td>{{ $data->supplier->office_name }}</td>
+                          <td>{{ $data->agent->name }}</td>
                           <td>
                             {{ $data->payment_mode }}
                             @if($data->image)

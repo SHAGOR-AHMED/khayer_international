@@ -67,8 +67,8 @@
                     <th width="25px">#</th>
                     <th width="95px"> Trans. Date  </th>
                     <th> Particulars </th>
-                    <th width="90px"> Debit (Tk.) </th>
-                    <th width="90px"> Credit (Tk.) </th>                
+                    <th width="90px"> Collection Amount (Tk.) </th>
+                    <th width="90px"> Paying Amount (Tk.) </th>                
                     <th width="110px"> Balance (Tk.) </th>
                 </tr>
             </thead>
