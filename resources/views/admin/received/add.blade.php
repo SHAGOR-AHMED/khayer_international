@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('title')
-  Add Payment
+  Add Received
 @endsection
 @section('content')
 
@@ -10,14 +10,14 @@
       @isset($add)
         <div class="box box-warning">
           <div class="box-header with-border">
-            <h3 class="box-title">Create New Payment</h3>
+            <h3 class="box-title">Create New Received</h3>
             <div class="box-tools pull-right">
-              <a href="{{ route('payment.index') }}" class="btn btn-success btn-sm" style="margin-left: 250px;"><i class="fa fa-eye"></i>&nbsp;View All</a>
+              <a href="{{ route('received.index') }}" class="btn btn-success btn-sm" style="margin-left: 250px;"><i class="fa fa-eye"></i>&nbsp;View All</a>
             </div>
           </div>
           
           <div class="box-body">
-          <form action="{{ route('payment.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form action="{{ route('received.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
           @csrf
             <div class="row">
               <div class="col-md-6 col-md-offset-3">

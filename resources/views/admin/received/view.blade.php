@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('title')
-  Manage Payment
+  Manage Received
 @endsection
 @section('content')
 
@@ -10,10 +10,10 @@
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Manage Payment's</h3>
+          <h3 class="box-title">Manage Received's</h3>
           <div class="box-tools pull-right">
-            <a href="{{ route('payment.report') }}" target="_blank" style="float: left; font-size: 20px; padding-right:5px;"><i class="fa fa-file-pdf-o"></i></a>
-            <a href="{{ route('payment.add') }}" class="btn btn-success btn-sm"> <i class="fa fa-plus"></i>&nbsp;Add New</a>
+            <a href="{{ route('received.report') }}" target="_blank" style="float: left; font-size: 20px; padding-right:5px;"><i class="fa fa-file-pdf-o"></i></a>
+            <a href="{{ route('received.add') }}" class="btn btn-success btn-sm"> <i class="fa fa-plus"></i>&nbsp;Add New</a>
           </div>
         </div>
         <div class="box-body color-black">
@@ -23,7 +23,7 @@
                       <th>SN</th>
                       <th>Trans. Date</th>
                       <th>Agent Name</th>
-                      <th>Payment From</th>
+                      <th>Payment Mode</th>
                       <th>Amount</th>
                       <th>Remarks</th>
                       <th>Status</th>
@@ -75,7 +75,7 @@
                             @endif
                           </td>
                           <td>
-                              <a href="{{ route('payment.edit',hashid_encode($data->id)) }}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a>
+                            <a href="{{ route('received.edit',hashid_encode($data->id)) }}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a>
                           </td>
                       </tr>
                         @php

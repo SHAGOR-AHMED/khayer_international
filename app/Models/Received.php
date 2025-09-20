@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Bank;
+use App\Models\Agent;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class Received extends Model
+{
+    use HasFactory;
+
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class);
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
+    
+}

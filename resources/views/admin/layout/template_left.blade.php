@@ -94,6 +94,7 @@
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="{{ route('payment.index') }}"><i class="fa fa-eye"></i>Manage Payment</a></li>
+					<li><a href="{{ route('received.index') }}"><i class="fa fa-eye"></i>Manage Received</a></li>
 					<li><a href="{{ route('expense.index') }}"><i class="fa fa-eye"></i>Manage Expense</a></li>
 				</ul>
             </li>

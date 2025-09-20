@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Payment;
+namespace App\Http\Controllers\Admin\Received;
 
 use PDF;
 use App\Models\Bank;
 use App\Models\Agent;
-use App\Models\Payment;
-use App\Models\Supplier;
+use App\Models\Received;
 use App\Models\BankLedger;
 use App\Models\AgentLedger;
 use Illuminate\Http\Request;
@@ -20,15 +19,15 @@ class IndexController extends Controller
     use ImageUpload;
 
     public function index(){
-    	$data['allData'] = Payment::with(['agent', 'bank'])->get();
-    	return view('admin.payment.view',$data);
+    	$data['allData'] = Received::with(['agent', 'bank'])->get();
+    	return view('admin.received.view',$data);
     }
 
     public function create(){
         $data['add'] = TRUE;
-        $data['all_agents'] = Supplier::query()
+        $data['all_agents'] = Agent::query()
                             ->where('status',1)
-                            ->pluck('office_name', 'id')
+                            ->pluck('name', 'id')
                             ->prepend('Please Select', '')
                             ->toArray();
         $data['all_banks'] = Bank::query()
@@ -36,7 +35,7 @@ class IndexController extends Controller
                             ->pluck('bank_name', 'id')
                             ->prepend('Please Select', '')
                             ->toArray();
-        return view('admin.payment.add', $data);
+        return view('admin.received.add', $data);
     }
 
     public function store(Request $request){
@@ -65,19 +64,16 @@ class IndexController extends Controller
             $cheque_no = '';
             $cheque_date = '';
 
-            $data                     = new Payment();
+            $data                    = new Received();
 
             $imagePath      = 'admin/documents/';
-            $imgFor = 'payment-';
+            $imgFor = 'received-';
             // Save Image 
             $current_image  = $request->file('image'); 
             if($current_image){
                 $imgName= $this->imageUplaodByName($current_image, null, $imagePath, $imgFor); 
                 $data->image = $imgName;
             }
-
-            $data->transaction_date   = date('d-m-Y', strtotime($request->transaction_date));
-            $data->agent_id           = $request->agent_id;
 
             if ($payment_mode == 'Cash') {
 				$bank_id = '1';
@@ -86,7 +82,9 @@ class IndexController extends Controller
 				$cheque_no = $request->cheque_no;
 				$cheque_date = date('d-m-Y', strtotime($request->cheque_date));
 			}
-            
+
+            $data->transaction_date   = date('d-m-Y', strtotime($request->transaction_date));
+            $data->agent_id           = $request->agent_id;
             $data->amount             = $request->amount;
             $data->payment_mode       = $payment_mode;
             $data->bank_id            = $bank_id;
@@ -101,23 +99,15 @@ class IndexController extends Controller
 
             if ($success) {
 
-                if ($bank_id == '1') {
-					// Check cash balance limitation
-					$cash = Bank::where('id',1)->first();
-					if ($request->amount > $cash->account_balance) {
-						notify()->error(limit_crossed(),"Error","topRight");
-						return redirect()->route('payment.index');
-					}
-				}
+                // Update agent balance
+                //$this->db->query("UPDATE tbl_party SET balance=balance-'" . $amount . "' WHERE id='" . $party_id . "' ");
 
-                // Update party balance
-                //$this->db->query("UPDATE tbl_party SET balance=balance+'" . $amount . "' WHERE id='" . $party_id . "' ");
                 // Create agent ledger
                 $Aldata = array(
                     'id'               => make_id('agent_ledger', 'id', 'AL'),
                     'agent_id'         => $request->agent_id,
                     'billing_date'     => $request->transaction_date,
-                    'transaction_type' => "Payment",
+                    'transaction_type' => "Received",
                     'reference_no'     => $data->id,
                     'amount'           => $request->amount,
                     'ledger_status'    => $status,
@@ -127,14 +117,15 @@ class IndexController extends Controller
                 // Update bank account balance
                 Bank::where('id',$bank_id)
                     ->update([
-                        'account_balance' => DB::raw('account_balance - ' . (int) $request->amount),
+                        'account_balance' => DB::raw('account_balance + ' . (int) $request->amount),
                     ]);
+
                 // Create bank ledger
                 $Bldata = array(
                     'id'               => make_id('bank_ledger', 'id', 'BL'),
                     'bank_id'          => $bank_id,
                     'transaction_date' => $request->transaction_date,
-                    'transaction_type' => "Payment",
+                    'transaction_type' => "Received",
                     'reference_no'     => $data->id,
                     'amount'           => $request->amount,
                     'ledger_status'    => $status,
@@ -147,40 +138,23 @@ class IndexController extends Controller
                 notify()->error(exception(),"Error","topRight");
             }
 
-            return redirect()->route('payment.index');
+            return redirect()->route('received.index');
 
         });
 
     }//store
 
+
     public function edit($id){
     	$data['edit'] = TRUE;
         $id = hashid_decode($id);
     	$data['single'] = Payment::findOrFail($id);
-    	return view('admin.payment.add', $data);
+    	return view('admin.received.add', $data);
     }
 
     public function update(Request $request){
 
-        $this->validate($request,[
-            'name'=>'required',
-            'phone'=>'required|digits_between:11,14',
-            'address'=>'required',
-        ]);
-       
-        $data               = Payment::findOrFail($request->id);
-        $data->name         = $request->name;
-        $data->email        = $request->email;
-        $data->phone        = $request->phone;
-        $data->address      = $request->address;
-        $success            = $data->save();
-
-        if($success){
-            notify()->success(updated_success(),"Success","topRight");
-        }else{
-            notify()->error(exception(),"Error","topRight");
-        }
-        return redirect()->route('payment.index');
+        dd('yoo');
         
     }//update
 
@@ -188,7 +162,7 @@ class IndexController extends Controller
     public function particulars($reference_no = NULL) {
 		$particular = $payment_mode = $money_receipt = $remarks =  '';
 		
-		$payment = Payment::with('bank')->find($reference_no);
+		$payment = Received::with('bank')->find($reference_no);
 		if ($payment->payment_mode == 'Cheque') {
 			$payment_mode =  $payment->bank->bank_name. " A/C # ". $payment->bank->account_no." Issued Cheque  #". $payment->cheque_no;
 		} else {
@@ -207,13 +181,10 @@ class IndexController extends Controller
 	}
 
     public function report(){
-        $data['title'] = 'Payment Report';
-        $data['allData'] = Payment::with(['agent', 'bank'])->get();
-        $pdf = PDF::loadHtml(view('admin.payment.report', $data));
-        return $pdf->stream('payment-report'.date('m-d-Y').'.pdf');
-        //$pdf = PDF::loadView('admin.payment.report', $data);
-        //return view('admin.payment.report', $data);
-        //return $pdf->stream('payment-report'.date('m-d-Y').'.pdf');
+        $data['title'] = 'Received Report';
+        $data['allData'] = Received::with(['agent', 'bank'])->get();
+        $pdf = PDF::loadHtml(view('admin.received.report', $data));
+        return $pdf->stream('received-report'.date('m-d-Y').'.pdf');
     }
 
     // destroy
