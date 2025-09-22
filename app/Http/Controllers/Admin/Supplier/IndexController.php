@@ -32,6 +32,7 @@ class IndexController extends Controller
         $this->validate($request,[
             'office_name'=>'required',
             'address'=>'required',
+            'type'=>'required',
         ]);
 
         $balance = '0.00';
@@ -44,6 +45,7 @@ class IndexController extends Controller
         $data->phone         = $request->phone;
         $data->balance       = $balance;
         $data->address       = $request->address;
+        $data->type          = $request->type;
         $success             = $data->save();
 
         if ($success) {
@@ -79,12 +81,14 @@ class IndexController extends Controller
         $this->validate($request,[
             'office_name'=>'required',
             'address'=>'required',
+            'type'=>'required',
         ]);
        
         $data                = Supplier::findOrFail($request->id);
         $data->office_name   = $request->office_name;
         $data->phone         = $request->phone;
         $data->address       = $request->address;
+        $data->type          = $request->type;
         $success             = $data->save();
 
         if($success){
@@ -117,6 +121,52 @@ class IndexController extends Controller
         }
     }
 
+    public function ledger(){
+        $data['all_suppliers'] = Supplier::query()
+                            ->where('status',1)
+                            ->pluck('office_name', 'id')
+                            ->prepend('Please Select', '')
+                            ->toArray();
+    	return view('admin.supplier.ledger',$data);
+    }
+
+    public function report(Request $request){
+
+        $from_date = $request->date_range_from;
+		$to_date = $request->date_range_to;
+		$supplier_id = $request->supplier_id;
+
+        $data['title'] = "Ledger Account";
+		$data['supplier'] = Supplier::find($supplier_id);
+		$data['results'] = $this->ledger_report($from_date, $to_date, $supplier_id);
+		$data['from_date'] = $from_date;
+		$data['to_date'] = $to_date;
+
+        return view('admin.supplier.ledger_report', $data);
+
+        $pdf = PDF::loadHtml(view('admin.supplier.ledger_report', $data));
+        return $pdf->stream('ledger-report'.date('m-d-Y').'.pdf');
+    }
+
+    public function ledger_report($from_date = NULL, $to_date=NULL, $supplier_id=NULL) {
+
+        return SupplierLedger::where('supplier_id',$supplier_id)->where('billing_date','>=', $from_date)->where('billing_date','<=', $to_date)->get();
+	}
+
+
+    public function previous_blance($supplier_id = NULL, $from_date = NULL) {
+		$balance = 0; 
+        $query = SupplierLedger::where('supplier_id',$supplier_id)->where('billing_date','<', $from_date)->orderBy('id', 'ASC')->get();
+		foreach ($query as $row) {
+			if ($row->transaction_type == 'Received') {
+				$balance = $balance - $row->amount;
+			} else {
+				$balance = $balance + $row->amount;
+			}
+		}
+		return $balance;
+	}
+
     // destroy
     public function delete($id){
         return DB::transaction(function () use ($id) {
@@ -131,7 +181,6 @@ class IndexController extends Controller
                 Alert::error('Error!', exception());
             }
             return redirect()->route('supplier.index');
-
         });
         
     }

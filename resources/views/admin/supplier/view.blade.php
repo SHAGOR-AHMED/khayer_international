@@ -28,6 +28,7 @@ use App\Models\SupplierLedger;
                       <th>Phone</th>
                       <th>Address</th>
                       <th>Current Balance</th>
+                      <th>Supplier Type</th>
                       <th>Status</th>
                       <th>Action</th>
                   </tr>
@@ -41,6 +42,7 @@ use App\Models\SupplierLedger;
                           <td>{{ ($data->phone) ? $data->phone : 'N/A' }}</td>
                           <td>{{ $data->address }}</td>
                           <td>{{ $data->balance }}</td>
+                          <td>{{ $data->type }}</td>
                           <td>
                             @if($data->status == 1)
                               <span class="badge btn-success">Active</span>

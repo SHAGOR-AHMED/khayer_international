@@ -72,8 +72,30 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Name">Amount <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="amount" placeholder="Enter Amount" value="{{ old('amount') }}" required>
+                    <label for="password">Supplier Type<span class="text-red">*</span></label>
+                    <select class="form-control" name="type" id="type" required onchange="typeToggle('type','rate','pay')">
+                      <option value="">Please Select</option>
+                      <option value="BD">BANGLADESH</option>
+                      <option value="FOREIGN">FOREIGN</option>
+                    </select>
+                    <span class="text-danger">{{ $errors->has('type') ? $errors->first('type') : '' }}</span>
+                </div>
+                <!-- for foreign supplier payment -->
+                <div class="form-group" style="display:none; margin-top:2px;" id="rate">
+                    <label for="Name">Rate <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="payrate" id="payrate" placeholder="Enter Rate" value="">
+                    <span class="text-danger">{{ $errors->has('payrate') ? $errors->first('payrate') : '' }}</span>
+                </div>
+
+                <div class="form-group" style="display:none; margin-top:2px;" id="pay">
+                    <label for="Name">BD Amount <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="bdamount" id="bdamount" placeholder="Enter BD Amount" value="" onkeyup="rateConversion()">
+                    <span class="text-danger">{{ $errors->has('bdamount') ? $errors->first('bdamount') : '' }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name">Total Amount <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter Amount" value="{{ old('amount') }}" required>
                     <span class="text-danger">{{ $errors->has('amount') ? $errors->first('amount') : '' }}</span>
                 </div>
 
@@ -121,5 +143,24 @@
         $("#" + para2).hide();
       }
     }
+
+    function typeToggle(para1, para2, para3) {
+      var type = $("#" + para1).val();
+      if (type === 'FOREIGN') {
+        $("#" + para2).show();
+        $("#" + para3).show();
+      } else {
+        $("#" + para2).hide();
+        $("#" + para3).hide();
+      }
+    }
+
+    function rateConversion() {
+      var payrate = $("#payrate").val();
+      var bdamount = $("#bdamount").val();
+      var totalAmount = (bdamount*payrate);
+      $("#amount").val(totalAmount);
+    }
+
   </script>
 @endsection

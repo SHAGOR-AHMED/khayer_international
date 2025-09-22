@@ -50,7 +50,7 @@
                     <p id="eligibilityMsg" style="color:red; display:none;"></p>
                 </div>
 
-                 <div class="form-group">
+                <div class="form-group">
                     <label for="type">Country <span class="text-red">*</span></label>
                     <select class="form-control" name="country_name" id="country_name" required onchange="globalToggle('country_name','country')">
                       <option value="">Please Select</option>

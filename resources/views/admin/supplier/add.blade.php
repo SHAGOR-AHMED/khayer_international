@@ -42,6 +42,16 @@
                     <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                 </div>
 
+                <div class="form-group">
+                    <label for="type">Supplier Type <span class="text-red">*</span></label>
+                    <select class="form-control" name="type" required>
+                      <option value="">Please Select</option>
+                      <option value="BD">BANGLADESH</option>
+                      <option value="FOREIGN">FOREIGN</option>
+                    </select>
+                    <span class="text-danger">{{ $errors->has('type') ? $errors->first('type') : '' }}</span>
+                </div>
+
                 <div>
                   <button style="width:100%" type="submit" name="submit" class="btn btn-success"><i class="fa fa-bookmark" aria-hidden="true"></i> Save Data</button>
                 </div>
@@ -59,7 +69,7 @@
             </div>
           </div>
           <div class="box-body">
-            <form action="{{ route('supplier.update') }}" name="form" method="post" name="edit" enctype="multipart/form-data" autocomplete="off">
+            <form action="{{ route('supplier.update') }}" name="form" method="post" name="edit" enctype="multipart/form-data" autocomplete="off" onsubmit="return(validate())">
                 @csrf
               <div class="row">
                 <div class="col-md-6 col-md-offset-3">
@@ -80,6 +90,16 @@
                     <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                   </div>
 
+                  <div class="form-group">
+                    <label for="type">Supplier Type <span class="text-red">*</span></label>
+                    <select class="form-control" name="type" required>
+                      <option value="">Please Select</option>
+                      <option value="BD">BANGLADESH</option>
+                      <option value="FOREIGN">FOREIGN</option>
+                    </select>
+                    <span class="text-danger">{{ $errors->has('type') ? $errors->first('type') : '' }}</span>
+                  </div>
+
                   <input type="hidden" name="id" value="{{ $single->id }}"  />
 
                   <div>
@@ -92,7 +112,20 @@
             </form>
           </div><!-- /.box-body -->
         </div><!-- /.box -->
+
+        <script type="text/javascript">
+          document.forms['form'].elements['type'].value='<?php echo $single->type ?>';
+          function validate(){
+              if(document.form.type.value == ''){
+                  alert("Please Select Supplier Type")
+                  return false;
+              }
+              return true;
+          }
+        </script>
+
       @endisset
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
+
 @endsection

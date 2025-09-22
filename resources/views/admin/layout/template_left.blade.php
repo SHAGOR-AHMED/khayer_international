@@ -21,23 +21,12 @@
 
 			<li class="treeview">
 				<a href="javascript:">
-					<i class="fa fa-users fa-lg"></i> <span>Supplier(BD) Module</span> <i class="fa fa-angle-left pull-right"></i>
+					<i class="fa fa-users fa-lg"></i> <span>Supplier Module</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="{{ route('supplier.add') }}"><i class="fa fa-plus"></i>Add New Supplier</a></li>
 					<li><a href="{{ route('supplier.index') }}"><i class="fa fa-eye"></i>View All Supplier</a></li>
-					<li><a href="#"><i class="fa fa-bar-chart"></i>Ledger</a></li>
-				</ul>
-            </li>
-
-			<li class="treeview">
-				<a href="javascript:">
-					<i class="fa fa-users fa-lg"></i> <span>Supplier(Foreign) Module</span> <i class="fa fa-angle-left pull-right"></i>
-				</a>
-				<ul class="treeview-menu">
-					<li><a href="#"><i class="fa fa-plus"></i>Add New Supplier</a></li>
-					<li><a href="#"><i class="fa fa-eye"></i>View All Supplier</a></li>
-					<li><a href="#"><i class="fa fa-bar-chart"></i>Ledger</a></li>
+					<li><a href="{{ route('supplier.ledger') }}"><i class="fa fa-bar-chart"></i>Supplier Ledger</a></li>
 				</ul>
             </li>
 

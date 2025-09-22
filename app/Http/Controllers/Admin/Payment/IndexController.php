@@ -48,6 +48,7 @@ class IndexController extends Controller
             'payment_mode'      =>'required',
             'amount'            =>'required',
             'money_receipt_no'  =>'required',
+            'type'              =>'required',
         ]);
 
         if($request->payment_mode == 'Cheque'){
@@ -55,6 +56,13 @@ class IndexController extends Controller
                 'bank_id'      =>'required',
                 'cheque_no'    =>'required',
                 'cheque_date'  =>'required',
+            ]);
+        }
+
+        if($request->type == 'FOREIGN'){
+            $this->validate($request,[
+                'payrate'     =>'required',
+                'bdamount'    =>'required',
             ]);
         }
 
@@ -87,6 +95,8 @@ class IndexController extends Controller
 
             $data->transaction_date   = date('d-m-Y', strtotime($request->transaction_date));
             $data->supplier_id        = $request->supplier_id;
+            $data->payrate            = $request->payrate;
+            $data->bdamount           = $request->bdamount;
             $data->amount             = $request->amount;
             $data->payment_mode       = $payment_mode;
             $data->bank_id            = $bank_id;

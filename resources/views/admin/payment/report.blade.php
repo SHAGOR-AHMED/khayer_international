@@ -39,7 +39,7 @@
 		</style>
 	</head>
 	<body>
-		<img src="https://asset.cpbangladesh.com/documents/cp_five_star_banner_20221201055508JiRXtyM6hn.jpg" width="100%" height="100px;" style="border-bottom:1px solid;">
+		<img src="https://app.akhayerintl.com/admin/img/banner.jpg" width="100%" height="100px;" style="border-bottom:1px solid;">
 		<h4 class="text-center" style="text-decoration: underline;"> {{ $title }} </h4>
 
         <table class="table table-bordered report" border="2px">
@@ -47,7 +47,7 @@
                 <tr>
                     <th width="25px">#</th>
                     <th>Trans. Date</th>
-                    <th>Agent Name</th>
+                    <th>Supplier</th>
                     <th>Payment From</th>
                     <th>Amount</th>
                     <th>Remarks</th>
@@ -59,7 +59,7 @@
                         <tr>
                             <td>{{ sprintf("%02d", ++$key); }}</td>
                             <td>{{ $data->transaction_date }}</td>
-                            <td>{{ $data->agent->name }}</td>
+                            <td>{{ $data->supplier->office_name }}</td>
                             <td>
                                 {{ $data->payment_mode }}
                                 @if($data->payment_mode == 'Cheque')
