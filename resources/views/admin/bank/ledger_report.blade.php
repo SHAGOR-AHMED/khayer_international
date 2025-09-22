@@ -39,7 +39,7 @@
 		</style>
 	</head>
 	<body>
-		<img src="https://app.akhayerintl.com/admin/img/banner.jpg" width="100%" height="100px;" style="border-bottom:1px solid;">
+		<img src="https://new.akhayerintl.com/admin/img/banner.jpg" width="100%" height="100px;" style="border-bottom:1px solid;">
 		<h4 class="text-center" style="text-decoration: underline;"> {{ $title }} </h4>
 
         <table class="table" style="vertical-align: top">

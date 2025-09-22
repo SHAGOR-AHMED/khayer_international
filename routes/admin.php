@@ -122,11 +122,12 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::get('/index',                'IndexController@index')->name('index');
 			Route::get('/create',               'IndexController@create')->name('add');
 			Route::post('/store',               'IndexController@store')->name('store');
-			Route::get('edit/{user_id}',        'IndexController@edit')->name('edit');
+			Route::get('edit/{id}',             'IndexController@edit')->name('edit');
 			Route::post('/update',              'IndexController@update')->name('update');
 			Route::get('/status/{id}',          'IndexController@status')->name('control');
 			Route::get('/delete/{id}',          'IndexController@delete')->name('delete');
 			Route::get('/report',               'IndexController@report')->name('report');
+			Route::get('invoice/{id}',          'IndexController@invoice')->name('invoice');
 		});
 
 		/*---Received---*/

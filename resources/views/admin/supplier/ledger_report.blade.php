@@ -39,7 +39,7 @@
 		</style>
 	</head>
 	<body>
-		<img src="https://app.akhayerintl.com/admin/img/banner.jpg" width="100%" height="100px;" style="border-bottom:1px solid;">
+		<img src="https://new.akhayerintl.com/admin/img/banner.jpg" width="100%" height="100px;" style="border-bottom:1px solid;">
 		<h4 class="text-center" style="text-decoration: underline;"> {{ $title }} </h4>
 
         <table class="table" style="vertical-align: top">
@@ -67,9 +67,15 @@
                     <th width="25px">#</th>
                     <th width="95px"> Billing Date  </th>
                     <th> Particulars </th>
-                    <th width="90px"> Collection Amount (Tk.) </th>
-                    <th width="90px"> Paying Amount (Tk.) </th>                
-                    <th width="110px"> Balance (Tk.) </th>
+                    @if($supplier->type == 'BD')
+                        <th width="90px"> Collection Amount (Tk.) </th>
+                        <th width="90px"> Paying Amount (Tk.) </th> 
+                        <th width="110px"> Balance (Tk.) </th>
+                    @else
+                        <th width="90px"> Collection Amount (SR) </th>
+                        <th width="90px"> Paying Amount (SR) </th> 
+                        <th width="110px"> Balance (SR) </th>
+                    @endif               
                 </tr>
             </thead>
             <tbody>
@@ -139,7 +145,7 @@
                     }
                     echo "<tr>";
                         $obj = new Currency();
-                        echo "<td valign='top' colspan='6' class='text-center'>" . $obj->ladger_in_text($balance) . "</td>";
+                        echo "<td valign='top' colspan='6' class='text-center'>" . $obj->get_bd_amount_in_text($balance) . "</td>";
                     echo "</tr>";
                 ?>
             </tbody>        

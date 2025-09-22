@@ -231,6 +231,28 @@ class IndexController extends Controller
         //return $pdf->stream('payment-report'.date('m-d-Y').'.pdf');
     }
 
+    public function invoice($payment_id = NULL) {
+
+        $id = hashid_decode($payment_id);
+		$data['invoice'] = Payment::with(['supplier', 'bank'])->where('id',$id)->first();
+		$payment = Payment::with(['supplier', 'bank'])->where('id',$id)->first();
+		if($payment->payment_mode=='Cash') {
+			$data['title'] = "Cash Paid Info";
+			$data['note'] = 'Cash';
+			$data['note2'] = 'Cash';
+		} else if($payment->payment_mode=='Cheque') {
+			$data['title'] = "Bank Paid Info";
+			$data['note'] = $payment->bank->bank_name." <".$payment->bank->account_no.">";
+			$data['note2'] = "";
+		}
+        $data['time'] = "Entry Time: " . date('d-m-Y h:i A', strtotime($data['invoice']->transaction_date))
+        . "Print Time: " . date('d-m-Y h:i A');
+        $data['by'] = "Print By: " . logged_in_user_name();
+
+        $pdf = PDF::loadHtml(view('admin.payment.invoice', $data));
+        return $pdf->stream('payment-invoice'.$id.date('m-d-Y').'.pdf');
+	}
+
     // destroy
     public function delete($id){
 

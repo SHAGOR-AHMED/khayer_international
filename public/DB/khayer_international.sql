@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 20, 2025 at 11:04 AM
+-- Generation Time: Sep 22, 2025 at 08:46 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -30,10 +30,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `agents` (
   `id` bigint UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` int NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -54,7 +54,8 @@ INSERT INTO `agents` (`id`, `name`, `email`, `phone`, `address`, `image`, `statu
 (22, 'SAKIB JEDDAH', 'SAKIB@GMAIL.COM', '01401399032', 'CUMILLA', NULL, 1, '2025-08-28 22:06:42', '2025-08-28 22:06:42'),
 (24, 'DAUD BAI', NULL, '01830194601', 'IQRA', NULL, 1, '2025-09-16 16:31:08', '2025-09-16 16:31:08'),
 (25, 'MILON BAI GH', NULL, '01307807928', 'GREEN HOLYDAY', NULL, 1, '2025-09-16 16:31:34', '2025-09-16 16:31:34'),
-(26, 'agent name missing', NULL, NULL, '...', NULL, 1, '2025-09-17 10:10:31', '2025-09-17 10:10:31');
+(26, 'agent name missing', NULL, NULL, '...', NULL, 1, '2025-09-17 11:19:52', '2025-09-17 11:19:52'),
+(27, 'CITY AIR INT.(SHAMIM BAI)', NULL, NULL, 'CITY AIR', NULL, 1, '2025-09-18 11:57:19', '2025-09-18 11:57:19');
 
 -- --------------------------------------------------------
 
@@ -107,7 +108,7 @@ CREATE TABLE `banks` (
 --
 
 INSERT INTO `banks` (`id`, `bank_name`, `account_name`, `account_no`, `account_balance`, `bank_remarks`, `bank_status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 'CASH', 'A Khayer Intl', '...', 52000.00, 'Company Cash Balance', 'ACTIVE', '1', NULL, '2025-09-12 20:38:38', '2025-09-20 09:49:36'),
+(1, 'CASH', 'A Khayer Intl', '...', 50000.00, 'Company Cash Balance', 'ACTIVE', '1', NULL, '2025-09-12 20:38:38', '2025-09-22 14:55:00'),
 (2, 'DBBL 6067', 'M/S. Khayer Intl', '2601100006067', 16000.00, 'Dutch-Bangla Bank, Hasnabad Branch, Routing: 090272569', 'ACTIVE', '1', NULL, '2025-09-12 22:09:01', '2025-09-20 10:01:59'),
 (3, 'Halifax London', 'Mr Solaman Badsha', '1551557', 6000.00, 'My Current Account', 'ACTIVE', '1', NULL, '2025-09-16 19:06:24', '2025-09-16 19:38:10');
 
@@ -142,7 +143,8 @@ INSERT INTO `bank_ledger` (`id`, `bank_id`, `transaction_date`, `transaction_typ
 ('BL000006', '1', '20-09-2025', 'Expense', NULL, '1', NULL, 1000.00, 'Active'),
 ('BL000007', '2', '20-09-2025', 'Expense', NULL, '2', NULL, 2000.00, 'Active'),
 ('BL000008', '1', '20-09-2025', 'Received', NULL, '1', NULL, 5000.00, 'Active'),
-('BL000009', '2', '20-09-2025', 'Received', NULL, '2', NULL, 1000.00, 'Active');
+('BL000009', '2', '20-09-2025', 'Received', NULL, '2', NULL, 1000.00, 'Active'),
+('BL000010', '1', '22-09-2025', 'Payment', NULL, '6', NULL, 2000.00, 'Active');
 
 -- --------------------------------------------------------
 
@@ -582,6 +584,8 @@ CREATE TABLE `payments` (
   `supplier_id` bigint UNSIGNED DEFAULT NULL,
   `transaction_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `payment_mode` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payrate` decimal(12,2) DEFAULT NULL,
+  `bdamount` decimal(12,2) DEFAULT NULL,
   `amount` decimal(12,2) NOT NULL,
   `bank_id` bigint UNSIGNED DEFAULT NULL,
   `cheque_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -604,9 +608,10 @@ CREATE TABLE `payments` (
 -- Dumping data for table `payments`
 --
 
-INSERT INTO `payments` (`id`, `supplier_id`, `transaction_date`, `payment_mode`, `amount`, `bank_id`, `cheque_no`, `cheque_date`, `transaction_point`, `destination_point`, `money_receipt_no`, `remarks`, `image`, `cancel_remarks`, `status`, `created_by`, `updated_by`, `log`, `created_at`, `updated_at`) VALUES
-(4, 1, '19-09-2025', 'Cash', 2000.00, 1, '', '', NULL, NULL, 'dummy no 111', 'paid by cash', NULL, NULL, 'Active', '1', NULL, 'Solaman Badsha<br/>19-09-2025', '2025-09-19 21:37:59', '2025-09-19 21:37:59'),
-(5, 1, '20-09-2025', 'Cheque', 3000.00, 2, 'dummy cheque 123', '20-09-2025', NULL, NULL, 'dummy 111', 'payment by bank', 'admin/documents/payment-H0HkS1758325752.jpg', NULL, 'Active', '1', NULL, 'Solaman Badsha<br/>20-09-2025', '2025-09-19 22:49:13', '2025-09-19 22:49:13');
+INSERT INTO `payments` (`id`, `supplier_id`, `transaction_date`, `payment_mode`, `payrate`, `bdamount`, `amount`, `bank_id`, `cheque_no`, `cheque_date`, `transaction_point`, `destination_point`, `money_receipt_no`, `remarks`, `image`, `cancel_remarks`, `status`, `created_by`, `updated_by`, `log`, `created_at`, `updated_at`) VALUES
+(4, 1, '19-09-2025', 'Cash', NULL, NULL, 2000.00, 1, '', '', NULL, NULL, 'dummy no 111', 'paid by cash', NULL, NULL, 'Active', '1', NULL, 'Solaman Badsha<br/>19-09-2025', '2025-09-19 21:37:59', '2025-09-19 21:37:59'),
+(5, 1, '20-09-2025', 'Cheque', NULL, NULL, 3000.00, 2, 'dummy cheque 123', '20-09-2025', NULL, NULL, 'dummy 111', 'payment by bank', 'admin/documents/payment-H0HkS1758325752.jpg', NULL, 'Active', '1', NULL, 'Solaman Badsha<br/>20-09-2025', '2025-09-19 22:49:13', '2025-09-19 22:49:13'),
+(6, 2, '22-09-2025', 'Cash', 20.00, 100.00, 2000.00, 1, '', '', NULL, NULL, 'dummy 333', 'test foreign payment', NULL, NULL, 'Active', '1', NULL, 'Solaman Badsha<br/>22-09-2025', '2025-09-22 14:55:00', '2025-09-22 14:55:00');
 
 -- --------------------------------------------------------
 
@@ -673,6 +678,7 @@ CREATE TABLE `suppliers` (
   `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `balance` decimal(12,2) NOT NULL,
   `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` int NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -682,8 +688,9 @@ CREATE TABLE `suppliers` (
 -- Dumping data for table `suppliers`
 --
 
-INSERT INTO `suppliers` (`id`, `office_name`, `phone`, `balance`, `address`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'XYZ COMPANY', NULL, 5000.00, 'Dhaka, Bangladesh', 1, '2025-09-19 20:45:28', '2025-09-19 22:49:13');
+INSERT INTO `suppliers` (`id`, `office_name`, `phone`, `balance`, `address`, `type`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'XYZ COMPANY', NULL, 5000.00, 'Dhaka, Bangladesh', 'BD', 1, '2025-09-19 20:45:28', '2025-09-19 22:49:13'),
+(2, 'AL BARAKA', NULL, 2000.00, 'SAUDI ARABIA', 'FOREIGN', 1, '2025-09-22 13:28:03', '2025-09-22 14:55:00');
 
 -- --------------------------------------------------------
 
@@ -708,7 +715,9 @@ CREATE TABLE `supplier_ledger` (
 INSERT INTO `supplier_ledger` (`id`, `supplier_id`, `billing_date`, `transaction_type`, `reference_no`, `amount`, `ledger_status`) VALUES
 ('SL000001', '1', '19-09-2025', 'Initial Balance', NULL, 0.00, 'Active'),
 ('SL000002', '1', '19-09-2025', 'Payment', '4', 2000.00, 'Active'),
-('SL000003', '1', '20-09-2025', 'Payment', '5', 3000.00, 'Active');
+('SL000003', '1', '20-09-2025', 'Payment', '5', 3000.00, 'Active'),
+('SL000004', '2', '22-09-2025', 'Initial Balance', NULL, 0.00, 'Active'),
+('SL000005', '2', '22-09-2025', 'Payment', '6', 2000.00, 'Active');
 
 -- --------------------------------------------------------
 
@@ -932,7 +941,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -950,7 +959,7 @@ ALTER TABLE `receiveds`
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`

@@ -20,7 +20,7 @@
           <form action="{{ route('payment.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
           @csrf
             <div class="row">
-              <div class="col-md-6 col-md-offset-3">
+              <div class="col-md-6">
                 <div class="form-group">
                     <label for="Name">Transaction Date <span class="text-red">*</span></label>
                     <input type="text" class="form-control datepicker" name="transaction_date" placeholder="Enter Date" value="{{ date('d-m-Y') }}" required>
@@ -37,6 +37,36 @@
                     <span class="text-danger">{{ $errors->has('supplier_id') ? $errors->first('supplier_id') : '' }}</span>
                 </div>
 
+                <div class="form-group">
+                    <label for="password">Supplier Type<span class="text-red">*</span></label>
+                    <select class="form-control" name="type" id="type" required onchange="typeToggle('type','rate','pay')">
+                      <option value="">Please Select</option>
+                      <option value="BD">BANGLADESH</option>
+                      <option value="FOREIGN">FOREIGN</option>
+                    </select>
+                    <span class="text-danger">{{ $errors->has('type') ? $errors->first('type') : '' }}</span>
+                </div>
+                <!-- for foreign supplier payment -->
+                <div class="form-group" style="display:none; margin-top:2px;" id="rate">
+                    <label for="Name">Rate <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="payrate" id="payrate" placeholder="Enter Rate" value="">
+                    <span class="text-danger">{{ $errors->has('payrate') ? $errors->first('payrate') : '' }}</span>
+                </div>
+
+                <div class="form-group" style="display:none; margin-top:2px;" id="pay">
+                    <label for="Name">BD Amount <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="bdamount" id="bdamount" placeholder="Enter BD Amount" value="" onkeyup="rateConversion()">
+                    <span class="text-danger">{{ $errors->has('bdamount') ? $errors->first('bdamount') : '' }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name">Total Amount <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter Amount" value="{{ old('amount') }}" required>
+                    <span class="text-danger">{{ $errors->has('amount') ? $errors->first('amount') : '' }}</span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
                 <div class="form-group">
                     <label for="password">Payment Mode<span class="text-red">*</span></label>
                     <select class="form-control" name="payment_mode" id="payment_mode" required onchange="globalToggle('payment_mode','cheque')">
@@ -70,35 +100,6 @@
                     <span class="text-danger">{{ $errors->has('cheque_date') ? $errors->first('cheque_date') : '' }}</span>
                   </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="password">Supplier Type<span class="text-red">*</span></label>
-                    <select class="form-control" name="type" id="type" required onchange="typeToggle('type','rate','pay')">
-                      <option value="">Please Select</option>
-                      <option value="BD">BANGLADESH</option>
-                      <option value="FOREIGN">FOREIGN</option>
-                    </select>
-                    <span class="text-danger">{{ $errors->has('type') ? $errors->first('type') : '' }}</span>
-                </div>
-                <!-- for foreign supplier payment -->
-                <div class="form-group" style="display:none; margin-top:2px;" id="rate">
-                    <label for="Name">Rate <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="payrate" id="payrate" placeholder="Enter Rate" value="">
-                    <span class="text-danger">{{ $errors->has('payrate') ? $errors->first('payrate') : '' }}</span>
-                </div>
-
-                <div class="form-group" style="display:none; margin-top:2px;" id="pay">
-                    <label for="Name">BD Amount <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="bdamount" id="bdamount" placeholder="Enter BD Amount" value="" onkeyup="rateConversion()">
-                    <span class="text-danger">{{ $errors->has('bdamount') ? $errors->first('bdamount') : '' }}</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="Name">Total Amount <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter Amount" value="{{ old('amount') }}" required>
-                    <span class="text-danger">{{ $errors->has('amount') ? $errors->first('amount') : '' }}</span>
-                </div>
-
                  <div class="form-group">
                     <label for="Name">Money Receipt No <span class="text-red">*</span></label>
                     <input type="text" class="form-control" name="money_receipt_no" placeholder="Enter Money Receipt No" value="{{ old('money_receipt_no') }}" required>
