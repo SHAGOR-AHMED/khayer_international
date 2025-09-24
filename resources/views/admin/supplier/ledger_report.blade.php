@@ -125,6 +125,8 @@
 
                             if ($row->transaction_type == 'Payment') {
                                 $particulars = app(\App\Http\Controllers\Admin\Payment\IndexController::class)->particulars($row->reference_no);
+                            } else if ($row->transaction_type == 'Purchase') {
+                                $particulars = app(\App\Http\Controllers\Admin\Purchase\IndexController::class)->particulars($row->reference_no);
                             }
 
                             echo "<tr>";

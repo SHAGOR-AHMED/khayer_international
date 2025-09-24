@@ -79,6 +79,16 @@
 
 			<li class="treeview">
 				<a href="javascript:">
+					<i class="fa fa-users fa-lg"></i> <span>Purchase Module</span> <i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="{{ route('purchase.add') }}"><i class="fa fa-plus"></i>Add New Purchase</a></li>
+					<li><a href="{{ route('purchase.index') }}"><i class="fa fa-eye"></i>Manage Purchase</a></li>
+				</ul>
+            </li>
+
+			<li class="treeview">
+				<a href="javascript:">
 					<i class="fa fa-calculator fa-lg"></i> <span>Accounts Module</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">

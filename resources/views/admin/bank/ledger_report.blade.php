@@ -103,7 +103,7 @@
                                 echo "<td valign='top' class='text-right'>" . bd_money_format($balance) . "</td>";
                                 echo "</tr>";
                             }
-                            if ($row->transaction_type == 'Payment' || $row->transaction_type == 'Expense') {
+                            if ($row->transaction_type == 'Purchase' || $row->transaction_type == 'Payment' || $row->transaction_type == 'Expense') {
                                 
                                 $balance = $balance - $row->amount;
                                 $credit = bd_money_format($row->amount);
@@ -123,6 +123,8 @@
                                 $particulars = app(\App\Http\Controllers\Admin\Expense\IndexController::class)->particulars($row->reference_no);
                             } else if ($row->transaction_type == 'Received') {
                                 $particulars = app(\App\Http\Controllers\Admin\Received\IndexController::class)->particulars($row->reference_no);
+                            } else if ($row->transaction_type == 'Purchase') {
+                                $particulars = app(\App\Http\Controllers\Admin\Purchase\IndexController::class)->particulars($row->reference_no);
                             }
 
                             echo "<tr>";

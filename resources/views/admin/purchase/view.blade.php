@@ -1,0 +1,80 @@
+@extends('admin.layout.default')
+@section('title')
+  Manage Purchase
+@endsection
+@section('content')
+
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Manage Purchase's</h3>
+          <div class="box-tools pull-right">
+            <a href="{{ route('purchase.report') }}" target="_blank" style="float: left; font-size: 20px; padding-right:5px;"><i class="fa fa-file-pdf-o"></i></a>
+            <a href="{{ route('purchase.add') }}" class="btn btn-success btn-sm"> <i class="fa fa-plus"></i>&nbsp;Add New</a>
+          </div>
+        </div>
+        <div class="box-body color-black">
+              <table id="members_list_table" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                      <th>SN</th>
+                      <th>Trans. Date</th>
+                      <th>Supplier</th>
+                      <th>Payment From</th>
+                      <th>Amount</th>
+                      <th>Remarks</th>
+                      <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if(!empty($allData))
+                    @php
+                      $grand_total = 0;
+                    @endphp
+                  	@foreach ($allData as $key => $data)
+                      <tr>
+                          <td>{{ sprintf("%02d", ++$key); }}</td>
+                          <td>{{ $data->transaction_date }}</td>
+                          <td>{{ $data->supplier->office_name }}</td>
+                          <td>
+                            {{ $data->payment_mode }}
+                            @if($data->image)
+                              <a href="{{ asset($data->image) }}" target='_blank'><i class='fa fa-eye'></i></a>
+                            @endif
+                            @if($data->payment_mode == 'Cheque')
+                              <p>{{ $data->bank->bank_name }} <{{ $data->cheque_no }}> <{{ $data->cheque_date }}></p>
+                            @endif
+                          </td>
+                          <td>{{ bd_money_format($data->amount) }}</td>
+                          <td>
+                            {{ $data->remarks }}
+                          </td>
+                          <td>
+                            <a href="{{ route('purchase.invoice',hashid_encode($data->id)) }}" style="color: green;" title="Edit" target="_blank">View <i class="fa fa-file-pdf-o" style="color: green;"></i></a>
+                          </td>
+                      </tr>
+                        @php
+                          $grand_total = $grand_total + $data->amount;
+                        @endphp
+                    @endforeach
+                  @endif
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td><p class='text-right' style='font-weight:bold'>Grand Total= </p></td>
+                      <td><p style='font-weight:bold'>{{ bd_money_format($grand_total) }}</p></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                </tbody>
+              </table>        
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </section><!-- /.content -->
+  </div><!-- /.content-wrapper -->
+@endsection
