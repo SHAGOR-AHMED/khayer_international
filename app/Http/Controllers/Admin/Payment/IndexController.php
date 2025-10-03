@@ -255,9 +255,7 @@ class IndexController extends Controller
 
     // destroy
     public function delete($id){
-
         dd('not done');
-        
     }
     
 }

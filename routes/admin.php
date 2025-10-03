@@ -155,6 +155,7 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::get('/status/{id}',          'IndexController@status')->name('control');
 			Route::get('/delete/{id}',          'IndexController@delete')->name('delete');
 			Route::get('/report',               'IndexController@report')->name('report');
+			Route::get('invoice/{id}',          'IndexController@invoice')->name('invoice');
 		});
 
 		/*---Expense---*/

@@ -75,7 +75,7 @@
                             @endif
                           </td>
                           <td>
-                            <a href="{{ route('received.edit',hashid_encode($data->id)) }}" style="color: green;" title="Edit">Edit <i class="fa fa-pencil-square fa-lg" style="color: green;"></i></a>
+                            <a href="{{ route('received.invoice',hashid_encode($data->id)) }}" style="color: green;" title="Edit" target="_blank">View <i class="fa fa-file-pdf-o" style="color: green;"></i></a>
                           </td>
                       </tr>
                         @php

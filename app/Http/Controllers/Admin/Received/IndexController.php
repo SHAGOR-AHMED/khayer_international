@@ -100,13 +100,16 @@ class IndexController extends Controller
             if ($success) {
 
                 // Update agent balance
-                //$this->db->query("UPDATE tbl_party SET balance=balance-'" . $amount . "' WHERE id='" . $party_id . "' ");
+                Agent::where('id',$request->agent_id)
+                    ->update([
+                        'balance' => DB::raw('balance - ' . (int) $request->amount),
+                    ]);
 
                 // Create agent ledger
                 $Aldata = array(
                     'id'               => make_id('agent_ledger', 'id', 'AL'),
                     'agent_id'         => $request->agent_id,
-                    'billing_date'     => $request->transaction_date,
+                    'billing_date'     => date('Y-m-d', strtotime($request->transaction_date)),
                     'transaction_type' => "Received",
                     'reference_no'     => $data->id,
                     'amount'           => $request->amount,
@@ -148,7 +151,7 @@ class IndexController extends Controller
     public function edit($id){
     	$data['edit'] = TRUE;
         $id = hashid_decode($id);
-    	$data['single'] = Payment::findOrFail($id);
+    	$data['single'] = Received::findOrFail($id);
     	return view('admin.received.add', $data);
     }
 
@@ -185,11 +188,31 @@ class IndexController extends Controller
         return $pdf->stream('received-report'.date('m-d-Y').'.pdf');
     }
 
+    public function invoice($received_id = NULL) {
+
+        $id              = hashid_decode($received_id);
+		$data['invoice'] = Received::with(['agent', 'bank'])->where('id',$id)->first();
+		$payment = Received::with(['agent', 'bank'])->where('id',$id)->first();
+		if($payment->payment_mode=='Cash') {
+			$data['title'] = "Cash Received Info";
+			$data['note'] = 'Cash';
+			$data['note2'] = 'Cash';
+		} else if($payment->payment_mode=='Cheque') {
+			$data['title'] = "Bank Received Info";
+			$data['note'] = $payment->bank->bank_name." <".$payment->bank->account_no.">";
+			$data['note2'] = "";
+		}
+        $data['time'] = "Entry Time: " . date('d-m-Y h:i A', strtotime($data['invoice']->transaction_date))
+        . "Print Time: " . date('d-m-Y h:i A');
+        $data['by'] = "Print By: " . logged_in_user_name();
+
+        $pdf = PDF::loadHtml(view('admin.received.invoice', $data));
+        return $pdf->stream('received-invoice'.$id.date('m-d-Y').'.pdf');
+	}
+
     // destroy
     public function delete($id){
-
         dd('not done');
-        
     }
     
 }
