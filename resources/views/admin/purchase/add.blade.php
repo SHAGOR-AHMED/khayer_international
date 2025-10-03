@@ -185,7 +185,7 @@
     function rateConversion() {
       var payrate = $("#payrate").val();
       var bdamount = $("#bdamount").val();
-      var totalAmount = (bdamount*payrate);
+      var totalAmount = (bdamount/payrate);
       $("#amount").val(totalAmount);
     }
 

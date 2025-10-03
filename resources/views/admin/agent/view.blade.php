@@ -22,6 +22,7 @@
                       <th>Name</th>
                       <th>Email</th>
                       <th>Phone</th>
+                      <th>Balance</th>
                       <th>Image</th>
                       <th>Status</th>
                       <th>Action</th>
@@ -35,6 +36,7 @@
                           <td>{{ $data->name }}</td>
                           <td>{{ $data->email }}</td>
                           <td>{{ $data->phone }}</td>
+                          <td>{{ $data->balance }}</td>
                           <td>
                               <a href="{{ imageShow($data->image) }}" target="_blank">
                                 <img height="50" width="60" src="{{ imageShow($data->image) }}" />

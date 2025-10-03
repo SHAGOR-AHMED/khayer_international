@@ -153,9 +153,7 @@ class IndexController extends Controller
     }
 
     public function update(Request $request){
-
         dd('yoo');
-        
     }//update
 
 

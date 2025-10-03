@@ -16,6 +16,7 @@
 				<ul class="treeview-menu">
 					<li><a href="{{ route('agent.add') }}"><i class="fa fa-plus"></i>Add New Agent</a></li>
 					<li><a href="{{ route('agent.index') }}"><i class="fa fa-eye"></i>View All Agents</a></li>
+					<li><a href="{{ route('agent.ledger') }}"><i class="fa fa-bar-chart"></i>Agent Ledger</a></li>
 				</ul>
             </li>
 

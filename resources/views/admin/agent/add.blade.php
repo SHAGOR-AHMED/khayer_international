@@ -35,6 +35,11 @@
                     <label for="password">Phone No</label>
                     <input type="text" class="form-control" name="phone" placeholder="Enter Phone No" value="{{ old('phone') }}">
                 </div>
+
+                <div class="form-group">
+                    <label for="password">Balance</label>
+                    <input type="text" class="form-control" name="balance" placeholder="Enter Balance" value="{{ old('balance') }}">
+                </div>
               </div>
 
               <div class="col-md-6">
