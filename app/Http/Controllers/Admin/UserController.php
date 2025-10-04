@@ -24,8 +24,10 @@ class UserController extends Controller
     }
 
     public function store(Request $request){
+        
+        return 'Not Authorized';
 
-       $this->validate($request,[
+        $this->validate($request,[
             'name'=>'required',
             'phone'=>'required|digits_between:11,14',
             'email'=>'required|email:filter',

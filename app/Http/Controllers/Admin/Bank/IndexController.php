@@ -14,23 +14,26 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class IndexController extends Controller
 {
-    public function index(){
-    	$data['allData'] = Bank::get();
-    	return view('admin.bank.view',$data);
+    public function index()
+    {
+        $data['allData'] = Bank::get();
+        return view('admin.bank.view', $data);
     }
 
-    public function create(){
+    public function create()
+    {
         $data['add'] = TRUE;
         return view('admin.bank.add', $data);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
-        $this->validate($request,[
-            'bank_name'=>'required',
-            'account_name'=>'required',
-            'account_no'=>'required',
-            'account_balance'=>'required',
+        $this->validate($request, [
+            'bank_name' => 'required',
+            'account_name' => 'required',
+            'account_no' => 'required',
+            'account_balance' => 'required',
         ]);
 
         return DB::transaction(function () use ($request) {
@@ -58,32 +61,32 @@ class IndexController extends Controller
                 BankLedger::insert($ledgerData);
             }
 
-            if($success){
-                notify()->success(saved_success(),"Success","topRight");
-            }else{
-                notify()->error(exception(),"Error","topRight");
+            if ($success) {
+                notify()->success(saved_success(), "Success", "topRight");
+            } else {
+                notify()->error(exception(), "Error", "topRight");
             }
             return redirect()->route('bank.index');
-
         });
+    } //store
 
-    }//store
-
-    public function edit($id){
-    	$data['edit'] = TRUE;
+    public function edit($id)
+    {
+        $data['edit'] = TRUE;
         $id = hashid_decode($id);
-    	$data['single'] = Bank::findOrFail($id);
-    	return view('admin.bank.add', $data);
+        $data['single'] = Bank::findOrFail($id);
+        return view('admin.bank.add', $data);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
 
-        $this->validate($request,[
-            'bank_name'=>'required',
-            'account_name'=>'required',
-            'account_no'=>'required',
+        $this->validate($request, [
+            'bank_name' => 'required',
+            'account_name' => 'required',
+            'account_no' => 'required',
         ]);
-       
+
         $data                = Bank::findOrFail($request->id);
         $data->bank_name     = $request->bank_name;
         $data->account_name  = $request->account_name;
@@ -91,85 +94,116 @@ class IndexController extends Controller
         $data->bank_remarks  = $request->bank_remarks;
         $success             = $data->save();
 
-        if($success){
-            notify()->success(updated_success(),"Success","topRight");
-        }else{
-            notify()->error(exception(),"Error","topRight");
+        if ($success) {
+            notify()->success(updated_success(), "Success", "topRight");
+        } else {
+            notify()->error(exception(), "Error", "topRight");
         }
         return redirect()->route('bank.index');
-        
-    }//update
+    } //update
 
     //control
-    public function status($id){
+    public function status($id)
+    {
         $id         = hashid_decode($id);
         $data       = Bank::findOrFail($id);
-        if($data){
+        if ($data) {
             $status = $data->bank_status;
-            if($status == 'ACTIVE'){
+            if ($status == 'ACTIVE') {
                 $data->bank_status = 'INACTIVE';
-            }else{
+            } else {
                 $data->bank_status = 'ACTIVE';
             }
             $success    =  $data->save();
-            if($success){
+            if ($success) {
                 Alert::toast(updated_success(), 'info');
-            }else{
+            } else {
                 Alert::toast(exception(), 'error');
             }
             return redirect()->route('bank.index');
         }
     }
 
-    public function ledger(){
+    public function ledger()
+    {
         $data['all_banks'] = Bank::query()
-                            ->where('bank_status','ACTIVE')
-                            ->pluck('bank_name', 'id')
-                            ->prepend('Please Select', '')
-                            ->toArray();
-    	return view('admin.bank.ledger',$data);
+            ->where('bank_status', 'ACTIVE')
+            ->pluck('bank_name', 'id')
+            ->prepend('All Banks', 'all')
+            ->toArray();
+        return view('admin.bank.ledger', $data);
     }
 
-    public function report(Request $request){
+    public function report(Request $request)
+    {
 
         $from_date = $request->date_range_from;
-		$to_date = $request->date_range_to;
-		$bank_id = $request->bank_id;
+        $to_date = $request->date_range_to;
+        $bank_id = $request->bank_id;
 
         $data['title'] = "Ledger Account";
-		$data['bank'] = Bank::find($bank_id);
-		$data['results'] = $this->ledger_report($from_date, $to_date, $bank_id);
-		$data['from_date'] = $from_date;
-		$data['to_date'] = $to_date;
 
-        return view('admin.bank.ledger_report', $data);
+        if ($bank_id == 'all') {
+            $data['bank'] = null;
+            $data['all_banks'] = Bank::where('bank_status', 'ACTIVE')->get();
+            $data['is_all_banks'] = true;
+        } else {
+            $data['bank'] = Bank::find($bank_id);
+            $data['all_banks'] = null;
+            $data['is_all_banks'] = false;
+        }
+
+        $data['results'] = $this->ledger_report($from_date, $to_date, $bank_id);
+        $data['from_date'] = $from_date;
+        $data['to_date'] = $to_date;
 
         $pdf = PDF::loadHtml(view('admin.bank.ledger_report', $data));
-        return $pdf->stream('ledger-report'.date('m-d-Y').'.pdf');
+        return $pdf->stream('ledger-report' . date('m-d-Y') . '.pdf');
     }
 
-    public function ledger_report($from_date = NULL, $to_date=NULL, $bank_id=NULL) {
+    public function ledger_report($from_date = NULL, $to_date = NULL, $bank_id = NULL)
+    {
 
-        return BankLedger::where('bank_id',$bank_id)->where('transaction_date','>=', $from_date)->where('transaction_date','<=', $to_date)->orderBy('transaction_date', 'ASC')->get();
-	}
+        $query = BankLedger::query();
+
+        if ($bank_id != 'all') {
+            $query->where('bank_id', $bank_id);
+        }
+
+        return $query->where('transaction_date', '>=', $from_date)
+            ->where('transaction_date', '<=', $to_date)
+            ->orderBy('bank_id', 'ASC')
+            ->orderBy('transaction_date', 'ASC')
+            ->get();
+    }
 
 
-    public function previous_blance($bank_id = NULL, $from_date = NULL) {
-		$balance = 0; 
-        $query = BankLedger::where('bank_id',$bank_id)->where('transaction_date','<', $from_date)->orderBy('transaction_date', 'ASC')->get();
-		foreach ($query as $row) {
-			if ($row->transaction_type == 'Payment' || $row->transaction_type == 'Expense') {
-				$balance = $balance - $row->amount;
-			} else {
-				$balance = $balance + $row->amount;
-			}
-		}
-		return $balance;
-	}
+    public function previous_blance($bank_id = NULL, $from_date = NULL)
+    {
+        $balance = 0;
+
+        $query = BankLedger::query();
+
+        if ($bank_id != 'all') {
+            $query->where('bank_id', $bank_id);
+        }
+
+        $results = $query->where('transaction_date', '<', $from_date)->orderBy('transaction_date', 'ASC')->get();
+
+        foreach ($results as $row) {
+            if ($row->transaction_type == 'Payment' || $row->transaction_type == 'Expense') {
+                $balance = $balance - $row->amount;
+            } else {
+                $balance = $balance + $row->amount;
+            }
+        }
+        return $balance;
+    }
 
 
     // destroy
-    public function delete($id){
+    public function delete($id)
+    {
 
         return DB::transaction(function () use ($id) {
             $id         = hashid_decode($id);
@@ -177,18 +211,15 @@ class IndexController extends Controller
             $success    = $data->delete();
 
             if ($success) {
-                BankLedger::where('bank_id',$id)->delete();
+                BankLedger::where('bank_id', $id)->delete();
             }
-            
-            if($success){
+
+            if ($success) {
                 Alert::success('Deleted!', deleted_success());
-            }else{
+            } else {
                 Alert::error('Error!', exception());
             }
             return redirect()->route('bank.index');
-
         });
-        
     }
-
 }

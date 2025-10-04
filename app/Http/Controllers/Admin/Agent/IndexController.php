@@ -161,8 +161,6 @@ class IndexController extends Controller
 		$data['from_date'] = $from_date;
 		$data['to_date'] = $to_date;
 
-        return view('admin.agent.ledger_report', $data);
-
         $pdf = PDF::loadHtml(view('admin.agent.ledger_report', $data));
         return $pdf->stream('ledger-report'.date('m-d-Y').'.pdf');
     }

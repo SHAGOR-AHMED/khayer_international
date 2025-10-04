@@ -105,7 +105,7 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::get('/details/{id}',         'IndexController@details')->name('details');
 			Route::get('/log',                  'IndexController@log')->name('log');
 		});
-
+		
 		/*---Purchase---*/
 		Route::namespace('Purchase')->prefix('/purchase')->name('purchase.')->group(function(){
 			Route::get('/index',                'IndexController@index')->name('index');
@@ -137,7 +137,7 @@ Route::group([ 'middleware' => ['auth', 'user-access:admin']], function(){
 			Route::get('/index',                'IndexController@index')->name('index');
 			Route::get('/create',               'IndexController@create')->name('add');
 			Route::post('/store',               'IndexController@store')->name('store');
-			Route::get('edit/{id}',             'IndexController@edit')->name('edit');
+			Route::get('edit/{id}',        'IndexController@edit')->name('edit');
 			Route::post('/update',              'IndexController@update')->name('update');
 			Route::get('/status/{id}',          'IndexController@status')->name('control');
 			Route::get('/delete/{id}',          'IndexController@delete')->name('delete');

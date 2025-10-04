@@ -151,12 +151,14 @@ class IndexController extends Controller
     public function edit($id){
     	$data['edit'] = TRUE;
         $id = hashid_decode($id);
-    	$data['single'] = Received::findOrFail($id);
+    	$data['single'] = Payment::findOrFail($id);
     	return view('admin.received.add', $data);
     }
 
     public function update(Request $request){
+
         dd('yoo');
+        
     }//update
 
 
@@ -187,7 +189,7 @@ class IndexController extends Controller
         $pdf = PDF::loadHtml(view('admin.received.report', $data));
         return $pdf->stream('received-report'.date('m-d-Y').'.pdf');
     }
-
+    
     public function invoice($received_id = NULL) {
 
         $id              = hashid_decode($received_id);
@@ -212,7 +214,9 @@ class IndexController extends Controller
 
     // destroy
     public function delete($id){
+
         dd('not done');
+        
     }
     
 }

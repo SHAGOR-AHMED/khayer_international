@@ -17,18 +17,21 @@ class IndexController extends Controller
 {
     use ImageUpload;
 
-    public function index(){
-    	$data['allData'] = Entry::with(['agent','user'])->where('status','!=','DELIVERED')->latest()->get();
-    	return view('admin.entry.view',$data);
+    public function index()
+    {
+        $data['allData'] = Entry::with(['agent', 'user'])->where('status', 'PENDING')->latest()->get();
+        return view('admin.entry.view', $data);
     }
 
-    public function details($hashid){
+    public function details($hashid)
+    {
         $id = hashid_decode($hashid);
-    	$data['single'] = Entry::with(['agent','user'])->findOrFail($id);
-    	return view('admin.entry.details',$data);
+        $data['single'] = Entry::with(['agent', 'user'])->findOrFail($id);
+        return view('admin.entry.details', $data);
     }
 
-    public function log(){
+    public function log()
+    {
         $id = \request()->input("entry_id");
         //$data['single'] = Entry::with(['created_by','updated_by'])->findOrFail($id);
 
@@ -36,35 +39,37 @@ class IndexController extends Controller
             ->join('users as U', 'U.id', '=', 'entries.created_by', 'LEFT')
             ->join('users as UM', 'UM.id', '=', 'entries.updated_by', 'LEFT')
             ->select("entries.*", "U.name as created_by", "UM.name as updated_by")
-            ->where("entries.id","=",$id)
+            ->where("entries.id", "=", $id)
             ->first();
         $returnHTML = view('admin.common.log')->with($data)->render();
-        return response()->json(array('success' => true, 'html'=>$returnHTML));
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 
-    public function create(){
+    public function create()
+    {
         $data['add'] = TRUE;
         $data['all_agents'] = Agent::query()
-                            ->where('status',1)
-                            ->pluck('name', 'id')
-                            ->prepend('Please Select', '')
-                            ->toArray();
-        $data['all_clients'] = User::where('type','user')->get();
+            ->where('status', 1)
+            ->pluck('name', 'id')
+            ->prepend('Please Select', '')
+            ->toArray();
+        $data['all_clients'] = User::where('type', 'user')->get();
         $data['all_countries'] = DB::table('countries')->get();
         return view('admin.entry.add', $data);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
-       $this->validate($request,[
-            'agent_id'=>'required',
-            'rl_no'=>'required',
-            'country'=>'required',
-            'client_id'=>'required',
-            'profession'=>'required',
-            'office_visa'=>'required',
-            'processing'=>'required',
-            'gcc_medical_report'=>'required',
+        $this->validate($request, [
+            'agent_id' => 'required',
+            'rl_no' => 'required',
+            'country' => 'required',
+            'client_id' => 'required',
+            'profession' => 'required',
+            'office_visa' => 'required',
+            'processing' => 'required',
+            'gcc_medical_report' => 'required',
         ]);
 
         $data                      = new Entry();
@@ -83,64 +88,66 @@ class IndexController extends Controller
         $data->created_by          = logged_in_user_id();
         $success                   = $data->save();
 
-        if($success){
-            notify()->success(saved_success(),"Success","topRight");
-        }else{
-            notify()->error(exception(),"Error","topRight");
+        if ($success) {
+            notify()->success(saved_success(), "Success", "topRight");
+        } else {
+            notify()->error(exception(), "Error", "topRight");
         }
         return redirect()->route('entry.index');
+    } //store
 
-    }//store
-
-    public function nextStage(Request $request){
+    public function nextStage(Request $request)
+    {
         $data               = Entry::findOrFail($request->id);
         $data->status       = $request->status;
         $data->updated_by   = logged_in_user_id();
         $success            = $data->save();
-        if($success){
-            notify()->success(updated_success(),"Success","topRight");
-        }else{
-            notify()->error(exception(),"Error","topRight");
+        if ($success) {
+            notify()->success(updated_success(), "Success", "topRight");
+        } else {
+            notify()->error(exception(), "Error", "topRight");
         }
         return redirect()->route('entry.index');
     }
 
-    public function return_application(Request $request){
+    public function return_application(Request $request)
+    {
 
-        $this->validate($request,[
-            'return_cause'=>'required',
+        $this->validate($request, [
+            'return_cause' => 'required',
         ]);
-       
+
         $data = Entry::findOrFail($request->id);
         $data->is_returned     = 'YES';
         $data->return_cause    = $request->return_cause;
         $data->updated_by      = logged_in_user_id();
         $success               = $data->save();
 
-        if($success){
-            notify()->success(updated_success(),"Success","topRight");
-        }else{
-            notify()->error(exception(),"Error","topRight");
+        if ($success) {
+            notify()->success(updated_success(), "Success", "topRight");
+        } else {
+            notify()->error(exception(), "Error", "topRight");
         }
         return redirect()->route('entry.index');
-        
     }
 
-    public function edit($id){
-    	$data['edit'] = TRUE;
-    	$data['single'] = Entry::findOrFail($id);
-    	return view('admin.entry.add', $data);
+    public function edit($id)
+    {
+        $data['edit'] = TRUE;
+        $data['single'] = Entry::findOrFail($id);
+        return view('admin.entry.add', $data);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
 
-        $this->validate($request,[
-            'name'=>'required',
-            'phone'=>'required',
-            'email'=>'required',
-            'address'=>'required',
+        $this->validate($request, [
+            'name' => 'required',
+            'phone' => 'required',
+            'email' => 'required',
+            'address' => 'required',
         ]);
-       
+
         $data = Entry::findOrFail($request->id);
         $data->name         = $request->name;
         $data->email        = $request->email;
@@ -149,46 +156,46 @@ class IndexController extends Controller
         $data->updated_by   = logged_in_user_id();
         $success            = $data->save();
 
-        if($success){
-            notify()->success(updated_success(),"Success","topRight");
-        }else{
-            notify()->error(exception(),"Error","topRight");
+        if ($success) {
+            notify()->success(updated_success(), "Success", "topRight");
+        } else {
+            notify()->error(exception(), "Error", "topRight");
         }
-        return redirect()->route('entry.edit',$request->id);
-        
-    }//update
+        return redirect()->route('entry.edit', $request->id);
+    } //update
 
     //control
-    public function status($id){
+    public function status($id)
+    {
 
         $data       =  Entry::find($id);
-        if($data){
-           $status = $data->status;
-            if($status == 1){
+        if ($data) {
+            $status = $data->status;
+            if ($status == 1) {
                 $data->status = 0;
-            }else{
+            } else {
                 $data->status = 1;
             }
             $success    =  $data->save();
-            if($success){
-                notify()->success(updated_success(),"Success","topRight");
-            }else{
-                notify()->error(exception(),"Error","topRight");
+            if ($success) {
+                notify()->success(updated_success(), "Success", "topRight");
+            } else {
+                notify()->error(exception(), "Error", "topRight");
             }
             return redirect()->route('entry.index');
         }
     }
 
     // destroy
-    public function delete($id){
+    public function delete($id)
+    {
         $data       =  Entry::find($id);
         $success    =  $data->delete();
-        if($success){
-            notify()->success(deleted_success(),"Success","topRight");
-        }else{
-            notify()->error(exception(),"Error","topRight");
+        if ($success) {
+            notify()->success(deleted_success(), "Success", "topRight");
+        } else {
+            notify()->error(exception(), "Error", "topRight");
         }
         return redirect()->route('entry.index');
     }
-
 }

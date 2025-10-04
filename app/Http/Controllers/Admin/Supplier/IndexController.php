@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Supplier;
 
+use PDF;
 use Session;
 use Carbon\Carbon;
 use App\Models\Supplier;
@@ -142,10 +143,8 @@ class IndexController extends Controller
 		$data['from_date'] = $from_date;
 		$data['to_date'] = $to_date;
 
-        return view('admin.supplier.ledger_report', $data);
-
         $pdf = PDF::loadHtml(view('admin.supplier.ledger_report', $data));
-        return $pdf->stream('ledger-report'.date('m-d-Y').'.pdf');
+        return $pdf->stream('supplier-ledger'.date('m-d-Y').'.pdf');
     }
 
     public function ledger_report($from_date = NULL, $to_date=NULL, $supplier_id=NULL) {
